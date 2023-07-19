@@ -76,6 +76,7 @@ The take-home task is to implement the 2-player version of this game, where each
 5. **Tailwind CSS** - Tailwind CSS is a utility-first CSS framework, which gets most common CSS problems out of the way. Developers will be able to focus on building the UI, instead of fighting with CSS. Tailwind CSS's utility-first design will allow developers to quickly style game components without having to write a lot of custom CSS.
 6. **React Router** - React Router enables "client side routing". Since this will be a "SPA" (Single-Page Application), some form of routing will be needed. React Router will allow developers to create different routes for different views in the application (like a home page, a game page, and a leaderboard page).
 7. **ESLint and Prettier** - ESLint and Prettier are tools that enforce code quality and consistent formatting. ESLint catches potential bugs and enforces best practices, while Prettier ensures that code follows a consistent style. This will help maintain code quality and readability, which is especially important in a collaborative project.
+8. **Socket.IO** - Socket.IO is a JavaScript library for real-time web applications. It enables real-time, bidirectional and event-based communication between the browser and the server. It will be used to handle real-time updates of the game state.
 
 #### The Backend
 
@@ -86,6 +87,7 @@ The take-home task is to implement the 2-player version of this game, where each
 5. **Express** - Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. It will be used to create the server-side logic, define routes, and handle HTTP requests and responses.
 6. **Docker** - Docker is a platform that enables developers to build, package, and distribute applications in standardized units called containers. Docker will be used to containerize the PostgreSQL database, ensuring that it runs consistently in any environment.
 7. **ESLint and Prettier** - As in the frontend, ESLint and Prettier will be used to enforce code quality and consistent formatting in the backend codebase.
+8. **Socket.IO** - Socket.IO is a JavaScript library for real-time web applications. It enables real-time, bidirectional and event-based communication between the server and the client. It will be used to handle real-time updates of the game state.
 
 #### Additional tools
 
