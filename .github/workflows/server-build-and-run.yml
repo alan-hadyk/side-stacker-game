@@ -1,0 +1,28 @@
+name: Server - build and run
+
+on: [push]
+
+jobs:
+  server-build-and-run:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.0.0]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.5.2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Build and start the server
+        working-directory: ./server
+        run: |
+          yarn install
+          yarn cache clean
+          yarn build
+          yarn start
