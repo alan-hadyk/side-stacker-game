@@ -6,7 +6,7 @@
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:@typescript-eslint/recommended-requiring-type-checking", "plugin:react-hooks/recommended", "plugin:import/recommended", "plugin:import/typescript", "plugin:prettier/recommended"],
   "overrides": [
     {
-      "files": ["src/App.tsx"], 
+      "files": ["vite.config.ts", "src/App.tsx"], 
       "rules": {
         "import/no-default-export": "off"
       }
@@ -15,7 +15,7 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
-    "project": ["./client/tsconfig.json"],
+    "project": ["./client/tsconfig.json", "./client/tsconfig.node.json"],
     "sourceType": "module"
   },
   "plugins": ["react-refresh", "typescript-sort-keys", "import"],
