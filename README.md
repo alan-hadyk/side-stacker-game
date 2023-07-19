@@ -152,6 +152,32 @@ Fields:
 
 > List of the major tasks that have to be completed
 
+- [ ] Initial server setup
+- [ ] Initial client setup
+- [ ] Server error handling
+- [ ] Server-side Player model implementation
+- [ ] Server-side Player routes and controllers implementation
+- [ ] Server-side Game entity implementation
+- [ ] Server-side Game routes and controllers implementation
+- [ ] Server-side Move entity implementation
+- [ ] Server-side Move routes and controllers implementation
+- [ ] Client - session logic
+- [ ] Client routes
+- [ ] Client - game lobby
+- [ ] Client - game board
+- [ ] Client - game creation and joining logic
+- [ ] Client - game play (making moves) logic
+- [ ] Client - game end (win/draw) logic
+- [ ] Client - user interface for game lobby, game board, and game end
+- [ ] Integration of client and server
+- [ ] Testing of all routes, controllers, and user interfaces
+
+### Potential additional features
+
+> Step into the shoes of a product manager and spec out some potential features to add to the project. Frame it as if it’s a client project and explain thought process for gathering requirements, prioritizing tickets, delegating, and making time estimates.
+
+TODO
+
 ### Testing Strategy
 
 > Plan to test the application, to ensure it works as expected
