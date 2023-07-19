@@ -114,6 +114,7 @@ Fields:
     - `player2_id` (UUID, optional): The ID of the second player. This is a foreign key referencing `Players.player_id`. This field is optional because a game might be created before the second player has joined.
     - `current_player_id` (UUID, required): The ID of the player whose turn it is. This is a foreign key referencing `Players.player_id`.
     - `current_game_state` (enum, required): The current state of the game. This is an enumeration with values like "waiting for players", "in progress", "finished", etc.
+    - `next_possible_moves` (integer[][2], required): An array of pairs of integers representing the X and Y coordinates of the next possible moves.
     - `winner_id` (UUID, optional): The ID of the winning player, if the game has finished. This is a foreign key referencing `Players.player_id`.
     - `created_at` (timestamp, required): The time when the game was created.
     - `finished_at` (timestamp, optional): The time when the game was finished. This field is optional because it will be empty for games that are still in progress.
@@ -136,11 +137,11 @@ Fields:
 
 2. **User enters username**: The user enters their chosen username and clicks on the "Confirm" button. A session is created for the user, and they are taken to the main game lobby.
 
-3. **User waits in the game lobby**: The user waits in the game lobby. They can see a list of games in progress, as well as a list of finished games.
+3. **User waits in the game lobby**: The user waits in the game lobby. They can see a list of games in progress, as well as a list of finished games. In the top, there might be also a game that they are currently participating in.
 
 4. **User creates a new game or joins an existing one**
-- A: **User creates a new game**: User clicks on "New Game" button. New game is created, and user is redirected to a route with a new game. They are assigned as Player 1 and there's no Player 2 yet. User waits for another player to join.
-- B: **User joins an existing game**: User clicks on one of the games in progress. They are redirected to a route with an existing game. If there's a free spot, user clicks on "Join Game" button. User is assigned as Player 2. If there isn't any free spot, user can watch the game.
+- A: **User creates a new game**: User clicks on "New Game" button. New game is created, and user is redirected to a route with a new game. They are assigned as Player 1 and there's no Player 2 yet. User waits for another player to join. If they are currently participating in another game, they are removed from that other game.
+- B: **User joins an existing game**: User clicks on one of the games in progress. They are redirected to a route with an existing game. If there's a free spot, user clicks on "Join Game" button. User is assigned as Player 1 or Player 2. If there isn't any free spot, user can watch the game.
 
 5. **Game starts**: The game board is displayed, and Player 1 is prompted to make the first move.
 
@@ -202,7 +203,7 @@ TODO
 
 2. **Concurrency issues**: If two players make a move at the same time, there's a need to ensure that the game state is updated correctly. This can be addressed by using locks or other concurrency control mechanisms.
 
-3. **Scaling**: If the game becomes popular, there might be a need to handle a large number of simultaneous games. This can be addressed by using a scalable server architecture, such as a load balancer and multiple game servers. **Note: Given the scope of the project, this probably not an issue**
+3. **Scaling**: If the game becomes popular, there might be a need to handle a large number of simultaneous games. This can be addressed by using a scalable server architecture, such as a load balancer and multiple game servers. **Note: Given the scope of the project, this is probably not an issue**
 
 4. **Cheating**: Players might try to cheat by modifying the client code or sending fake requests to the server. This can be addressed by validating all moves on the server and checking that they come from the player whose turn it is.
 
