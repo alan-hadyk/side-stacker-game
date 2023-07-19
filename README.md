@@ -57,6 +57,12 @@ The take-home task is to implement the 2-player version of this game, where each
 4. The frontend and backend may interact via REST API, or websocket.
 5. Real-time streaming can be tricky, so sending drawing strokes or board moves may be done when user clicks a button instead of sending continuous events.
 
+### System Architecture
+
+> High-level diagram showing how the different components of the system will interact with each other
+
+![System Architecture - High-level diagram](docs/system-architecture.drawio.svg?raw=true "System Architecture - High-level diagram")
+
 ### Technology Stack
 
 > List of technologies used in the project
@@ -69,7 +75,7 @@ The take-home task is to implement the 2-player version of this game, where each
 4. **TanStack Query** - TanStack Query (FKA React Query) is often described as the missing data-fetching library for web applications, but in more technical terms, it makes fetching, caching, synchronizing and updating server state in web applications a breeze. It's also [possible to use WebSockets with TanStack Query](https://tkdodo.eu/blog/using-web-sockets-with-react-query). This library will provide a robust state management solution, which is definitely needed for this project. TanStack Query's caching and synchronization features will be useful for keeping the game state consistent across multiple clients.
 5. **Tailwind CSS** - Tailwind CSS is a utility-first CSS framework, which gets most common CSS problems out of the way. Developers will be able to focus on building the UI, instead of fighting with CSS. Tailwind CSS's utility-first design will allow developers to quickly style game components without having to write a lot of custom CSS.
 6. **React Router** - React Router enables "client side routing". Since this will be a "SPA" (Single-Page Application), some form of routing will be needed. React Router will allow developers to create different routes for different views in the application (like a home page, a game page, and a leaderboard page).
-7. **ESLint and Prettier** - ESLint and Prettier are tools that enforce code quality and consistent formatting. ESLint catches potential bugs and enforces best practices, while Prettier ensures that code follows a consistent style. This will help maintain code quality and readability, especially important in a collaborative project.
+7. **ESLint and Prettier** - ESLint and Prettier are tools that enforce code quality and consistent formatting. ESLint catches potential bugs and enforces best practices, while Prettier ensures that code follows a consistent style. This will help maintain code quality and readability, which is especially important in a collaborative project.
 
 #### The Backend
 
@@ -84,10 +90,6 @@ The take-home task is to implement the 2-player version of this game, where each
 #### Additional tools
 
 Real and production-level application could also have additional tools, such as a tool for managing the environment variables (like Dotenv), testing frameworks (like Jest or Cypress), API documentation (like Swagger) and logging. However, given the scope and time constraints of this project, they probably won't be implemented.
-
-### System Architecture
-
-> High-level diagram showing how the different components of the system will interact with each other
 
 ### Data Model
 
