@@ -63,10 +63,21 @@ The take-home task is to implement the 2-player version of this game, where each
 4. **TanStack Query** - TanStack Query (FKA React Query) is often described as the missing data-fetching library for web applications, but in more technical terms, it makes fetching, caching, synchronizing and updating server state in web applications a breeze. It's also [possible to use WebSockets with TanStack Query](https://tkdodo.eu/blog/using-web-sockets-with-react-query). This library will provide a robust state management solution, which is definitely needed for this project. TanStack Query's caching and synchronization features will be useful for keeping the game state consistent across multiple clients.
 5. **Tailwind CSS** - Tailwind CSS is a utility-first CSS framework, which gets most common CSS problems out of the way. Developers will be able to focus on building the UI, instead of fighting with CSS. Tailwind CSS's utility-first design will allow developers to quickly style game components without having to write a lot of custom CSS.
 6. **React Router** - React Router enables "client side routing". Since this will be a "SPA" (Single-Page Application), some form of routing will be needed. React Router will allow developers to create different routes for different views in the application (like a home page, a game page, and a leaderboard page).
+7. **ESLint and Prettier** - ESLint and Prettier are tools that enforce code quality and consistent formatting. ESLint catches potential bugs and enforces best practices, while Prettier ensures that code follows a consistent style. This will help maintain code quality and readability, especially important in a collaborative project.
 
 #### The Backend
 
-TODO
+1. **Node.js** - Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It's perfect for developing server-side and networking applications, especially real-time ones like this game. Its non-blocking, event-driven architecture makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
+2. **TypeScript** - TypeScript, as in the frontend, will provide the benefits of static typing and enhanced code quality and maintainability. This is especially important in the backend where data integrity and application stability are crucial.
+3. **PostgreSQL** - PostgreSQL is a powerful, open-source object-relational database system. It is robust and has many advanced features like complex queries, foreign keys, views, transactional integrity, and multiversion concurrency control. It will be used to store game states and player information.
+4. **slonik** - Slonik is a battle-tested PostgreSQL client for Node.js, providing a set of features suitable for professional backend development. It will help manage database connections, transactions, and queries in a secure and efficient manner.
+5. **Express** - Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. It will be used to create the server-side logic, define routes, and handle HTTP requests and responses.
+6. **Docker** - Docker is a platform that enables developers to build, package, and distribute applications in standardized units called containers. Docker will be used to containerize the PostgreSQL database, ensuring that it runs consistently in any environment.
+7. **ESLint and Prettier** - As in the frontend, ESLint and Prettier will be used to enforce code quality and consistent formatting in the backend codebase.
+
+#### Additional tools
+
+Real and production-level application could also have additional tools, such as a tool for managing the environment variables (like Dotenv), testing frameworks (like Jest or Cypress), API documentation (like Swagger) and logging. However, given the scope and time constraints of this project, they probably won't be implemented.
 
 ### System Architecture
 
