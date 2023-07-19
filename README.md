@@ -6,6 +6,8 @@ Side-Stacker Game - Monadical Application - Take-home project
 
 ### Project Overview
 
+> Brief description of the project and its objectives.
+
 **Side-Stacker Game**
 
 This is essentially connect-four, but the pieces stack on either side of the board instead of bottom-up.
@@ -38,6 +40,8 @@ The take-home task is to implement the 2-player version of this game, where each
 
 ### Technical Requirements
 
+> Hard Technical Requirements of the project
+
 #### The Frontend
 
 1. Frontend must be written in ES7 Javascript. It can use either React or no framework at all. Angular, Vue and other large JS frameworks are not allowed, but Lodash, jQuery and similar are fine.
@@ -54,6 +58,8 @@ The take-home task is to implement the 2-player version of this game, where each
 5. Real-time streaming can be tricky, so sending drawing strokes or board moves may be done when user clicks a button instead of sending continuous events.
 
 ### Technology Stack
+
+> List of technologies used in the project
 
 #### The Frontend
 
@@ -81,24 +87,24 @@ Real and production-level application could also have additional tools, such as 
 
 ### System Architecture
 
-TODO
+> High-level diagram showing how the different components of the system will interact with each other
 
 ### Data Model
 
-TODO
+> Description of database schema
 
 ### User Flow
 
-TODO
+> Step-by-step walkthrough of a typical user interaction with the application
 
 ### Implementation Plan
 
-TODO
+> List of the major tasks that have to be completed
 
 ### Testing Strategy
 
-TODO
+> Plan to test the application, to ensure it works as expected
 
 ### Potential Challenges
 
-TODO
+> Any difficulties that might arise during the development. How they can be addressed?
