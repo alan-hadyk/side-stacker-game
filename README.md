@@ -53,8 +53,8 @@ The take-home task is to implement the 2-player version of this game, where each
 
 1. Game should be stored in the backend using a relational database.
 2. Backend can be written in JavaScript, Rust or Python >= 3.7.
-3. Any Python backend framework or ORM might be used as needed.
-4. The frontend and backend may interact via REST API, or websocket.
+3. Any Python backend framework or database ORM might be used as needed.
+4. The frontend and backend may interact via REST API or WebSockets.
 5. Real-time streaming can be tricky, so sending drawing strokes or board moves may be done when user clicks a button instead of sending continuous events.
 
 ### System Architecture
@@ -129,6 +129,24 @@ Fields:
 ### User Flow
 
 > Step-by-step walkthrough of a typical user interaction with the application
+
+1. **User visits the application**: The user opens the application in their web browser. They are presented with a loading indicator, and then a welcome screen and a modal to enter their username. If they've already entered the username, they land in step `3.`.
+
+2. **User enters username**: The user enters their chosen username and clicks on the "Confirm" button. A session is created for the user, and they are taken to the main game lobby.
+
+3. **User waits in the game lobby**: The user waits in the game lobby. They can see a list of games in progress, as well as a list of finished games.
+
+4. **User creates a new game or joins an existing one**
+- A: **User creates a new game**: User clicks on "New Game" button. New game is created, and user is redirected to a route with a new game. They are assigned as Player 1 and there's no Player 2 yet. User waits for another player to join.
+- B: **User joins an existing game**: User clicks on one of the games in progress. They are redirected to a route with an existing game. If there's a free spot, user clicks on "Join Game" button. User is assigned as Player 2. If there isn't any free spot, user can watch the game.
+
+5. **Game starts**: The game board is displayed, and Player 1 is prompted to make the first move.
+
+6. **Players make moves**: Players take turns making moves. After each move, the game state is updated and displayed on the game board.
+
+7. **Game ends**: The game ends when one player wins or the game is a draw. The result is displayed on the screen, and both players are taken back to the game lobby.
+
+8. **User leaves the application**: The user can choose to create another game, join another existing game or leave the application. If they click on "Leave" button, their session ends. If they refresh the page or come back to the application later, their session will persist.
 
 ### Implementation Plan
 
