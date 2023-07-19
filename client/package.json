@@ -1,4 +1,6 @@
 {
+  "author": "alan-hadyk <alan.hadyk@gmail.com>",
+  "description": "Client for Side-Stacker game",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -20,6 +22,10 @@
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
     "vite-tsconfig-paths": "^4.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.6.0"
   },
   "name": "client",
   "private": true,
