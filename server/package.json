@@ -1,4 +1,7 @@
 {
+  "_moduleAliases": {
+    "@app": "./dist"
+  },
   "author": "alan-hadyk <alan.hadyk@gmail.com>",
   "description": "Server for Side-Stacker game",
   "dependencies": {
@@ -35,8 +38,5 @@
     "lint": "eslint 'src/**/*.{ts,tsx}' --fix",
     "start": "NODE_ENV=production node -r module-alias/register dist/index.js"
   },
-  "version": "1.0.0",
-  "_moduleAliases": {
-    "@app": "./dist"
-  }
+  "version": "1.0.0"
 }
