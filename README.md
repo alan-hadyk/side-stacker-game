@@ -182,6 +182,26 @@ TODO
 
 > Plan to test the application, to ensure it works as expected
 
+1. **Unit Testing**: Tests individual functions and methods to ensure they work correctly in isolation. **Note: Should be implemented only if it doesn't violate the allotted time and scope**
+
+2. **Integration Testing**: Tests the interaction between different parts of the application. For example, it might test that the client correctly sends a request to the server when a user makes a move, and that the server correctly updates the game state and sends a response.  **Note: Should be implemented only if it doesn't violate the allotted time and scope**
+
+3. **System Testing**: Tests application as a whole. This might involve playing several games from start to finish and checking that the game state is correctly updated at each step, that the game ends correctly when a player wins or the game is a draw, and that the game lobby correctly displays the current state of all games.
+
+4. **Performance Testing**: Tests the performance of the application under load. This might involve creating many games and making many moves in a short period of time to see how the application handles it.
+
+5. **Usability Testing**: Tests the user interface of the application. This might involve checking that all buttons, links, and forms work correctly, and that the user interface is intuitive and easy to use.
+
 ### Potential Challenges
 
 > Any difficulties that might arise during the development. How they can be addressed?
+
+1. **Real-time updates**: One of the main challenges in a multiplayer online game is ensuring that all players see the same game state in real time. This can be addressed by using a technology like WebSockets to push updates from the server to the client.
+
+2. **Concurrency issues**: If two players make a move at the same time, there's a need to ensure that the game state is updated correctly. This can be addressed by using locks or other concurrency control mechanisms.
+
+3. **Scaling**: If the game becomes popular, there might be a need to handle a large number of simultaneous games. This can be addressed by using a scalable server architecture, such as a load balancer and multiple game servers. **Note: Given the scope of the project, this probably not an issue**
+
+4. **Cheating**: Players might try to cheat by modifying the client code or sending fake requests to the server. This can be addressed by validating all moves on the server and checking that they come from the player whose turn it is.
+
+5. **User experience**: Creating a user interface that is intuitive and responsive can be challenging. This can be addressed by using a modern front-end framework, and by testing the user interface with real users and iterating based on their feedback.
