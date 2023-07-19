@@ -1,9 +1,9 @@
-name: Server - build and run
+name: Server - build
 
 on: [push]
 
 jobs:
-  server-build-and-run:
+  server-build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,10 +19,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Build and start the server
+      - name: Build the server
         working-directory: ./server
         run: |
           yarn install
           yarn cache clean
           yarn build
-          yarn start
