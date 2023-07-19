@@ -155,7 +155,7 @@ Fields:
 
 > List of the major tasks that have to be completed
 
-- [x] Initial server setup
+- [x] [Initial server setup](https://github.com/alan-hadyk/side-stacker-game/pull/2)
 - [ ] Initial client setup
 - [ ] Server database setup
 - [ ] Server error handling
