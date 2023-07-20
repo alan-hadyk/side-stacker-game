@@ -1,4 +1,4 @@
-import { ValidationError } from "@app/errors/definitions/validationError";
+import { ValidationError } from "@app/errors/definitions/validationError"
 import {
   BackendTerminatedError,
   ConnectionError,
@@ -10,7 +10,7 @@ import {
   StatementTimeoutError,
   TupleMovedToAnotherPartitionError,
   UniqueIntegrityConstraintViolationError,
-} from "slonik";
+} from "slonik"
 
 export type Err =
   | Error
@@ -24,4 +24,4 @@ export type Err =
   | StatementTimeoutError
   | TupleMovedToAnotherPartitionError
   | UniqueIntegrityConstraintViolationError
-  | ConnectionError;
+  | ConnectionError
