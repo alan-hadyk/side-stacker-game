@@ -27,6 +27,8 @@ const startServer = async () => {
   const { appConfig } = config
   const { host, port } = appConfig.httpServer
 
+  websocketsServer.listen(port)
+
   // Run the server at given host and port
   httpServer.listen(port, host, () => {
     console.log(`HTTP server running at http://${host}:${port}/`)
