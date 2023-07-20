@@ -114,10 +114,11 @@ Fields:
     - `game_id` (UUID, required): A unique identifier for each game. This is the primary key.
     - `player1_id` (UUID, optional): The ID of the first player (owner of the game). This is a foreign key referencing `players.player_id`. This field is optional because a game might be created before the first player has joined, or a first player might abandon the game.
     - `player2_id` (UUID, optional): The ID of the second player. This is a foreign key referencing `players.player_id`. This field is optional because a game might be created before the second player has joined, or a second player might abandon the game.
-    - `current_player_id` (UUID, required): The ID of the player whose turn it is. This is a foreign key referencing `players.player_id`.
+    - `current_player_id` (UUID, optional): The ID of the player whose turn it is. This is a foreign key referencing `players.player_id`. This field is optional because there might not be any players in the game.
     - `current_game_state` (enum, required): The current state of the game. This is an enumeration with values like "waiting for players", "in progress", "finished", etc.
+    - `current_board_status` (integer[7][7], required): 7 x 7 array representing current board state.
     - `next_possible_moves` (integer[][2], required): An array of pairs of integers representing the X and Y coordinates of the next possible moves.
-    - `winner_id` (UUID, optional): The ID of the winning player, if the game has finished. This is a foreign key referencing `players.player_id`.
+    - `winner_id` (UUID, optional): The ID of the winning player, if the game has finished. This is a foreign key referencing `players.player_id`. This field is optional because winner appears only when the game is finished, or there might be a draw.
     - `created_at` (timestamp, required): The time when the game was created.
     - `finished_at` (timestamp, optional): The time when the game was finished. This field is optional because it will be empty for games that are still in progress.
 
@@ -162,7 +163,7 @@ Fields:
 - [x] [Server database setup](https://github.com/alan-hadyk/side-stacker-game/pull/4)
 - [x] [Server error handling](https://github.com/alan-hadyk/side-stacker-game/pull/5)
 - [x] [Server-side Player model implementation](https://github.com/alan-hadyk/side-stacker-game/pull/6)
-- [ ] Server-side Game model implementation
+- [x] [Server-side Game model implementation]()
 - [ ] Server-side Move model implementation
 - [ ] Server-side Player controllers and services implementation
 - [ ] Server-side Game controllers and services implementation
