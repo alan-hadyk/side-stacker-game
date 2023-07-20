@@ -93,11 +93,11 @@ export class PlayerModel {
     pool.connect(async (connection) => {
       const fragments = []
 
-      if (last_active_at !== undefined) {
-        fragments.push(sql.fragment`last_active_at = ${last_active_at}`)
-      } else {
-        fragments.push(sql.fragment`last_active_at = NOW()`)
-      }
+      fragments.push(
+        last_active_at !== undefined
+          ? sql.fragment`last_active_at = ${last_active_at}`
+          : sql.fragment`last_active_at = NOW()`,
+      )
 
       if (session_id !== undefined) {
         fragments.push(sql.fragment`session_id = ${session_id}`)
