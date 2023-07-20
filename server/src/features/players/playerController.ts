@@ -79,6 +79,10 @@ export class PlayerController {
       websocketsServer.emit("invalidateQuery", {
         entity: ["players", "list"],
       })
+      websocketsServer.emit("invalidateQuery", {
+        entity: ["players", "detail"],
+        id: deletedPlayer.player_id,
+      })
 
       res.json(deletedPlayerWithIsoDates)
     } catch (error) {
@@ -171,6 +175,50 @@ export class PlayerController {
           ["created_at", "deleted_at", "last_active_at"],
         ),
       }
+
+      res.json(playerWithIsoDates)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static update = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      RequestValidationService.validateQuery(req.query, [], [], [])
+      const body = RequestValidationService.validateBody(
+        req.body,
+        PlayerObject.pick({
+          username: true,
+        }),
+      )
+      const params = RequestValidationService.validateParams(
+        req.params,
+        PlayerObject.pick({ player_id: true }),
+      )
+
+      const player = await PlayerModel.update(params.player_id, {
+        username: body.username,
+      })
+      const { created_at, deleted_at, last_active_at, player_id, username } =
+        player
+
+      const playerWithIsoDates = {
+        player_id,
+        username,
+        ...convertObjectToObjectWithIsoDates(
+          { created_at, deleted_at, last_active_at },
+          ["created_at", "deleted_at", "last_active_at"],
+        ),
+      }
+
+      // Emit an event to all connected clients to invalidate the players query
+      websocketsServer.emit("invalidateQuery", {
+        entity: ["players", "list"],
+      })
+      websocketsServer.emit("invalidateQuery", {
+        entity: ["players", "detail"],
+        id: player_id,
+      })
 
       res.json(playerWithIsoDates)
     } catch (error) {

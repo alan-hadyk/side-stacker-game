@@ -90,24 +90,10 @@ export class PlayerModel {
 
   static update = (
     player_id: Player["player_id"],
-    {
-      last_active_at,
-      session_id,
-      username,
-    }: Partial<Pick<Player, "last_active_at" | "session_id" | "username">>,
+    { username }: Partial<Pick<Player, "username">>,
   ): Promise<Player> =>
     pool.connect(async (connection) => {
-      const fragments = []
-
-      fragments.push(
-        last_active_at !== undefined
-          ? sql.fragment`last_active_at = ${last_active_at}`
-          : sql.fragment`last_active_at = NOW()`,
-      )
-
-      if (session_id !== undefined) {
-        fragments.push(sql.fragment`session_id = ${session_id}`)
-      }
+      const fragments = [sql.fragment`last_active_at = NOW()`]
 
       if (username !== undefined) {
         fragments.push(sql.fragment`username = ${username}`)
