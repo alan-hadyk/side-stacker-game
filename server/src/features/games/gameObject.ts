@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const CurrentGameStateEnum = z.enum([
+export const GameStateEnum = z.enum([
   "waiting_for_players",
   "in_progress",
   "finished",
@@ -12,7 +12,7 @@ export const GameObject = z
   .object({
     created_at: z.number(),
     current_board_status: z.array(z.array(BoardMoveTypeEnum)),
-    current_game_state: CurrentGameStateEnum,
+    current_game_state: GameStateEnum,
     current_player_id: z.string().uuid().optional(),
     finished_at: z.number().optional(),
     game_id: z.string().uuid(),
