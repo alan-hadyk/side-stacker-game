@@ -1,3 +1,4 @@
+import { websocketsServer } from "@app/clients/websocketsServer"
 import { PlayerModel } from "@app/features/players/playerModel"
 import { PlayerObject } from "@app/features/players/playerObject"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
@@ -16,21 +17,26 @@ export const playerControllers = {
 
       const session_id = uuidv4()
 
-      const player = await PlayerModel.create({
+      const newPlayer = await PlayerModel.create({
         session_id,
         username,
       })
 
-      const playerWithIsoDates = {
-        ...player,
-        ...convertObjectToObjectWithIsoDates(player, [
+      const newPlayerWithIsoDates = {
+        ...newPlayer,
+        ...convertObjectToObjectWithIsoDates(newPlayer, [
           "created_at",
           "deleted_at",
           "last_active_at",
         ]),
       }
 
-      res.json({ ...playerWithIsoDates, session_id })
+      // Emit an event to all connected clients to invalidate the players query
+      websocketsServer.emit("invalidateQuery", {
+        entity: ["players", "list"],
+      })
+
+      res.json({ ...newPlayerWithIsoDates, session_id })
     } catch (error) {
       next(error)
     }

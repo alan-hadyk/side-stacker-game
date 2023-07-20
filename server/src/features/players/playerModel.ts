@@ -54,7 +54,7 @@ export class PlayerModel {
   static getAll = ({
     limit = 20,
     offset = 0,
-    orderBy = "created_at",
+    orderBy = "last_active_at",
     orderDirection = OrderDirection.DESC,
   }: PlayerModelGetAll): Promise<readonly Player[]> =>
     pool.connect(async (connection) => {
