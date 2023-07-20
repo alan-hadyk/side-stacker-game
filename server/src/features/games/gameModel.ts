@@ -196,7 +196,7 @@ export class GameModel {
         player2_id,
         winner_id,
       })) {
-        if (value) {
+        if (value !== undefined) {
           fragments.push(sql.fragment`${sql.identifier([key])} = ${value}`)
         }
       }
@@ -233,18 +233,22 @@ export class GameModel {
 }
 
 export const GamesTableInit = sql.unsafe`
-  CREATE TYPE IF NOT EXISTS game_state AS ENUM ('waiting_for_players', 'in_progress', 'finished');
+    DO $$ BEGIN
+        CREATE TYPE game_state AS ENUM ('waiting_for_players', 'in_progress', 'finished');
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
 
-  CREATE TABLE IF NOT EXISTS games (
-    game_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    player1_id UUID REFERENCES players(player_id),
-    player2_id UUID REFERENCES players(player_id),
-    current_player_id UUID REFERENCES players(player_id),
-    current_game_state game_state NOT NULL DEFAULT 'waiting_for_players',
-    current_board_status JSONB NOT NULL,
-    next_possible_moves JSONB NOT NULL,
-    winner_id UUID REFERENCES players(player_id),
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    finished_at TIMESTAMP
-  );
+    CREATE TABLE IF NOT EXISTS games (
+        game_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        player1_id UUID REFERENCES players(player_id),
+        player2_id UUID REFERENCES players(player_id),
+        current_player_id UUID REFERENCES players(player_id),
+        current_game_state game_state NOT NULL DEFAULT 'waiting_for_players',
+        current_board_status JSONB NOT NULL,
+        next_possible_moves JSONB NOT NULL,
+        winner_id UUID REFERENCES players(player_id),
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        finished_at TIMESTAMP
+    );
 `
