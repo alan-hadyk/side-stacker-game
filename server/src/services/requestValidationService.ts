@@ -53,7 +53,7 @@ export class RequestValidationService {
     if (query.filters && allowedQueryParams.includes("filters")) {
       for (const [key, value] of Object.entries(query.filters)) {
         if (!allowedFilters.includes(key)) {
-          errors.push(`incorrect filter: ${key} - ${value}`)
+          errors.push(`incorrect filter query param: ${key} - ${value}`)
         }
       }
     }
@@ -102,23 +102,16 @@ export class RequestValidationService {
       )
     }
 
-    if (
-      query.deleted &&
-      allowedQueryParams.includes("deleted") &&
-      query.deleted !== "false" &&
-      query.deleted !== "true"
-    ) {
-      errors.push("deleted query param should be a boolean")
-    }
-
     if (!isEmpty(errors)) {
       throw new ValidationError(errors)
     }
 
-    const { deleted, limit, offset, orderBy, orderDirection } = query
+    const { filters, limit, offset, orderBy, orderDirection } = query
 
     return {
-      ...(deleted && { deleted: deleted === "true" }),
+      ...(filters && {
+        filters: filters as Record<keyof typeof allowedFilters, string>,
+      }),
       ...(limit && { limit: Number(limit) }),
       ...(offset && { offset: Number(offset) }),
       ...(orderBy && { orderBy: orderBy as keyof typeof objectKeys }),
@@ -126,5 +119,29 @@ export class RequestValidationService {
         orderDirection: orderDirection as OrderDirection,
       }),
     }
+  }
+
+  static validateParams = <T extends ZodRawShape>(
+    params: Request["params"],
+    entityObject: z.ZodObject<T>,
+  ) => {
+    const incorrectParams: string[] = []
+    const entityObjectKeys: string[] = entityObject.keyof()._def.values
+
+    Object.keys(params).forEach((bodyKey) => {
+      if (!entityObjectKeys.includes(bodyKey as never)) {
+        incorrectParams.push(bodyKey)
+      }
+    })
+
+    if (!isEmpty(incorrectParams)) {
+      throw new ValidationError(incorrectParams)
+    }
+
+    const payloadWithoutEmptyFields = omitBy(params, isNil)
+
+    entityObject.parse(payloadWithoutEmptyFields)
+
+    return payloadWithoutEmptyFields as z.infer<typeof entityObject>
   }
 }

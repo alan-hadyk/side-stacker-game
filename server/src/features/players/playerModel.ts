@@ -31,14 +31,17 @@ export class PlayerModel {
       return rows[0]
     })
 
-  static delete = (player_id: Player["player_id"]): Promise<Player> =>
+  static delete = (
+    player_id: Player["player_id"],
+    session_id: Player["session_id"],
+  ): Promise<Player> =>
     pool.connect(async (connection) => {
       const fragments = [sql.fragment`deleted_at = NOW()`]
 
       const query = sql.typeAlias("player")`
           UPDATE players
           SET ${sql.join(fragments, sql.unsafe`, `)}
-          WHERE player_id = ${player_id}
+          WHERE player_id = ${player_id}, session_id = ${session_id}
           RETURNING *
         `
 
