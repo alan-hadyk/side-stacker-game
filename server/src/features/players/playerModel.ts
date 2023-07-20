@@ -36,7 +36,10 @@ export class PlayerModel {
     session_id: Player["session_id"],
   ): Promise<Player> =>
     pool.connect(async (connection) => {
-      const fragments = [sql.fragment`deleted_at = NOW()`]
+      const fragments = [
+        sql.fragment`session_id = NULL`,
+        sql.fragment`deleted_at = NOW()`,
+      ]
 
       const query = sql.typeAlias("player")`
           UPDATE players

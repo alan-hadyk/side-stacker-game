@@ -139,4 +139,42 @@ export class PlayerController {
       next(error)
     }
   }
+
+  static getById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      RequestValidationService.validateQuery(req.query, [], [], [])
+      RequestValidationService.validateBody(
+        req.body,
+        PlayerObject.omit({
+          created_at: true,
+          deleted_at: true,
+          last_active_at: true,
+          player_id: true,
+          session_id: true,
+          username: true,
+        }),
+      )
+      const params = RequestValidationService.validateParams(
+        req.params,
+        PlayerObject.pick({ player_id: true }),
+      )
+
+      const player = await PlayerModel.getById(params.player_id)
+      const { created_at, deleted_at, last_active_at, player_id, username } =
+        player
+
+      const playerWithIsoDates = {
+        player_id,
+        username,
+        ...convertObjectToObjectWithIsoDates(
+          { created_at, deleted_at, last_active_at },
+          ["created_at", "deleted_at", "last_active_at"],
+        ),
+      }
+
+      res.json(playerWithIsoDates)
+    } catch (error) {
+      next(error)
+    }
+  }
 }

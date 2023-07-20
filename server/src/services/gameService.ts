@@ -1,5 +1,6 @@
 import { websocketsServer } from "@app/clients/websocketsServer"
 import { GameModel } from "@app/features/games/gameModel"
+import { GameStateEnum } from "@app/features/games/gameObject"
 import { Player } from "@app/features/players/@types/playerObject"
 
 export class GameService {
@@ -7,6 +8,7 @@ export class GameService {
     const gamesWithDeletedPlayer = await GameModel.getAll({
       filterType: "OR",
       filters: {
+        current_game_state: GameStateEnum.enum.in_progress,
         current_player_id: deletedPlayer.player_id,
         player1_id: deletedPlayer.player_id,
         player2_id: deletedPlayer.player_id,
