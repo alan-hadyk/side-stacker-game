@@ -32,10 +32,10 @@ export class RequestValidationService {
     return payloadWithoutEmptyFields as z.infer<typeof entityObject>
   }
 
-  static validateQuery = (
+  static validateQuery = <T>(
     query: Request["query"],
     allowedQueryParams: string[],
-    objectKeys: string[],
+    objectKeys: T[],
     allowedFilters: string[],
   ) => {
     const disallowedQueryParams = Object.keys(query).filter(
@@ -93,7 +93,7 @@ export class RequestValidationService {
     if (
       query.orderBy &&
       allowedQueryParams.includes("orderBy") &&
-      !objectKeys.includes(query.orderBy as string)
+      !objectKeys.includes(query.orderBy as T)
     ) {
       errors.push(
         `orderBy query param should be one of the following values: ${JSON.stringify(
@@ -114,7 +114,7 @@ export class RequestValidationService {
       }),
       ...(limit && { limit: Number(limit) }),
       ...(offset && { offset: Number(offset) }),
-      ...(orderBy && { orderBy: orderBy as keyof typeof objectKeys }),
+      ...(orderBy && { orderBy: orderBy as T }),
       ...(orderDirection && {
         orderDirection: orderDirection as OrderDirection,
       }),
