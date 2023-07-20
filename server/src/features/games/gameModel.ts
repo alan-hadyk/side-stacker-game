@@ -191,7 +191,6 @@ export class GameModel {
       for (const [key, value] of Object.entries({
         current_game_state,
         current_player_id,
-        finished_at,
         player1_id,
         player2_id,
         winner_id,
@@ -199,6 +198,10 @@ export class GameModel {
         if (value !== undefined) {
           fragments.push(sql.fragment`${sql.identifier([key])} = ${value}`)
         }
+      }
+
+      if (finished_at !== undefined) {
+        fragments.push(sql.fragment`finished_at = NOW()`)
       }
 
       if (current_board_status !== undefined) {
