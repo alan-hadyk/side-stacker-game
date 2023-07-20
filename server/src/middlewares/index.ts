@@ -23,7 +23,13 @@ export const useMiddlewares = async (
   // Websockets logging
   websocketsServer.engine.on("connection_error", handleWsErrors)
   websocketsServer.on("connection", (socket) => {
-    console.log("websocketsServer connection")
+    if (socket.recovered) {
+      // recovery was successful: socket.id, socket.rooms and socket.data were restored
+      console.log("websocketsServer recovery was successful")
+    } else {
+      console.log("websocketsServer connection")
+    }
+
     console.log({ socket })
   })
 }
