@@ -1,8 +1,8 @@
 import { websocketsServer } from "@app/clients/websocketsServer"
-import { GameModel } from "@app/features/games/gameModel"
 import { PlayerModel } from "@app/features/players/playerModel"
 import { PlayerObject } from "@app/features/players/playerObject"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
+import { GameService } from "@app/services/gameService"
 import { RequestValidationService } from "@app/services/requestValidationService"
 import { Request, Response, NextFunction } from "express"
 import { v4 as uuidv4 } from "uuid"
@@ -72,40 +72,7 @@ export const playerControllers = {
         ]),
       }
 
-      try {
-        const gamesWithDeletedPlayer = await GameModel.getAll({
-          filterType: "OR",
-          filters: {
-            current_player_id: deletedPlayer.player_id,
-            player1_id: deletedPlayer.player_id,
-            player2_id: deletedPlayer.player_id,
-          },
-        })
-
-        if (gamesWithDeletedPlayer.length > 0) {
-          await Promise.all(
-            gamesWithDeletedPlayer.map((game) => {
-              const field = Object.entries(game).find(
-                ([, value]) => value === deletedPlayer.player_id,
-              )?.[0]
-
-              if (field) {
-                return GameModel.update(game.game_id, {
-                  [field]: "",
-                })
-              }
-
-              return game
-            }),
-          )
-          // Emit an event to all connected clients to invalidate the games query
-          websocketsServer.emit("invalidateQuery", {
-            entity: ["games", "list"],
-          })
-        }
-      } catch (error) {
-        console.error(error)
-      }
+      await GameService.removeDeletedPlayerFromGames(deletedPlayer)
 
       // Emit an event to all connected clients to invalidate the players query
       websocketsServer.emit("invalidateQuery", {
