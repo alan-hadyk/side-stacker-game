@@ -47,9 +47,9 @@ export class GameModel {
             player2_id || ""
           }, ${current_player_id || ""}, ${
             current_game_state || GameStateEnum.enum.waiting_for_players
-          }, ${sql.json(current_board_status)}, ${sql.json(
-            next_possible_moves,
-          )}, ${winner_id || ""}, NOW())
+          }, ${sql.json(current_board_status)}, ${next_possible_moves}, ${
+            winner_id || ""
+          }, NOW())
           RETURNING *
         `
 
