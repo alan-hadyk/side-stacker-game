@@ -35,71 +35,11 @@ export class GameModel {
     | "winner_id"
   >): Promise<Game> =>
     pool.connect(async (connection) => {
-      const current_board_status = [
-        [
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-        ],
-        [
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-        ],
-        [
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-        ],
-        [
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-        ],
-        [
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-        ],
-        [
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-        ],
-        [
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-          BoardMoveTypeEnum.enum.empty,
-        ],
-      ]
+      const current_board_status_row = new Array(7).fill(
+        BoardMoveTypeEnum.enum.empty,
+      )
+      const current_board_status = new Array(7).fill(current_board_status_row)
+
       const query = sql.typeAlias("game")`
           INSERT 
           INTO games (game_id, player1_id, player2_id, current_player_id, current_game_state, current_board_status, next_possible_moves, winner_id, created_at) 
