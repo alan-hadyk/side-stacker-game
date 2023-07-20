@@ -5,7 +5,7 @@ import {
 import { config } from "@app/config"
 import { initializers } from "@app/initializers"
 import { useMiddlewares } from "@app/middlewares"
-import { handleErrorsMiddleware } from "@app/middlewares/handleErrors"
+import { handleHttpErrorsMiddleware } from "@app/middlewares/handleHttpErrors"
 import express from "express"
 import { createServer } from "http"
 
@@ -19,35 +19,19 @@ const startServer = async () => {
   await Promise.all(initializers.map((initializer) => initializer()))
 
   // Middlewares
-  await useMiddlewares(app)
+  await useMiddlewares(app, websocketsServer)
 
-  // Errors middleware
-  app.use(handleErrorsMiddleware)
-
-  websocketsServer.on("connection", (socket) => {
-    console.log("websocketsServer connection")
-    console.log({ socket })
-  })
-
-  websocketsServer.engine.on("connection_error", (err) => {
-    console.log(err.req) // the request object
-    console.log(err.code) // the error code, for example 1
-    console.log(err.message) // the error message, for example "Session ID unknown"
-    console.log(err.context) // some additional error context
-  })
+  // HTTP Errors middleware
+  app.use(handleHttpErrorsMiddleware)
 
   const { appConfig } = config
+  const { host, port } = appConfig.httpServer
 
   // Run the server at given host and port
-  httpServer.listen(
-    appConfig.httpServer.port,
-    appConfig.httpServer.host,
-    () => {
-      console.log(
-        `HTTP server running at http://${appConfig.httpServer.host}:${appConfig.httpServer.port}/`,
-      )
-    },
-  )
+  httpServer.listen(port, host, () => {
+    console.log(`HTTP server running at http://${host}:${port}/`)
+    console.log(`WS server running at ws://${host}:${port}/`)
+  })
 }
 
 startServer()
