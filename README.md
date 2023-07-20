@@ -161,12 +161,13 @@ Fields:
 - [x] [Initial client setup](https://github.com/alan-hadyk/side-stacker-game/pull/3)
 - [x] [Server database setup](https://github.com/alan-hadyk/side-stacker-game/pull/4)
 - [x] [Server error handling](https://github.com/alan-hadyk/side-stacker-game/pull/5)
-- [x] [Server-side Player model implementation]()
-- [ ] Server-side Player routes and controllers implementation
-- [ ] Server-side Game entity implementation
-- [ ] Server-side Game routes and controllers implementation
-- [ ] Server-side Move entity implementation
-- [ ] Server-side Move routes and controllers implementation
+- [x] [Server-side Player model implementation](https://github.com/alan-hadyk/side-stacker-game/pull/6)
+- [ ] Server-side Game model implementation
+- [ ] Server-side Move model implementation
+- [ ] Server-side Player controllers and services implementation
+- [ ] Server-side Game controllers and services implementation
+- [ ] Server-side Move controllers and services implementation
+- [ ] Server routes implementation
 - [ ] Client - session logic
 - [ ] Client routes
 - [ ] Client - game lobby
