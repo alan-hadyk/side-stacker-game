@@ -10,6 +10,9 @@ import {
 } from "@app/features/games/gameObject"
 import { Player } from "@app/@types/playerObject"
 import { WebsocketService } from "@app/services/websocketService"
+import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
+import { GameResponse } from "@app/@types/gameService"
+import { convertDateISOStringToTimestamp } from "@app/helpers/dates/convertDateISOStringToTimestamp"
 
 export class GameService {
   static readonly BOARD_SIZE = 7
@@ -45,6 +48,34 @@ export class GameService {
     })
 
     return nextPossibleMoves
+  }
+
+  static parseRequestToGame = (game: Partial<GameResponse>) => {
+    const { current_board_status, created_at, next_possible_moves } = game
+
+    return {
+      ...game,
+      created_at: created_at
+        ? convertDateISOStringToTimestamp(created_at)
+        : undefined,
+      current_board_status: current_board_status
+        ? JSON.stringify(current_board_status)
+        : undefined,
+      next_possible_moves: next_possible_moves
+        ? JSON.stringify(next_possible_moves)
+        : undefined,
+    }
+  }
+
+  static parseGameToResponse = (game: Game): GameResponse => {
+    const { current_board_status, created_at, next_possible_moves } = game
+
+    return {
+      ...game,
+      current_board_status: JSON.parse(current_board_status),
+      next_possible_moves: JSON.parse(next_possible_moves),
+      ...convertObjectToObjectWithIsoDates({ created_at }, ["created_at"]),
+    }
   }
 
   static removeDeletedPlayerFromGames = async (deletedPlayer: Player) => {

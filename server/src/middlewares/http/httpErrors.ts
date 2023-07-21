@@ -13,7 +13,7 @@ import {
   UniqueIntegrityConstraintViolationError,
 } from "slonik"
 
-export const handleHttpErrorsMiddleware = (
+export const httpErrorsMiddleware = (
   error: Err,
   _req: Request,
   res: Response,

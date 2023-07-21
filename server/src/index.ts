@@ -2,7 +2,7 @@ import { createWebsocketsServer } from "@app/clients/websocketsServer"
 import { config } from "@app/config"
 import { initializers } from "@app/initializers"
 import { useHttpMiddlewares } from "@app/middlewares/http"
-import { handleHttpErrorsMiddleware } from "@app/middlewares/http/handleHttpErrors"
+import { httpErrorsMiddleware } from "@app/middlewares/http/httpErrors"
 import { useWsMiddlewares } from "@app/middlewares/ws"
 import express from "express"
 import { createServer as createHttpServer } from "http"
@@ -21,8 +21,9 @@ const startServer = async () => {
   useHttpMiddlewares(app)
   useWsMiddlewares(websocketsServer)
 
-  // HTTP Errors middleware - has to be used after routing
-  app.use(handleHttpErrorsMiddleware)
+  // HTTP Errors middleware - has to be used after
+  // routing to catch all errors from routers, controllers and models
+  app.use(httpErrorsMiddleware)
 
   const { appConfig } = config
   const { host, port } = appConfig.httpServer
