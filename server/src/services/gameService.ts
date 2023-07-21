@@ -12,21 +12,23 @@ import { Player } from "@app/@types/playerObject"
 import { WebsocketService } from "@app/services/websocketService"
 
 export class GameService {
+  static readonly BOARD_SIZE = 7
+
   static calculateNextPossibleMoves = (
     current_board_status?: BoardMoveTypeEnumType[][],
   ) => {
-    const currentBoardStatusRowInit = new Array(7).fill(
+    const boardStatusRowInit = new Array(GameService.BOARD_SIZE).fill(
       BoardMoveTypeEnum.enum.empty,
     )
-    const currentBoardStatusInit: BoardMoveTypeEnumType[][] = new Array(7).fill(
-      currentBoardStatusRowInit,
-    )
+    const boardStatusInit: BoardMoveTypeEnumType[][] = new Array(
+      GameService.BOARD_SIZE,
+    ).fill(boardStatusRowInit)
 
-    const currentBoardStatus = current_board_status || currentBoardStatusInit
+    const boardStatus = current_board_status || boardStatusInit
 
     const nextPossibleMoves: number[][] = []
 
-    currentBoardStatus.forEach((row, rowIndex) => {
+    boardStatus.forEach((row, rowIndex) => {
       const leftMostEmptyIndex = row.indexOf(BoardMoveTypeEnum.enum.empty)
       const rightMostEmptyIndex = row.lastIndexOf(BoardMoveTypeEnum.enum.empty)
 
@@ -58,22 +60,32 @@ export class GameService {
 
     if (gamesWithDeletedPlayer.length > 0) {
       await Promise.all(
-        gamesWithDeletedPlayer.map((game) => {
-          const field = Object.entries(game).find(
-            ([, value]) => value === deletedPlayer.player_id,
-          )?.[0]
+        gamesWithDeletedPlayer.map(async (game) => {
+          const fieldsToUpdate = Object.entries(game)
+            .filter(
+              ([key, value]) =>
+                value === deletedPlayer.player_id &&
+                gameObjectKeys.includes(key as keyof Game),
+            )
+            .map(([key]) => key)
 
-          if (field && gameObjectKeys.includes(field as keyof Game)) {
-            return GameModel.update(game.game_id, {
-              [field]: "",
-            })
+          if (fieldsToUpdate.length > 0) {
+            await GameModel.update(
+              game.game_id,
+              Object.fromEntries(fieldsToUpdate.map((field) => [field, ""])),
+            )
+
+            WebsocketService.emitInvalidateQuery(
+              ["games", "detail"],
+              game.game_id,
+            )
           }
 
           return game
         }),
       )
 
-      // Emit an event to all connected clients to invalidate the games query
+      // Emit an event to all connected clients to invalidate the games queries
       WebsocketService.emitInvalidateQuery(["games", "list"])
     }
   }
