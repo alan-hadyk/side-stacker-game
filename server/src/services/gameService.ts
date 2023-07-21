@@ -13,9 +13,23 @@ import { WebsocketService } from "@app/services/websocketService"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
 import { GameResponse } from "@app/@types/gameService"
 import { convertDateISOStringToTimestamp } from "@app/helpers/dates/convertDateISOStringToTimestamp"
+import { Move } from "@app/@types/moveObject"
 
 export class GameService {
   static readonly BOARD_SIZE = 7
+
+  static calculateBoardStatusAfterNextMove = (
+    current_board_status: BoardMoveTypeEnumType[][],
+    position_y: Move["position_y"],
+    position_x: Move["position_x"],
+    move: BoardMoveTypeEnumType,
+  ) => {
+    const currentBoardStatus = { ...current_board_status }
+
+    currentBoardStatus[position_y][position_x] = move
+
+    return currentBoardStatus
+  }
 
   static calculateNextPossibleMoves = (
     current_board_status?: BoardMoveTypeEnumType[][],
@@ -28,6 +42,11 @@ export class GameService {
     ).fill(boardStatusRowInit)
 
     const boardStatus = current_board_status || boardStatusInit
+
+    // Check if the game has been won
+    if (current_board_status && GameService.checkWin(boardStatus)) {
+      return []
+    }
 
     const nextPossibleMoves: number[][] = []
 
@@ -48,6 +67,75 @@ export class GameService {
     })
 
     return nextPossibleMoves
+  }
+
+  static checkWin = (boardStatus: BoardMoveTypeEnumType[][]): boolean => {
+    const counts = {
+      [BoardMoveTypeEnum.enum.O]: {
+        horizontal: Array(boardStatus[0].length).fill(0),
+        vertical: Array(boardStatus.length).fill(0),
+      },
+      [BoardMoveTypeEnum.enum.X]: {
+        horizontal: Array(boardStatus[0].length).fill(0),
+        vertical: Array(boardStatus.length).fill(0),
+      },
+    }
+
+    // Horizontal and vertical checks
+    for (let rowIndex = 0; rowIndex < boardStatus.length; rowIndex++) {
+      for (
+        let cellIndex = 0;
+        cellIndex < boardStatus[rowIndex].length;
+        cellIndex++
+      ) {
+        const cell = boardStatus[rowIndex][cellIndex]
+        if (
+          cell === BoardMoveTypeEnum.enum.X ||
+          cell === BoardMoveTypeEnum.enum.O
+        ) {
+          counts[cell].horizontal[rowIndex]++
+          counts[cell].vertical[cellIndex]++
+          if (
+            counts[cell].horizontal[rowIndex] === 4 ||
+            counts[cell].vertical[cellIndex] === 4
+          ) {
+            return true
+          }
+        } else {
+          counts.X.horizontal[rowIndex] = 0
+          counts.X.vertical[cellIndex] = 0
+          counts.O.horizontal[rowIndex] = 0
+          counts.O.vertical[cellIndex] = 0
+        }
+      }
+    }
+
+    // Diagonal checks
+    for (let rowIndex = 0; rowIndex < boardStatus.length - 3; rowIndex++) {
+      for (
+        let cellIndex = 0;
+        cellIndex < boardStatus[rowIndex].length - 3;
+        cellIndex++
+      ) {
+        for (const cell of [
+          BoardMoveTypeEnum.enum.X,
+          BoardMoveTypeEnum.enum.O,
+        ]) {
+          if (
+            [...Array(4).keys()].every(
+              (i) => boardStatus[rowIndex + i][cellIndex + i] === cell,
+            ) ||
+            [...Array(4).keys()].every(
+              (i) => boardStatus[rowIndex + 3 - i][cellIndex + i] === cell,
+            )
+          ) {
+            return true
+          }
+        }
+      }
+    }
+
+    return false
   }
 
   static determineCurrentGameState = (game: Game) => {
