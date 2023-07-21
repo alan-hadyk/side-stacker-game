@@ -78,33 +78,45 @@ export class GameService {
     }
   }
 
-  static removeDeletedPlayerFromGames = async (deletedPlayer: Player) => {
-    const gamesWithDeletedPlayer = await GameModel.getAll({
+  static removePlayerFromActiveGames = async (
+    player_id: Player["player_id"],
+  ) => {
+    const activeGamesWithPlayer = await GameModel.getAll({
       filterType: "OR",
       filters: {
-        current_game_state: GameStateEnum.enum.in_progress,
-        current_player_id: deletedPlayer.player_id,
-        player1_id: deletedPlayer.player_id,
-        player2_id: deletedPlayer.player_id,
+        current_game_state: [
+          GameStateEnum.enum.in_progress,
+          GameStateEnum.enum.waiting_for_players,
+        ],
+        current_player_id: player_id,
+        player1_id: player_id,
+        player2_id: player_id,
       },
     })
 
-    if (gamesWithDeletedPlayer.length > 0) {
+    if (activeGamesWithPlayer.length > 0) {
       await Promise.all(
-        gamesWithDeletedPlayer.map(async (game) => {
+        activeGamesWithPlayer.map(async (game) => {
           const fieldsToUpdate = Object.entries(game)
             .filter(
               ([key, value]) =>
-                value === deletedPlayer.player_id &&
+                value === player_id &&
                 gameObjectKeys.includes(key as keyof Game),
             )
             .map(([key]) => key)
 
           if (fieldsToUpdate.length > 0) {
-            await GameModel.update(
-              game.game_id,
-              Object.fromEntries(fieldsToUpdate.map((field) => [field, ""])),
+            // Create an object with the fields to update
+            const updateObject = Object.fromEntries(
+              fieldsToUpdate.map((field) => [field, ""]),
             )
+
+            // Add the current_game_state field to the update object
+            updateObject.current_game_state =
+              GameStateEnum.enum.waiting_for_players
+            updateObject.current_player_id = ""
+
+            await GameModel.update(game.game_id, updateObject)
 
             WebsocketService.emitInvalidateQuery(
               ["games", "detail"],
@@ -115,9 +127,6 @@ export class GameService {
           return game
         }),
       )
-
-      // Emit an event to all connected clients to invalidate the games queries
-      WebsocketService.emitInvalidateQuery(["games", "list"])
     }
   }
 }

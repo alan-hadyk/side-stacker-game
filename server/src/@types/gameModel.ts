@@ -3,19 +3,13 @@ import { OrderDirection } from "@app/@types/models"
 import { PrimitiveValueExpression } from "slonik"
 
 export interface GameModelGetAll {
-  filters?: Partial<
-    Record<
-      keyof Pick<
-        Game,
-        | "player1_id"
-        | "player2_id"
-        | "current_player_id"
-        | "current_game_state"
-        | "winner_id"
-      >,
-      string | GameStateEnum
-    >
-  >
+  filters?: {
+    player1_id?: string
+    player2_id?: string
+    current_player_id?: string
+    current_game_state?: GameStateEnum | GameStateEnum[]
+    winner_id?: string
+  }
   filterType?: "AND" | "OR"
   limit?: number
   offset?: number

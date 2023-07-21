@@ -115,9 +115,17 @@ export class GameModel {
 
       if (filters) {
         for (const [key, value] of Object.entries(filters)) {
-          filtersFragments.push(
-            sql.fragment`${sql.identifier([key])} = ${value}`,
-          )
+          if (Array.isArray(value)) {
+            value.forEach((val) => {
+              filtersFragments.push(
+                sql.fragment`${sql.identifier([key])} = ${val}`,
+              )
+            })
+          } else {
+            filtersFragments.push(
+              sql.fragment`${sql.identifier([key])} = ${value}`,
+            )
+          }
         }
       }
 

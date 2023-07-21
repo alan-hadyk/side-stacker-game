@@ -45,7 +45,7 @@ export class PlayerController {
 
     const deletedPlayer = await PlayerModel.delete(player_id, session_id)
 
-    await GameService.removeDeletedPlayerFromGames(deletedPlayer)
+    await GameService.removePlayerFromActiveGames(deletedPlayer.player_id)
 
     // Emit an event to all connected clients to invalidate the players query
     WebsocketService.emitInvalidateQuery(["players", "list"])
@@ -53,6 +53,8 @@ export class PlayerController {
       ["players", "detail"],
       deletedPlayer.player_id,
     )
+    // Emit an event to all connected clients to invalidate the games queries
+    WebsocketService.emitInvalidateQuery(["games", "list"])
 
     const deletedPlayerWithIsoDates =
       PlayerService.convertDatesToIso(deletedPlayer)
@@ -81,17 +83,7 @@ export class PlayerController {
             .optional(),
         }),
       )
-    RequestValidationService.validateBody(
-      req.body,
-      PlayerObject.omit({
-        created_at: true,
-        deleted_at: true,
-        last_active_at: true,
-        player_id: true,
-        session_id: true,
-        username: true,
-      }),
-    )
+    RequestValidationService.validateBody(req.body, z.object({}))
 
     const players = await PlayerModel.getAll({
       limit,
