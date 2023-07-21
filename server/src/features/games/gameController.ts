@@ -5,11 +5,12 @@ import { Request, Response, NextFunction } from "express"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
 import { websocketsServer } from "@app/clients/websocketsServer"
 import { GameService } from "@app/services/gameService"
+import { z } from "zod"
 
 export class GameController {
   static create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      RequestValidationService.validateQuery(req.query, [], [], [])
+      RequestValidationService.validateQuery(req.query, z.object({}))
       const { player1_id } = RequestValidationService.validateBody(
         req.body,
         GameObject.pick({

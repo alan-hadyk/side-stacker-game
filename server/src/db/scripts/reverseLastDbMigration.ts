@@ -8,6 +8,8 @@ import {
   executeMigration,
 } from "@app/db/scripts/dbMigrations"
 
+// Reverses the last applied migration
+// Run this script in terminal with `yarn db:reverse-migration`
 const reverseLastDbMigration = async () => {
   await connectToDb()
 

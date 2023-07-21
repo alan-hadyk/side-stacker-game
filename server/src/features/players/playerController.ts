@@ -1,5 +1,4 @@
 import { websocketsServer } from "@app/clients/websocketsServer"
-import { PlayerModelGetAll } from "@app/@types/playerModel"
 import { PlayerModel } from "@app/features/players/playerModel"
 import { PlayerObject } from "@app/features/players/playerObject"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
@@ -7,11 +6,13 @@ import { GameService } from "@app/services/gameService"
 import { RequestValidationService } from "@app/services/requestValidationService"
 import { Request, Response, NextFunction } from "express"
 import { v4 as uuidv4 } from "uuid"
+import { z } from "zod"
+import { OrderDirection } from "@app/@types/models"
 
 export class PlayerController {
   static create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      RequestValidationService.validateQuery(req.query, [], [], [])
+      RequestValidationService.validateQuery(req.query, z.object({}))
       const { username } = RequestValidationService.validateBody(
         req.body,
         PlayerObject.pick({ username: true }),
@@ -46,15 +47,11 @@ export class PlayerController {
 
   static delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      RequestValidationService.validateQuery(req.query, [], [], [])
+      RequestValidationService.validateQuery(req.query, z.object({}))
       const { session_id } = RequestValidationService.validateBody(
         req.body,
-        PlayerObject.omit({
-          created_at: true,
-          deleted_at: true,
-          last_active_at: true,
-          player_id: true,
-          username: true,
+        PlayerObject.pick({
+          session_id: true,
         }),
       )
       const { player_id } = RequestValidationService.validateParams(
@@ -95,15 +92,22 @@ export class PlayerController {
       const { limit, offset, orderBy, orderDirection } =
         RequestValidationService.validateQuery(
           req.query,
-          ["limit", "offset", "orderDirection", "orderBy"],
-          [
-            "username",
-            "created_at",
-            "deleted_at",
-            "last_active_at",
-            "player_id",
-          ],
-          [],
+          z.object({
+            limit: z.number().optional(),
+            offset: z.number().optional(),
+            orderBy: z
+              .enum([
+                "created_at",
+                "deleted_at",
+                "last_active_at",
+                "player_id",
+                "username",
+              ])
+              .optional(),
+            orderDirection: z
+              .enum([OrderDirection.ASC, OrderDirection.DESC])
+              .optional(),
+          }),
         )
       RequestValidationService.validateBody(
         req.body,
@@ -120,7 +124,7 @@ export class PlayerController {
       const players = await PlayerModel.getAll({
         limit,
         offset,
-        orderBy: orderBy as PlayerModelGetAll["orderBy"],
+        orderBy,
         orderDirection,
       })
 
@@ -146,18 +150,8 @@ export class PlayerController {
 
   static getById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      RequestValidationService.validateQuery(req.query, [], [], [])
-      RequestValidationService.validateBody(
-        req.body,
-        PlayerObject.omit({
-          created_at: true,
-          deleted_at: true,
-          last_active_at: true,
-          player_id: true,
-          session_id: true,
-          username: true,
-        }),
-      )
+      RequestValidationService.validateQuery(req.query, z.object({}))
+      RequestValidationService.validateBody(req.body, z.object({}))
       const params = RequestValidationService.validateParams(
         req.params,
         PlayerObject.pick({ player_id: true }),
@@ -184,7 +178,7 @@ export class PlayerController {
 
   static update = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      RequestValidationService.validateQuery(req.query, [], [], [])
+      RequestValidationService.validateQuery(req.query, z.object({}))
       const body = RequestValidationService.validateBody(
         req.body,
         PlayerObject.pick({

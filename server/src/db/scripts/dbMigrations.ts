@@ -8,6 +8,7 @@ import path from "node:path"
 import { MigrationObject } from "@app/db/utils/objects/migrationObject"
 import { z } from "zod"
 
+// SQL tag for migrations, with type aliases for migration and null
 export const migrationsSql = createSqlTag({
   typeAliases: {
     migration: MigrationObject,
@@ -15,9 +16,11 @@ export const migrationsSql = createSqlTag({
   },
 })
 
+// Returns the directory path for the given migration type ("up" or "down")
 export const getMigrationsDir = (type: "up" | "down") =>
   path.resolve(process.cwd(), `src/db/migrations/${type}`)
 
+// Reads and sorts the migration files in the given directory
 export const getMigrationFiles = async (migrationsDir: string) => {
   const migrationFiles = await readdir(migrationsDir)
 
@@ -26,6 +29,7 @@ export const getMigrationFiles = async (migrationsDir: string) => {
   return migrationFiles
 }
 
+// Fetches the names of all executed migrations from the database
 export const getExecutedMigrations = async (
   connection: DatabasePoolConnection,
 ) => {
@@ -38,6 +42,7 @@ export const getExecutedMigrations = async (
   return executedMigrations.rows.map((migration) => migration.name)
 }
 
+// Executes the given migration file within the provided transaction
 export const executeMigration = async (
   transactionConnection: DatabaseTransactionConnection,
   migrationsDir: string,

@@ -8,6 +8,7 @@ import {
   migrationsSql,
 } from "@app/db/scripts/dbMigrations"
 
+// Applies all pending migrations to the database
 export const applyDbMigrations = async (connection: DatabasePoolConnection) => {
   await connection.query(MigrationsTableInit)
 
