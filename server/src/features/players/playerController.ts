@@ -111,6 +111,7 @@ export class PlayerController {
     res.json(playerResponse)
   }
 
+  // TODO - Remove if unused
   static update = async (req: Request, res: Response) => {
     RequestValidationService.validateQuery(req.query, z.object({}))
     const body = RequestValidationService.validateBody(

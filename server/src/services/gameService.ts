@@ -62,6 +62,7 @@ export class GameService {
     return GameStateEnum.enum.waiting_for_players
   }
 
+  // TODO - Remove if unused
   static parseRequestToGame = (game: Partial<GameResponse>) => {
     const { current_board_status, created_at, next_possible_moves } = game
 
