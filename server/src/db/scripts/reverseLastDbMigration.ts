@@ -2,7 +2,7 @@ import { createSqlTag } from "slonik"
 import { readdir, readFile } from "node:fs/promises"
 import path from "node:path"
 import { MigrationObject } from "@app/db/utils/objects/migrationObject"
-import { connectToDb, pool } from "@app/db/pool"
+import { connectToDb, databasePool } from "@app/db/databasePool"
 import { MigrationsTableInit } from "@app/db/utils/tables/migrationTable"
 import { z } from "zod"
 
@@ -18,7 +18,7 @@ const sql = createSqlTag({
 const reverseLastDbMigration = async () => {
   await connectToDb()
 
-  await pool.connect(async (connection) => {
+  await databasePool.connect(async (connection) => {
     await connection.query(MigrationsTableInit)
 
     const migrationFiles = await readdir(migrationsDir)

@@ -1,11 +1,11 @@
 import { websocketsServer } from "@app/clients/websocketsServer"
-import { BoardMoveTypeEnum as BoardMoveTypeEnumType } from "@app/features/games/@types/gameObject"
+import { BoardMoveTypeEnum as BoardMoveTypeEnumType } from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
 import {
   BoardMoveTypeEnum,
   GameStateEnum,
 } from "@app/features/games/gameObject"
-import { Player } from "@app/features/players/@types/playerObject"
+import { Player } from "@app/@types/playerObject"
 
 export class GameService {
   static calculateNextPossibleMoves = (

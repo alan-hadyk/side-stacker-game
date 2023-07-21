@@ -1,7 +1,7 @@
-import { pool } from "@app/db/pool"
-import { OrderDirection } from "@app/features/@types/models"
-import { GameModelGetAll } from "@app/features/games/@types/gameModel"
-import { Game } from "@app/features/games/@types/gameObject"
+import { databasePool } from "@app/db/databasePool"
+import { OrderDirection } from "@app/@types/models"
+import { GameModelGetAll } from "@app/@types/gameModel"
+import { Game } from "@app/@types/gameObject"
 import {
   BoardMoveTypeEnum,
   GameObject,
@@ -34,7 +34,7 @@ export class GameModel {
     | "next_possible_moves"
     | "winner_id"
   >): Promise<Game> =>
-    pool.connect(async (connection) => {
+    databasePool.connect(async (connection) => {
       const current_board_status_row = new Array(7).fill(
         BoardMoveTypeEnum.enum.empty,
       )
@@ -66,7 +66,7 @@ export class GameModel {
     orderBy = "created_at",
     orderDirection = OrderDirection.DESC,
   }: GameModelGetAll): Promise<readonly Game[]> =>
-    pool.connect(async (connection) => {
+    databasePool.connect(async (connection) => {
       const filtersFragments = []
 
       if (filters) {
@@ -94,7 +94,7 @@ export class GameModel {
     })
 
   static getById = (game_id: Game["game_id"]): Promise<Game> =>
-    pool.connect(async (connection) =>
+    databasePool.connect(async (connection) =>
       connection.one(
         sql.typeAlias("game")`
             SELECT * 
@@ -129,7 +129,7 @@ export class GameModel {
       >
     >,
   ): Promise<Game> =>
-    pool.connect(async (connection) => {
+    databasePool.connect(async (connection) => {
       const fragments = []
 
       for (const [key, value] of Object.entries({

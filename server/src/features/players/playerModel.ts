@@ -1,7 +1,7 @@
-import { pool } from "@app/db/pool"
-import { OrderDirection } from "@app/features/@types/models"
-import { PlayerModelGetAll } from "@app/features/players/@types/playerModel"
-import { Player } from "@app/features/players/@types/playerObject"
+import { databasePool } from "@app/db/databasePool"
+import { OrderDirection } from "@app/@types/models"
+import { PlayerModelGetAll } from "@app/@types/playerModel"
+import { Player } from "@app/@types/playerObject"
 import { PlayerObject } from "@app/features/players/playerObject"
 import { NotFoundError, createSqlTag } from "slonik"
 import { z } from "zod"
@@ -18,7 +18,7 @@ export class PlayerModel {
     session_id,
     username,
   }: Pick<Player, "session_id" | "username">): Promise<Player> =>
-    pool.connect(async (connection) => {
+    databasePool.connect(async (connection) => {
       const query = sql.typeAlias("player")`
           INSERT 
           INTO players (player_id, session_id, username, created_at, last_active_at, deleted_at) 
@@ -35,7 +35,7 @@ export class PlayerModel {
     player_id: Player["player_id"],
     session_id: Player["session_id"],
   ): Promise<Player> =>
-    pool.connect(async (connection) => {
+    databasePool.connect(async (connection) => {
       const fragments = [
         sql.fragment`session_id = NULL`,
         sql.fragment`deleted_at = NOW()`,
@@ -63,7 +63,7 @@ export class PlayerModel {
     orderBy = "last_active_at",
     orderDirection = OrderDirection.DESC,
   }: PlayerModelGetAll): Promise<readonly Player[]> =>
-    pool.connect(async (connection) => {
+    databasePool.connect(async (connection) => {
       const direction = orderDirection === OrderDirection.ASC ? "ASC" : "DESC"
       const query = sql.typeAlias("player")`
         SELECT * 
@@ -78,7 +78,7 @@ export class PlayerModel {
     })
 
   static getById = (player_id: Player["player_id"]): Promise<Player> =>
-    pool.connect(async (connection) =>
+    databasePool.connect(async (connection) =>
       connection.one(
         sql.typeAlias("player")`
             SELECT * 
@@ -92,7 +92,7 @@ export class PlayerModel {
     player_id: Player["player_id"],
     { username }: Partial<Pick<Player, "username">>,
   ): Promise<Player> =>
-    pool.connect(async (connection) => {
+    databasePool.connect(async (connection) => {
       const fragments = [sql.fragment`last_active_at = NOW()`]
 
       if (username !== undefined) {

@@ -19,7 +19,6 @@ export class GameController {
 
       const newGame = await GameModel.create({
         current_game_state: GameStateEnum.enum.waiting_for_players,
-        current_player_id: player1_id,
         next_possible_moves: JSON.stringify(
           GameService.calculateNextPossibleMoves(),
         ),

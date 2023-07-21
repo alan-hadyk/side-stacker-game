@@ -1,5 +1,5 @@
-import { OrderDirection } from "@app/features/@types/models"
-import { Game, GameStateEnum } from "@app/features/games/@types/gameObject"
+import { Game, GameStateEnum } from "@app/@types/gameObject"
+import { OrderDirection } from "@app/@types/models"
 
 export interface GameModelGetAll {
   filters?: Partial<

@@ -1,5 +1,5 @@
 import { ValidationError } from "@app/errors/definitions/validationError"
-import { OrderDirection } from "@app/features/@types/models"
+import { OrderDirection } from "@app/@types/models"
 import { isConvertableToNumber } from "@app/helpers/numbers/isConvertableToNumber"
 import { Request } from "express"
 import isEmpty from "lodash/isEmpty"

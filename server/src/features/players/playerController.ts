@@ -1,5 +1,5 @@
 import { websocketsServer } from "@app/clients/websocketsServer"
-import { PlayerModelGetAll } from "@app/features/players/@types/playerModel"
+import { PlayerModelGetAll } from "@app/@types/playerModel"
 import { PlayerModel } from "@app/features/players/playerModel"
 import { PlayerObject } from "@app/features/players/playerObject"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
