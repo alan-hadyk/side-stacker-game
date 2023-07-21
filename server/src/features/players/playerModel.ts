@@ -130,7 +130,7 @@ export const PlayersTableInit = sql.unsafe`
     session_id UUID NOT NULL,
     username TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    last_active_at TIMESTAMP,
+    last_active_at TIMESTAMP NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP
   );
 `

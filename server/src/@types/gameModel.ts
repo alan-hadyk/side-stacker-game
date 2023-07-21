@@ -6,7 +6,6 @@ export interface GameModelGetAll {
   filters?: {
     player1_id?: string
     player2_id?: string
-    current_player_id?: string
     current_game_state?: GameStateEnum | GameStateEnum[]
     winner_id?: string
   }

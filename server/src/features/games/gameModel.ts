@@ -65,7 +65,6 @@ export class GameModel {
   static create = ({
     player1_id,
     player2_id,
-    current_player_id,
     current_game_state,
     next_possible_moves,
     winner_id,
@@ -73,7 +72,6 @@ export class GameModel {
     Game,
     | "player1_id"
     | "player2_id"
-    | "current_player_id"
     | "current_game_state"
     | "next_possible_moves"
     | "winner_id"
@@ -86,12 +84,12 @@ export class GameModel {
 
       const query = sql.typeAlias("game")`
           INSERT 
-          INTO games (game_id, player1_id, player2_id, current_player_id, current_game_state, current_board_status, next_possible_moves, winner_id, created_at) 
+          INTO games (game_id, player1_id, player2_id, current_game_state, current_board_status, next_possible_moves, number_of_moves, winner_id, created_at) 
           VALUES (uuid_generate_v4(), ${player1_id || ""}, ${
             player2_id || ""
-          }, ${current_player_id || ""}, ${
+          }, ${
             current_game_state || GameStateEnum.enum.waiting_for_players
-          }, ${sql.json(current_board_status)}, ${next_possible_moves}, ${
+          }, ${sql.json(current_board_status)}, ${next_possible_moves}, ${0}, ${
             winner_id || ""
           }, NOW())
           RETURNING *
@@ -165,21 +163,21 @@ export class GameModel {
       const fragments = GameModel.updateFields(
         fields,
         [
+          "current_board_status",
           "current_game_state",
-          "current_player_id",
+          "finished_at",
+          "next_possible_moves",
+          "number_of_moves",
           "player1_id",
           "player2_id",
           "winner_id",
-          "finished_at",
-          "current_board_status",
-          "next_possible_moves",
         ],
         {
           current_board_status: "json",
           current_game_state: "default",
-          current_player_id: "default",
           finished_at: "now",
           next_possible_moves: "json",
+          number_of_moves: "default",
           player1_id: "default",
           player2_id: "default",
           winner_id: "default",
@@ -208,10 +206,10 @@ export const GamesTableInit = sql.unsafe`
         game_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         player1_id UUID REFERENCES players(player_id),
         player2_id UUID REFERENCES players(player_id),
-        current_player_id UUID REFERENCES players(player_id),
         current_game_state game_state NOT NULL DEFAULT 'waiting_for_players',
         current_board_status JSONB NOT NULL,
         next_possible_moves JSONB NOT NULL,
+        number_of_moves INTEGER NOT NULL DEFAULT 0,
         winner_id UUID REFERENCES players(player_id),
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
         finished_at TIMESTAMP

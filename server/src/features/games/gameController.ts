@@ -41,7 +41,6 @@ export class GameController {
           filterType: z.enum(["AND", "OR"]).optional(),
           filters: GameObject.pick({
             current_game_state: true,
-            current_player_id: true,
             player1_id: true,
             player2_id: true,
             winner_id: true,
@@ -109,7 +108,20 @@ export class GameController {
       await GameService.removePlayerFromActiveGames(player2_id)
     }
 
+    const currentGame = await GameModel.getById(game_id)
+
+    const currentGameWithUpdates = {
+      ...currentGame,
+      player1_id,
+      player2_id,
+    }
+
+    const current_game_state = GameService.determineCurrentGameState(
+      currentGameWithUpdates,
+    )
+
     const updatedGame = await GameModel.update(game_id, {
+      current_game_state,
       player1_id,
       player2_id,
     })

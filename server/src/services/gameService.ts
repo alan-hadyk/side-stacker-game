@@ -50,6 +50,18 @@ export class GameService {
     return nextPossibleMoves
   }
 
+  static determineCurrentGameState = (game: Game) => {
+    if (game.finished_at) {
+      return GameStateEnum.enum.finished
+    }
+
+    if (game.player1_id && game.player2_id) {
+      return GameStateEnum.enum.in_progress
+    }
+
+    return GameStateEnum.enum.waiting_for_players
+  }
+
   static parseRequestToGame = (game: Partial<GameResponse>) => {
     const { current_board_status, created_at, next_possible_moves } = game
 
@@ -88,7 +100,6 @@ export class GameService {
           GameStateEnum.enum.in_progress,
           GameStateEnum.enum.waiting_for_players,
         ],
-        current_player_id: player_id,
         player1_id: player_id,
         player2_id: player_id,
       },
@@ -114,7 +125,6 @@ export class GameService {
             // Add the current_game_state field to the update object
             updateObject.current_game_state =
               GameStateEnum.enum.waiting_for_players
-            updateObject.current_player_id = ""
 
             await GameModel.update(game.game_id, updateObject)
 
