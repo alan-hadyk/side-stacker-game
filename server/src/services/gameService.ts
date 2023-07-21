@@ -1,11 +1,15 @@
-import { websocketsServer } from "@app/clients/websocketsServer"
-import { BoardMoveTypeEnum as BoardMoveTypeEnumType } from "@app/@types/gameObject"
+import {
+  BoardMoveTypeEnum as BoardMoveTypeEnumType,
+  Game,
+} from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
 import {
   BoardMoveTypeEnum,
   GameStateEnum,
+  gameObjectKeys,
 } from "@app/features/games/gameObject"
 import { Player } from "@app/@types/playerObject"
+import { WebsocketService } from "@app/services/websocketService"
 
 export class GameService {
   static calculateNextPossibleMoves = (
@@ -59,7 +63,7 @@ export class GameService {
             ([, value]) => value === deletedPlayer.player_id,
           )?.[0]
 
-          if (field) {
+          if (field && gameObjectKeys.includes(field as keyof Game)) {
             return GameModel.update(game.game_id, {
               [field]: "",
             })
@@ -70,9 +74,7 @@ export class GameService {
       )
 
       // Emit an event to all connected clients to invalidate the games query
-      websocketsServer.emit("invalidateQuery", {
-        entity: ["games", "list"],
-      })
+      WebsocketService.emitInvalidateQuery(["games", "list"])
     }
   }
 }

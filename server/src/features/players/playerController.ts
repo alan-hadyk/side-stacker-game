@@ -1,222 +1,151 @@
-import { websocketsServer } from "@app/clients/websocketsServer"
 import { PlayerModel } from "@app/features/players/playerModel"
 import { PlayerObject } from "@app/features/players/playerObject"
-import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
 import { GameService } from "@app/services/gameService"
 import { RequestValidationService } from "@app/services/requestValidationService"
-import { Request, Response, NextFunction } from "express"
+import { Request, Response } from "express"
 import { v4 as uuidv4 } from "uuid"
 import { z } from "zod"
 import { OrderDirection } from "@app/@types/models"
+import { PlayerService } from "@app/services/playerService"
+import { WebsocketService } from "@app/services/websocketService"
 
 export class PlayerController {
-  static create = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      RequestValidationService.validateQuery(req.query, z.object({}))
-      const { username } = RequestValidationService.validateBody(
-        req.body,
-        PlayerObject.pick({ username: true }),
-      )
+  static create = async (req: Request, res: Response) => {
+    RequestValidationService.validateQuery(req.query, z.object({}))
+    const body = RequestValidationService.validateBody(
+      req.body,
+      PlayerObject.pick({ username: true }),
+    )
 
-      const session_id = uuidv4()
+    const newPlayer = await PlayerModel.create({
+      session_id: uuidv4(),
+      username: body.username,
+    })
 
-      const newPlayer = await PlayerModel.create({
-        session_id,
-        username,
-      })
+    const newPlayerWithIsoDates = PlayerService.convertDatesToIso(newPlayer)
 
-      const newPlayerWithIsoDates = {
-        ...newPlayer,
-        ...convertObjectToObjectWithIsoDates(newPlayer, [
-          "created_at",
-          "deleted_at",
-          "last_active_at",
-        ]),
-      }
+    // Emit an event to all connected clients to invalidate the players query
+    WebsocketService.emitInvalidateQuery(["players", "list"])
 
-      // Emit an event to all connected clients to invalidate the players query
-      websocketsServer.emit("invalidateQuery", {
-        entity: ["players", "list"],
-      })
-
-      res.json(newPlayerWithIsoDates)
-    } catch (error) {
-      next(error)
-    }
+    res.json({ ...newPlayerWithIsoDates, session_id: newPlayer.session_id })
   }
 
-  static delete = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      RequestValidationService.validateQuery(req.query, z.object({}))
-      const { session_id } = RequestValidationService.validateBody(
-        req.body,
-        PlayerObject.pick({
-          session_id: true,
+  static delete = async (req: Request, res: Response) => {
+    RequestValidationService.validateQuery(req.query, z.object({}))
+    const { session_id } = RequestValidationService.validateBody(
+      req.body,
+      PlayerObject.pick({
+        session_id: true,
+      }),
+    )
+    const { player_id } = RequestValidationService.validateParams(
+      req.params,
+      PlayerObject.pick({ player_id: true }),
+    )
+
+    const deletedPlayer = await PlayerModel.delete(player_id, session_id)
+
+    await GameService.removeDeletedPlayerFromGames(deletedPlayer)
+
+    // Emit an event to all connected clients to invalidate the players query
+    WebsocketService.emitInvalidateQuery(["players", "list"])
+    WebsocketService.emitInvalidateQuery(
+      ["players", "detail"],
+      deletedPlayer.player_id,
+    )
+
+    const deletedPlayerWithIsoDates =
+      PlayerService.convertDatesToIso(deletedPlayer)
+
+    res.json(deletedPlayerWithIsoDates)
+  }
+
+  static getAll = async (req: Request, res: Response) => {
+    const { limit, offset, orderBy, orderDirection } =
+      RequestValidationService.validateQuery(
+        req.query,
+        z.object({
+          limit: z.number().optional(),
+          offset: z.number().optional(),
+          orderBy: z
+            .enum([
+              "created_at",
+              "deleted_at",
+              "last_active_at",
+              "player_id",
+              "username",
+            ])
+            .optional(),
+          orderDirection: z
+            .enum([OrderDirection.ASC, OrderDirection.DESC])
+            .optional(),
         }),
       )
-      const { player_id } = RequestValidationService.validateParams(
-        req.params,
-        PlayerObject.pick({ player_id: true }),
-      )
+    RequestValidationService.validateBody(
+      req.body,
+      PlayerObject.omit({
+        created_at: true,
+        deleted_at: true,
+        last_active_at: true,
+        player_id: true,
+        session_id: true,
+        username: true,
+      }),
+    )
 
-      const deletedPlayer = await PlayerModel.delete(player_id, session_id)
+    const players = await PlayerModel.getAll({
+      limit,
+      offset,
+      orderBy,
+      orderDirection,
+    })
 
-      const deletedPlayerWithIsoDates = {
-        ...deletedPlayer,
-        ...convertObjectToObjectWithIsoDates(deletedPlayer, [
-          "created_at",
-          "deleted_at",
-          "last_active_at",
-        ]),
-      }
+    const playersWithIsoDates = players.map(PlayerService.convertDatesToIso)
 
-      await GameService.removeDeletedPlayerFromGames(deletedPlayer)
-
-      // Emit an event to all connected clients to invalidate the players query
-      websocketsServer.emit("invalidateQuery", {
-        entity: ["players", "list"],
-      })
-      websocketsServer.emit("invalidateQuery", {
-        entity: ["players", "detail"],
-        id: deletedPlayer.player_id,
-      })
-
-      res.json(deletedPlayerWithIsoDates)
-    } catch (error) {
-      next(error)
-    }
+    res.json(playersWithIsoDates)
   }
 
-  static getAll = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { limit, offset, orderBy, orderDirection } =
-        RequestValidationService.validateQuery(
-          req.query,
-          z.object({
-            limit: z.number().optional(),
-            offset: z.number().optional(),
-            orderBy: z
-              .enum([
-                "created_at",
-                "deleted_at",
-                "last_active_at",
-                "player_id",
-                "username",
-              ])
-              .optional(),
-            orderDirection: z
-              .enum([OrderDirection.ASC, OrderDirection.DESC])
-              .optional(),
-          }),
-        )
-      RequestValidationService.validateBody(
-        req.body,
-        PlayerObject.omit({
-          created_at: true,
-          deleted_at: true,
-          last_active_at: true,
-          player_id: true,
-          session_id: true,
-          username: true,
-        }),
-      )
+  static getById = async (req: Request, res: Response) => {
+    RequestValidationService.validateQuery(req.query, z.object({}))
+    RequestValidationService.validateBody(req.body, z.object({}))
+    const params = RequestValidationService.validateParams(
+      req.params,
+      PlayerObject.pick({ player_id: true }),
+    )
 
-      const players = await PlayerModel.getAll({
-        limit,
-        offset,
-        orderBy,
-        orderDirection,
-      })
+    const player = await PlayerModel.getById(params.player_id)
+    const playerWithIsoDates = PlayerService.convertDatesToIso(player)
 
-      const playersWithIsoDates = players.map((player) => {
-        const { created_at, deleted_at, last_active_at, player_id, username } =
-          player
-
-        return {
-          player_id,
-          username,
-          ...convertObjectToObjectWithIsoDates(
-            { created_at, deleted_at, last_active_at },
-            ["created_at", "deleted_at", "last_active_at"],
-          ),
-        }
-      })
-
-      res.json(playersWithIsoDates)
-    } catch (error) {
-      next(error)
-    }
+    res.json(playerWithIsoDates)
   }
 
-  static getById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      RequestValidationService.validateQuery(req.query, z.object({}))
-      RequestValidationService.validateBody(req.body, z.object({}))
-      const params = RequestValidationService.validateParams(
-        req.params,
-        PlayerObject.pick({ player_id: true }),
-      )
+  static update = async (req: Request, res: Response) => {
+    RequestValidationService.validateQuery(req.query, z.object({}))
+    const body = RequestValidationService.validateBody(
+      req.body,
+      PlayerObject.pick({
+        username: true,
+      }),
+    )
+    const params = RequestValidationService.validateParams(
+      req.params,
+      PlayerObject.pick({ player_id: true }),
+    )
 
-      const player = await PlayerModel.getById(params.player_id)
-      const { created_at, deleted_at, last_active_at, player_id, username } =
-        player
+    const updatedPlayer = await PlayerModel.update(params.player_id, {
+      username: body.username,
+    })
 
-      const playerWithIsoDates = {
-        player_id,
-        username,
-        ...convertObjectToObjectWithIsoDates(
-          { created_at, deleted_at, last_active_at },
-          ["created_at", "deleted_at", "last_active_at"],
-        ),
-      }
+    const updatedPlayerWithIsoDates =
+      PlayerService.convertDatesToIso(updatedPlayer)
 
-      res.json(playerWithIsoDates)
-    } catch (error) {
-      next(error)
-    }
-  }
+    // Emit an event to all connected clients to invalidate the players query
+    WebsocketService.emitInvalidateQuery(["players", "list"])
+    WebsocketService.emitInvalidateQuery(
+      ["players", "detail"],
+      updatedPlayer.player_id,
+    )
 
-  static update = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      RequestValidationService.validateQuery(req.query, z.object({}))
-      const body = RequestValidationService.validateBody(
-        req.body,
-        PlayerObject.pick({
-          username: true,
-        }),
-      )
-      const params = RequestValidationService.validateParams(
-        req.params,
-        PlayerObject.pick({ player_id: true }),
-      )
-
-      const player = await PlayerModel.update(params.player_id, {
-        username: body.username,
-      })
-      const { created_at, deleted_at, last_active_at, player_id, username } =
-        player
-
-      const playerWithIsoDates = {
-        player_id,
-        username,
-        ...convertObjectToObjectWithIsoDates(
-          { created_at, deleted_at, last_active_at },
-          ["created_at", "deleted_at", "last_active_at"],
-        ),
-      }
-
-      // Emit an event to all connected clients to invalidate the players query
-      websocketsServer.emit("invalidateQuery", {
-        entity: ["players", "list"],
-      })
-      websocketsServer.emit("invalidateQuery", {
-        entity: ["players", "detail"],
-        id: player_id,
-      })
-
-      res.json(playerWithIsoDates)
-    } catch (error) {
-      next(error)
-    }
+    res.json(updatedPlayerWithIsoDates)
   }
 }

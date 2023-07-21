@@ -151,7 +151,7 @@ export class GameModel {
 
   static update = (
     game_id: Game["game_id"],
-    fields: Omit<Game, "created_at" | "game_id">,
+    fields: Partial<Omit<Game, "created_at" | "game_id">>,
   ): Promise<Game> =>
     databasePool.connect(async (connection) => {
       const fragments = GameModel.updateFields(
