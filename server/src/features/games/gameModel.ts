@@ -1,14 +1,24 @@
 import { databasePool } from "@app/db/databasePool"
 import { OrderDirection } from "@app/@types/models"
-import { GameModelGetAll } from "@app/@types/gameModel"
+import {
+  GameModelGetAll,
+  GameModelUpdateFieldsReturnType,
+} from "@app/@types/gameModel"
 import { Game } from "@app/@types/gameObject"
 import {
   BoardMoveTypeEnum,
   GameObject,
   GameStateEnum,
 } from "@app/features/games/gameObject"
-import { NotFoundError, createSqlTag } from "slonik"
-import { z } from "zod"
+import {
+  DatabasePoolConnection,
+  NotFoundError,
+  QuerySqlToken,
+  SerializableValue,
+  ValueExpression,
+  createSqlTag,
+} from "slonik"
+import { ZodTypeAny, z } from "zod"
 
 const sql = createSqlTag({
   typeAliases: {
@@ -18,6 +28,40 @@ const sql = createSqlTag({
 })
 
 export class GameModel {
+  private static updateFields = (
+    fields: Partial<Game>,
+    keys: (keyof Omit<Game, "created_at" | "game_id">)[],
+    types: Record<keyof Omit<Game, "created_at" | "game_id">, string>,
+  ): GameModelUpdateFieldsReturnType =>
+    keys
+      .filter((key) => fields[key] !== undefined)
+      .map((key) => {
+        if (types[key] === "json") {
+          return sql.fragment`${sql.identifier([key])} = ${sql.json(
+            fields[key] as SerializableValue,
+          )}`
+        } else if (types[key] === "now") {
+          return sql.fragment`${sql.identifier([key])} = NOW()`
+        } else {
+          return sql.fragment`${sql.identifier([key])} = ${
+            fields[key] as ValueExpression
+          }`
+        }
+      })
+
+  private static async executeQuery(
+    connection: DatabasePoolConnection,
+    query: QuerySqlToken<ZodTypeAny>,
+  ) {
+    const { rowCount, rows } = await connection.query(query)
+
+    if (rowCount === 0) {
+      throw new NotFoundError(query)
+    }
+
+    return rows[0]
+  }
+
   static create = ({
     player1_id,
     player2_id,
@@ -78,6 +122,7 @@ export class GameModel {
       }
 
       const direction = orderDirection === OrderDirection.ASC ? "ASC" : "DESC"
+
       const query = sql.typeAlias("game")`
         SELECT * 
         FROM games 
@@ -106,61 +151,32 @@ export class GameModel {
 
   static update = (
     game_id: Game["game_id"],
-    {
-      player1_id,
-      player2_id,
-      current_player_id,
-      current_game_state,
-      current_board_status,
-      next_possible_moves,
-      winner_id,
-      finished_at,
-    }: Partial<
-      Pick<
-        Game,
-        | "player1_id"
-        | "player2_id"
-        | "current_player_id"
-        | "current_game_state"
-        | "current_board_status"
-        | "next_possible_moves"
-        | "winner_id"
-        | "finished_at"
-      >
-    >,
+    fields: Omit<Game, "created_at" | "game_id">,
   ): Promise<Game> =>
     databasePool.connect(async (connection) => {
-      const fragments = []
-
-      for (const [key, value] of Object.entries({
-        current_game_state,
-        current_player_id,
-        player1_id,
-        player2_id,
-        winner_id,
-      })) {
-        if (value !== undefined) {
-          fragments.push(sql.fragment`${sql.identifier([key])} = ${value}`)
-        }
-      }
-
-      if (finished_at !== undefined) {
-        fragments.push(sql.fragment`finished_at = NOW()`)
-      }
-
-      if (current_board_status !== undefined) {
-        fragments.push(
-          sql.fragment`current_board_status = ${sql.json(
-            current_board_status,
-          )}`,
-        )
-      }
-
-      if (next_possible_moves !== undefined) {
-        fragments.push(
-          sql.fragment`next_possible_moves = ${sql.json(next_possible_moves)}`,
-        )
-      }
+      const fragments = GameModel.updateFields(
+        fields,
+        [
+          "current_game_state",
+          "current_player_id",
+          "player1_id",
+          "player2_id",
+          "winner_id",
+          "finished_at",
+          "current_board_status",
+          "next_possible_moves",
+        ],
+        {
+          current_board_status: "json",
+          current_game_state: "default",
+          current_player_id: "default",
+          finished_at: "now",
+          next_possible_moves: "json",
+          player1_id: "default",
+          player2_id: "default",
+          winner_id: "default",
+        },
+      )
 
       const query = sql.typeAlias("game")`
           UPDATE games
@@ -169,13 +185,7 @@ export class GameModel {
           RETURNING *
         `
 
-      const { rowCount, rows } = await connection.query(query)
-
-      if (rowCount === 0) {
-        throw new NotFoundError(query)
-      }
-
-      return rows[0]
+      return GameModel.executeQuery(connection, query)
     })
 }
 

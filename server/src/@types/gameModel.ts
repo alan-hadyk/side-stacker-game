@@ -1,5 +1,6 @@
 import { Game, GameStateEnum } from "@app/@types/gameObject"
 import { OrderDirection } from "@app/@types/models"
+import { PrimitiveValueExpression } from "slonik"
 
 export interface GameModelGetAll {
   filters?: Partial<
@@ -21,3 +22,9 @@ export interface GameModelGetAll {
   orderBy?: keyof Game
   orderDirection?: OrderDirection
 }
+
+export type GameModelUpdateFieldsReturnType = Readonly<{
+  type: "SLONIK_TOKEN_FRAGMENT"
+  sql: string
+  values: PrimitiveValueExpression[]
+}>[]
