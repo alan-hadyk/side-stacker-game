@@ -22,12 +22,12 @@ export class PlayerController {
       username: body.username,
     })
 
-    const newPlayerWithIsoDates = PlayerService.convertDatesToIso(newPlayer)
+    const newPlayerResponse = PlayerService.parsePlayerToResponse(newPlayer)
 
     // Emit an event to all connected clients to invalidate the players query
     WebsocketService.emitInvalidateQuery(["players", "list"])
 
-    res.json({ ...newPlayerWithIsoDates, session_id: newPlayer.session_id })
+    res.json({ ...newPlayerResponse, session_id: newPlayer.session_id })
   }
 
   static delete = async (req: Request, res: Response) => {
@@ -56,10 +56,10 @@ export class PlayerController {
     // Emit an event to all connected clients to invalidate the games queries
     WebsocketService.emitInvalidateQuery(["games", "list"])
 
-    const deletedPlayerWithIsoDates =
-      PlayerService.convertDatesToIso(deletedPlayer)
+    const deletedPlayerResponse =
+      PlayerService.parsePlayerToResponse(deletedPlayer)
 
-    res.json(deletedPlayerWithIsoDates)
+    res.json(deletedPlayerResponse)
   }
 
   static getAll = async (req: Request, res: Response) => {
@@ -92,9 +92,9 @@ export class PlayerController {
       orderDirection,
     })
 
-    const playersWithIsoDates = players.map(PlayerService.convertDatesToIso)
+    const playersResponse = players.map(PlayerService.parsePlayerToResponse)
 
-    res.json(playersWithIsoDates)
+    res.json(playersResponse)
   }
 
   static getById = async (req: Request, res: Response) => {
@@ -106,9 +106,9 @@ export class PlayerController {
     )
 
     const player = await PlayerModel.getById(params.player_id)
-    const playerWithIsoDates = PlayerService.convertDatesToIso(player)
+    const playerResponse = PlayerService.parsePlayerToResponse(player)
 
-    res.json(playerWithIsoDates)
+    res.json(playerResponse)
   }
 
   static update = async (req: Request, res: Response) => {
@@ -128,8 +128,8 @@ export class PlayerController {
       username: body.username,
     })
 
-    const updatedPlayerWithIsoDates =
-      PlayerService.convertDatesToIso(updatedPlayer)
+    const updatedPlayerResponse =
+      PlayerService.parsePlayerToResponse(updatedPlayer)
 
     // Emit an event to all connected clients to invalidate the players query
     WebsocketService.emitInvalidateQuery(["players", "list"])
@@ -138,6 +138,6 @@ export class PlayerController {
       updatedPlayer.player_id,
     )
 
-    res.json(updatedPlayerWithIsoDates)
+    res.json(updatedPlayerResponse)
   }
 }
