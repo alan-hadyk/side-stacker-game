@@ -32,7 +32,7 @@ export class GameService {
   }
 
   static calculateNextPossibleMoves = (
-    current_board_status?: BoardMoveTypeEnumType[][],
+    currentBoardStatus?: BoardMoveTypeEnumType[][],
   ) => {
     const boardStatusRowInit = new Array(GameService.BOARD_SIZE).fill(
       BoardMoveTypeEnum.enum.empty,
@@ -41,10 +41,10 @@ export class GameService {
       GameService.BOARD_SIZE,
     ).fill(boardStatusRowInit)
 
-    const boardStatus = current_board_status || boardStatusInit
+    const boardStatus = currentBoardStatus || boardStatusInit
 
     // Check if the game has been won
-    if (current_board_status && GameService.checkWin(boardStatus)) {
+    if (currentBoardStatus && GameService.checkWin(boardStatus)) {
       return []
     }
 
@@ -70,42 +70,32 @@ export class GameService {
   }
 
   static checkWin = (boardStatus: BoardMoveTypeEnumType[][]): boolean => {
-    const counts = {
-      [BoardMoveTypeEnum.enum.O]: {
-        horizontal: Array(boardStatus[0].length).fill(0),
-        vertical: Array(boardStatus.length).fill(0),
-      },
-      [BoardMoveTypeEnum.enum.X]: {
-        horizontal: Array(boardStatus[0].length).fill(0),
-        vertical: Array(boardStatus.length).fill(0),
-      },
-    }
-
-    // Horizontal and vertical checks
+    // Vertical and horizontal checks
     for (let rowIndex = 0; rowIndex < boardStatus.length; rowIndex++) {
       for (
         let cellIndex = 0;
         cellIndex < boardStatus[rowIndex].length;
         cellIndex++
       ) {
-        const cell = boardStatus[rowIndex][cellIndex]
-        if (
-          cell === BoardMoveTypeEnum.enum.X ||
-          cell === BoardMoveTypeEnum.enum.O
-        ) {
-          counts[cell].horizontal[rowIndex]++
-          counts[cell].vertical[cellIndex]++
+        for (const cell of ["X", "O"]) {
           if (
-            counts[cell].horizontal[rowIndex] === 4 ||
-            counts[cell].vertical[cellIndex] === 4
+            cellIndex <= boardStatus[rowIndex].length - 4 &&
+            [...Array(4).keys()].every(
+              (i) => boardStatus[rowIndex][cellIndex + i] === cell,
+            )
           ) {
             return true
           }
-        } else {
-          counts.X.horizontal[rowIndex] = 0
-          counts.X.vertical[cellIndex] = 0
-          counts.O.horizontal[rowIndex] = 0
-          counts.O.vertical[cellIndex] = 0
+          if (
+            rowIndex <= boardStatus.length - 4 &&
+            [...Array(4).keys()].every(
+              (i) =>
+                boardStatus[rowIndex + i] &&
+                boardStatus[rowIndex + i][cellIndex] === cell,
+            )
+          ) {
+            return true
+          }
         }
       }
     }
