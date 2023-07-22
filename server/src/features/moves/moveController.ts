@@ -1,5 +1,9 @@
+import { Game } from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
-import { BoardMoveTypeEnum } from "@app/features/games/gameObject"
+import {
+  BoardMoveTypeEnum,
+  GameStateEnum,
+} from "@app/features/games/gameObject"
 import { MoveModel } from "@app/features/moves/moveModel"
 import { MoveObject } from "@app/features/moves/moveObject"
 import { GameService } from "@app/services/gameService"
@@ -42,25 +46,26 @@ export class MoveController {
     const next_possible_moves =
       GameService.calculateNextPossibleMoves(current_board_status)
 
-    const winning_move = GameService.calculateWinningMove(current_board_status)
+    const winning_moves =
+      GameService.calculateWinningMoves(current_board_status)
 
-    const updatedGame = {
-      ...game,
-      current_board_status,
-      next_possible_moves,
+    const updatedGame: Partial<Game> = {
+      current_board_status: JSON.stringify(current_board_status),
+      next_possible_moves: JSON.stringify(next_possible_moves),
       number_of_moves,
     }
 
-    await GameModel.update(game_id, {
-      current_board_status: JSON.stringify(updatedGame.current_board_status),
-      next_possible_moves: JSON.stringify(updatedGame.next_possible_moves),
-      number_of_moves,
-      ...(!isEmpty(winning_move) && {
-        finished_at: 1,
-        winner_id: player_id,
-        winning_move: JSON.stringify(winning_move),
-      }),
-    })
+    if (isEmpty(next_possible_moves)) {
+      updatedGame.finished_at = 1
+      updatedGame.current_game_state = GameStateEnum.enum.finished
+
+      if (!isEmpty(winning_moves)) {
+        updatedGame.winner_id = player_id
+        updatedGame.winning_moves = JSON.stringify(winning_moves)
+      }
+    }
+
+    await GameModel.update(game_id, updatedGame)
 
     await MoveModel.create({
       game_id,

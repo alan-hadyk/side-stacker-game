@@ -79,7 +79,7 @@ export class GameModel {
 
       const query = sql.typeAlias("game")`
           INSERT 
-          INTO games (game_id, player1_id, player2_id, current_game_state, current_board_status, next_possible_moves, number_of_moves, winner_id, winning_move, created_at) 
+          INTO games (game_id, player1_id, player2_id, current_game_state, current_board_status, next_possible_moves, number_of_moves, winner_id, winning_moves, created_at) 
           VALUES (
             uuid_generate_v4(), 
             ${player1_id || null}, 
@@ -181,7 +181,7 @@ export class GameModel {
           player1_id: "default",
           player2_id: "default",
           winner_id: "default",
-          winning_move: "json",
+          winning_moves: "json",
         },
       )
 
@@ -212,7 +212,7 @@ export const GamesTableInit = sql.unsafe`
         next_possible_moves JSONB NOT NULL,
         number_of_moves INTEGER NOT NULL DEFAULT 0,
         winner_id UUID REFERENCES players(player_id),
-        winning_move JSONB,
+        winning_moves JSONB,
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
         finished_at TIMESTAMP
     );

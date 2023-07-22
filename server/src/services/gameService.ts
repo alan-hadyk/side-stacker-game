@@ -47,7 +47,7 @@ export class GameService {
     // Check if the game has been won
     if (
       currentBoardStatus &&
-      !isEmpty(GameService.calculateWinningMove(boardStatus))
+      !isEmpty(GameService.calculateWinningMoves(boardStatus))
     ) {
       return []
     }
@@ -73,7 +73,7 @@ export class GameService {
     return nextPossibleMoves
   }
 
-  static calculateWinningMove = (boardStatus: BoardMoveTypeEnumType[][]) => {
+  static calculateWinningMoves = (boardStatus: BoardMoveTypeEnumType[][]) => {
     // Vertical and horizontal checks
     for (let rowIndex = 0; rowIndex < boardStatus.length; rowIndex++) {
       for (
@@ -156,7 +156,7 @@ export class GameService {
       current_board_status,
       created_at,
       next_possible_moves,
-      winning_move,
+      winning_moves,
     } = game
 
     return {
@@ -170,7 +170,7 @@ export class GameService {
       next_possible_moves: next_possible_moves
         ? JSON.stringify(next_possible_moves)
         : undefined,
-      winning_move: winning_move ? JSON.stringify(winning_move) : undefined,
+      winning_moves: winning_moves ? JSON.stringify(winning_moves) : undefined,
     }
   }
 
@@ -179,14 +179,14 @@ export class GameService {
       current_board_status,
       created_at,
       next_possible_moves,
-      winning_move,
+      winning_moves,
     } = game
 
     return {
       ...game,
       current_board_status: JSON.parse(current_board_status),
       next_possible_moves: JSON.parse(next_possible_moves),
-      winning_move: winning_move ? JSON.parse(winning_move) : undefined,
+      winning_moves: winning_moves ? JSON.parse(winning_moves) : undefined,
       ...convertObjectToObjectWithIsoDates({ created_at }, ["created_at"]),
     }
   }

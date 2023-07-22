@@ -20,7 +20,7 @@ export const GameObject = z
     player1_id: z.string().uuid().optional(),
     player2_id: z.string().uuid().optional(),
     winner_id: z.string().uuid().optional(),
-    winning_move: z.string().optional(),
+    winning_moves: z.string().optional(),
   })
   .strict()
 
