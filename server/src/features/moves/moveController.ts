@@ -1,9 +1,6 @@
 import { Game } from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
-import {
-  BoardMoveTypeEnum,
-  GameStateEnum,
-} from "@app/features/games/gameObject"
+import { MoveTypeEnum, GameStateEnum } from "@app/features/games/gameObject"
 import { MoveModel } from "@app/features/moves/moveModel"
 import { MoveObject } from "@app/features/moves/moveObject"
 import { GameService } from "@app/services/gameService"
@@ -31,16 +28,14 @@ export class MoveController {
     const parsedGame = GameService.parseGameToResponse(game)
     const number_of_moves = parsedGame.number_of_moves + 1
 
-    const move =
-      number_of_moves % 2 !== 0
-        ? BoardMoveTypeEnum.enum.X
-        : BoardMoveTypeEnum.enum.O
+    const move_type =
+      number_of_moves % 2 !== 0 ? MoveTypeEnum.enum.X : MoveTypeEnum.enum.O
 
     const current_board_status = GameService.calculateBoardStatusAfterNextMove(
       parsedGame.current_board_status,
       position_y,
       position_x,
-      move,
+      move_type,
     )
 
     const next_possible_moves =
@@ -70,6 +65,7 @@ export class MoveController {
     await MoveModel.create({
       game_id,
       move_number: number_of_moves,
+      move_type,
       player_id,
       position_x,
       position_y,

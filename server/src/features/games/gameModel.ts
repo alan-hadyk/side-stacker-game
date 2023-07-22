@@ -6,7 +6,7 @@ import {
 } from "@app/@types/gameModel"
 import { Game } from "@app/@types/gameObject"
 import {
-  BoardMoveTypeEnum,
+  MoveTypeEnum,
   GameObject,
   GameStateEnum,
 } from "@app/features/games/gameObject"
@@ -73,7 +73,7 @@ export class GameModel {
   >): Promise<Game> =>
     databasePool.connect(async (connection) => {
       const current_board_status_row = new Array(7).fill(
-        BoardMoveTypeEnum.enum.empty,
+        MoveTypeEnum.enum.empty,
       )
       const current_board_status = new Array(7).fill(current_board_status_row)
 

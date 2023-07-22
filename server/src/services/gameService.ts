@@ -1,10 +1,7 @@
-import {
-  BoardMoveTypeEnum as BoardMoveTypeEnumType,
-  Game,
-} from "@app/@types/gameObject"
+import { MoveTypeEnum as MoveTypeEnumType, Game } from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
 import {
-  BoardMoveTypeEnum,
+  MoveTypeEnum,
   GameStateEnum,
   gameObjectKeys,
 } from "@app/features/games/gameObject"
@@ -20,25 +17,25 @@ export class GameService {
   static readonly BOARD_SIZE = 7
 
   static calculateBoardStatusAfterNextMove = (
-    current_board_status: BoardMoveTypeEnumType[][],
+    current_board_status: MoveTypeEnumType[][],
     position_y: Move["position_y"],
     position_x: Move["position_x"],
-    move: BoardMoveTypeEnumType,
+    moveType: MoveTypeEnumType,
   ) => {
     const currentBoardStatus = { ...current_board_status }
 
-    currentBoardStatus[position_y][position_x] = move
+    currentBoardStatus[position_y][position_x] = moveType
 
     return currentBoardStatus
   }
 
   static calculateNextPossibleMoves = (
-    currentBoardStatus?: BoardMoveTypeEnumType[][],
+    currentBoardStatus?: MoveTypeEnumType[][],
   ) => {
     const boardStatusRowInit = new Array(GameService.BOARD_SIZE).fill(
-      BoardMoveTypeEnum.enum.empty,
+      MoveTypeEnum.enum.empty,
     )
-    const boardStatusInit: BoardMoveTypeEnumType[][] = new Array(
+    const boardStatusInit: MoveTypeEnumType[][] = new Array(
       GameService.BOARD_SIZE,
     ).fill(boardStatusRowInit)
 
@@ -55,8 +52,8 @@ export class GameService {
     const nextPossibleMoves: number[][] = []
 
     boardStatus.forEach((row, rowIndex) => {
-      const leftMostEmptyIndex = row.indexOf(BoardMoveTypeEnum.enum.empty)
-      const rightMostEmptyIndex = row.lastIndexOf(BoardMoveTypeEnum.enum.empty)
+      const leftMostEmptyIndex = row.indexOf(MoveTypeEnum.enum.empty)
+      const rightMostEmptyIndex = row.lastIndexOf(MoveTypeEnum.enum.empty)
 
       if (leftMostEmptyIndex !== -1) {
         nextPossibleMoves.push([rowIndex, leftMostEmptyIndex])
@@ -73,7 +70,7 @@ export class GameService {
     return nextPossibleMoves
   }
 
-  static calculateWinningMoves = (boardStatus: BoardMoveTypeEnumType[][]) => {
+  static calculateWinningMoves = (boardStatus: MoveTypeEnumType[][]) => {
     // Vertical and horizontal checks
     for (let rowIndex = 0; rowIndex < boardStatus.length; rowIndex++) {
       for (
@@ -108,10 +105,7 @@ export class GameService {
         cellIndex < boardStatus[rowIndex].length - 3;
         cellIndex++
       ) {
-        for (const cell of [
-          BoardMoveTypeEnum.enum.X,
-          BoardMoveTypeEnum.enum.O,
-        ]) {
+        for (const cell of [MoveTypeEnum.enum.X, MoveTypeEnum.enum.O]) {
           const diagonalWin1 = [...Array(4).keys()].every(
             (i) => boardStatus[rowIndex + i][cellIndex + i] === cell,
           )

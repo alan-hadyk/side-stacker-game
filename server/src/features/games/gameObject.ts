@@ -6,7 +6,7 @@ export const GameStateEnum = z.enum([
   "finished",
 ])
 
-export const BoardMoveTypeEnum = z.enum(["X", "O", "empty"])
+export const MoveTypeEnum = z.enum(["X", "O", "empty"])
 
 export const GameObject = z
   .object({
