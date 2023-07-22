@@ -55,9 +55,11 @@ export class MoveModel {
 
       if (filters) {
         for (const [key, value] of Object.entries(filters)) {
-          filtersFragments.push(
-            sql.fragment`${sql.identifier([key])} = ${value}`,
-          )
+          if (value) {
+            filtersFragments.push(
+              sql.fragment`${sql.identifier([key])} = ${value}`,
+            )
+          }
         }
       }
 

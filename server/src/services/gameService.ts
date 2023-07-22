@@ -132,7 +132,9 @@ export class GameService {
     return []
   }
 
-  static determineCurrentGameState = (game: Game) => {
+  static determineCurrentGameState = (
+    game: Pick<Game, "finished_at" | "player1_id" | "player2_id">,
+  ) => {
     if (game.finished_at) {
       return GameStateEnum.enum.finished
     }

@@ -3,6 +3,7 @@ import { GameModel } from "@app/features/games/gameModel"
 import { MoveTypeEnum, GameStateEnum } from "@app/features/games/gameObject"
 import { MoveModel } from "@app/features/moves/moveModel"
 import { MoveObject } from "@app/features/moves/moveObject"
+import { PlayerModel } from "@app/features/players/playerModel"
 import { GameService } from "@app/services/gameService"
 import { RequestValidationService } from "@app/services/requestValidationService"
 import { WebsocketService } from "@app/services/websocketService"
@@ -26,37 +27,36 @@ export class MoveController {
 
     const game = await GameModel.getById(game_id)
     const parsedGame = GameService.parseGameToResponse(game)
-    const number_of_moves = parsedGame.number_of_moves + 1
+    const numberOfMoves = parsedGame.number_of_moves + 1
 
-    const move_type =
-      number_of_moves % 2 !== 0 ? MoveTypeEnum.enum.X : MoveTypeEnum.enum.O
+    const moveType =
+      numberOfMoves % 2 !== 0 ? MoveTypeEnum.enum.X : MoveTypeEnum.enum.O
 
-    const current_board_status = GameService.calculateBoardStatusAfterNextMove(
+    const newBoardStatus = GameService.calculateBoardStatusAfterNextMove(
       parsedGame.current_board_status,
       position_y,
       position_x,
-      move_type,
+      moveType,
     )
 
-    const next_possible_moves =
-      GameService.calculateNextPossibleMoves(current_board_status)
+    const nextPossibleMoves =
+      GameService.calculateNextPossibleMoves(newBoardStatus)
 
-    const winning_moves =
-      GameService.calculateWinningMoves(current_board_status)
+    const winningMoves = GameService.calculateWinningMoves(newBoardStatus)
 
     const updatedGame: Partial<Game> = {
-      current_board_status: JSON.stringify(current_board_status),
-      next_possible_moves: JSON.stringify(next_possible_moves),
-      number_of_moves,
+      current_board_status: JSON.stringify(newBoardStatus),
+      next_possible_moves: JSON.stringify(nextPossibleMoves),
+      number_of_moves: numberOfMoves,
     }
 
-    if (isEmpty(next_possible_moves)) {
+    if (isEmpty(nextPossibleMoves) || !isEmpty(winningMoves)) {
       updatedGame.finished_at = 1
       updatedGame.current_game_state = GameStateEnum.enum.finished
 
-      if (!isEmpty(winning_moves)) {
+      if (!isEmpty(winningMoves)) {
         updatedGame.winner_id = player_id
-        updatedGame.winning_moves = JSON.stringify(winning_moves)
+        updatedGame.winning_moves = JSON.stringify(winningMoves)
       }
     }
 
@@ -64,14 +64,18 @@ export class MoveController {
 
     await MoveModel.create({
       game_id,
-      move_number: number_of_moves,
-      move_type,
+      move_number: numberOfMoves,
+      move_type: moveType,
       player_id,
       position_x,
       position_y,
     })
 
+    await PlayerModel.update(player_id, {})
+
     WebsocketService.emitInvalidateQuery(["games", "list"])
     WebsocketService.emitInvalidateQuery(["games", "detail"], game_id)
+    WebsocketService.emitInvalidateQuery(["players", "list"])
+    WebsocketService.emitInvalidateQuery(["players", "detail"], player_id)
   }
 }

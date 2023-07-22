@@ -36,7 +36,9 @@ export class GameModel {
     keys
       .filter((key) => fields[key] !== undefined)
       .map((key) => {
-        if (types[key] === "json") {
+        if (fields[key] === null) {
+          return sql.fragment`${sql.identifier([key])} = ${null}`
+        } else if (types[key] === "json") {
           return sql.fragment`${sql.identifier([key])} = ${sql.json(
             fields[key] as SerializableValue,
           )}`
@@ -113,16 +115,18 @@ export class GameModel {
 
       if (filters) {
         for (const [key, value] of Object.entries(filters)) {
-          if (Array.isArray(value)) {
-            value.forEach((val) => {
+          if (value !== undefined) {
+            if (Array.isArray(value)) {
+              value.forEach((val) => {
+                filtersFragments.push(
+                  sql.fragment`${sql.identifier([key])} = ${val}`,
+                )
+              })
+            } else {
               filtersFragments.push(
-                sql.fragment`${sql.identifier([key])} = ${val}`,
+                sql.fragment`${sql.identifier([key])} = ${value}`,
               )
-            })
-          } else {
-            filtersFragments.push(
-              sql.fragment`${sql.identifier([key])} = ${value}`,
-            )
+            }
           }
         }
       }
@@ -171,6 +175,7 @@ export class GameModel {
           "player1_id",
           "player2_id",
           "winner_id",
+          "winning_moves",
         ],
         {
           current_board_status: "json",
