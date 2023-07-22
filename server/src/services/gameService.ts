@@ -152,7 +152,12 @@ export class GameService {
 
   // TODO - Remove if unused
   static parseRequestToGame = (game: Partial<GameResponse>) => {
-    const { current_board_status, created_at, next_possible_moves } = game
+    const {
+      current_board_status,
+      created_at,
+      next_possible_moves,
+      winning_move,
+    } = game
 
     return {
       ...game,
@@ -165,16 +170,23 @@ export class GameService {
       next_possible_moves: next_possible_moves
         ? JSON.stringify(next_possible_moves)
         : undefined,
+      winning_move: winning_move ? JSON.stringify(winning_move) : undefined,
     }
   }
 
   static parseGameToResponse = (game: Game): GameResponse => {
-    const { current_board_status, created_at, next_possible_moves } = game
+    const {
+      current_board_status,
+      created_at,
+      next_possible_moves,
+      winning_move,
+    } = game
 
     return {
       ...game,
       current_board_status: JSON.parse(current_board_status),
       next_possible_moves: JSON.parse(next_possible_moves),
+      winning_move: winning_move ? JSON.parse(winning_move) : undefined,
       ...convertObjectToObjectWithIsoDates({ created_at }, ["created_at"]),
     }
   }

@@ -67,14 +67,9 @@ export class GameModel {
     player2_id,
     current_game_state,
     next_possible_moves,
-    winner_id,
   }: Pick<
     Game,
-    | "player1_id"
-    | "player2_id"
-    | "current_game_state"
-    | "next_possible_moves"
-    | "winner_id"
+    "player1_id" | "player2_id" | "current_game_state" | "next_possible_moves"
   >): Promise<Game> =>
     databasePool.connect(async (connection) => {
       const current_board_status_row = new Array(7).fill(
@@ -84,14 +79,19 @@ export class GameModel {
 
       const query = sql.typeAlias("game")`
           INSERT 
-          INTO games (game_id, player1_id, player2_id, current_game_state, current_board_status, next_possible_moves, number_of_moves, winner_id, created_at) 
-          VALUES (uuid_generate_v4(), ${player1_id || ""}, ${
-            player2_id || ""
-          }, ${
-            current_game_state || GameStateEnum.enum.waiting_for_players
-          }, ${sql.json(current_board_status)}, ${next_possible_moves}, ${0}, ${
-            winner_id || ""
-          }, NOW())
+          INTO games (game_id, player1_id, player2_id, current_game_state, current_board_status, next_possible_moves, number_of_moves, winner_id, winning_move, created_at) 
+          VALUES (
+            uuid_generate_v4(), 
+            ${player1_id || null}, 
+            ${player2_id || null}, 
+            ${current_game_state || GameStateEnum.enum.waiting_for_players}, 
+            ${sql.json(current_board_status)}, 
+            ${next_possible_moves}, 
+            ${0}, 
+            NULL, 
+            NULL, 
+            NOW()
+          )
           RETURNING *
         `
 
@@ -181,6 +181,7 @@ export class GameModel {
           player1_id: "default",
           player2_id: "default",
           winner_id: "default",
+          winning_move: "json",
         },
       )
 
@@ -211,6 +212,7 @@ export const GamesTableInit = sql.unsafe`
         next_possible_moves JSONB NOT NULL,
         number_of_moves INTEGER NOT NULL DEFAULT 0,
         winner_id UUID REFERENCES players(player_id),
+        winning_move JSONB,
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
         finished_at TIMESTAMP
     );

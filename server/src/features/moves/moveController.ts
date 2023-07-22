@@ -6,6 +6,7 @@ import { GameService } from "@app/services/gameService"
 import { RequestValidationService } from "@app/services/requestValidationService"
 import { WebsocketService } from "@app/services/websocketService"
 import { Request } from "express"
+import isEmpty from "lodash/isEmpty"
 import { z } from "zod"
 
 export class MoveController {
@@ -23,7 +24,8 @@ export class MoveController {
       )
 
     const game = await GameModel.getById(game_id)
-    const number_of_moves = game.number_of_moves + 1
+    const parsedGame = GameService.parseGameToResponse(game)
+    const number_of_moves = parsedGame.number_of_moves + 1
 
     const move =
       number_of_moves % 2 !== 0
@@ -31,29 +33,38 @@ export class MoveController {
         : BoardMoveTypeEnum.enum.O
 
     const current_board_status = GameService.calculateBoardStatusAfterNextMove(
-      JSON.parse(game.current_board_status),
+      parsedGame.current_board_status,
       position_y,
       position_x,
       move,
     )
+
     const next_possible_moves =
       GameService.calculateNextPossibleMoves(current_board_status)
+
+    const winning_move = GameService.calculateWinningMove(current_board_status)
 
     const updatedGame = {
       ...game,
       current_board_status,
+      next_possible_moves,
       number_of_moves,
     }
 
     await GameModel.update(game_id, {
-      current_board_status: JSON.stringify(current_board_status),
-      next_possible_moves: JSON.stringify(next_possible_moves),
+      current_board_status: JSON.stringify(updatedGame.current_board_status),
+      next_possible_moves: JSON.stringify(updatedGame.next_possible_moves),
       number_of_moves,
+      ...(!isEmpty(winning_move) && {
+        finished_at: 1,
+        winner_id: player_id,
+        winning_move: JSON.stringify(winning_move),
+      }),
     })
 
     await MoveModel.create({
       game_id,
-      move_number: updatedGame.number_of_moves,
+      move_number: number_of_moves,
       player_id,
       position_x,
       position_y,
