@@ -14,6 +14,7 @@ import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertO
 import { GameResponse } from "@app/@types/gameService"
 import { convertDateISOStringToTimestamp } from "@app/helpers/dates/convertDateISOStringToTimestamp"
 import { Move } from "@app/@types/moveObject"
+import isEmpty from "lodash/isEmpty"
 
 export class GameService {
   static readonly BOARD_SIZE = 7
@@ -44,7 +45,10 @@ export class GameService {
     const boardStatus = currentBoardStatus || boardStatusInit
 
     // Check if the game has been won
-    if (currentBoardStatus && GameService.checkWin(boardStatus)) {
+    if (
+      currentBoardStatus &&
+      !isEmpty(GameService.calculateWinningMove(boardStatus))
+    ) {
       return []
     }
 
@@ -69,7 +73,7 @@ export class GameService {
     return nextPossibleMoves
   }
 
-  static checkWin = (boardStatus: BoardMoveTypeEnumType[][]): boolean => {
+  static calculateWinningMove = (boardStatus: BoardMoveTypeEnumType[][]) => {
     // Vertical and horizontal checks
     for (let rowIndex = 0; rowIndex < boardStatus.length; rowIndex++) {
       for (
@@ -78,23 +82,20 @@ export class GameService {
         cellIndex++
       ) {
         for (const cell of ["X", "O"]) {
-          if (
-            cellIndex <= boardStatus[rowIndex].length - 4 &&
-            [...Array(4).keys()].every(
-              (i) => boardStatus[rowIndex][cellIndex + i] === cell,
-            )
-          ) {
-            return true
+          const horizontalWin = [...Array(4).keys()].every(
+            (i) => boardStatus[rowIndex][cellIndex + i] === cell,
+          )
+          const verticalWin = [...Array(4).keys()].every(
+            (i) =>
+              boardStatus[rowIndex + i] &&
+              boardStatus[rowIndex + i][cellIndex] === cell,
+          )
+
+          if (horizontalWin) {
+            return [...Array(4).keys()].map((i) => [rowIndex, cellIndex + i])
           }
-          if (
-            rowIndex <= boardStatus.length - 4 &&
-            [...Array(4).keys()].every(
-              (i) =>
-                boardStatus[rowIndex + i] &&
-                boardStatus[rowIndex + i][cellIndex] === cell,
-            )
-          ) {
-            return true
+          if (verticalWin) {
+            return [...Array(4).keys()].map((i) => [rowIndex + i, cellIndex])
           }
         }
       }
@@ -111,21 +112,30 @@ export class GameService {
           BoardMoveTypeEnum.enum.X,
           BoardMoveTypeEnum.enum.O,
         ]) {
-          if (
-            [...Array(4).keys()].every(
-              (i) => boardStatus[rowIndex + i][cellIndex + i] === cell,
-            ) ||
-            [...Array(4).keys()].every(
-              (i) => boardStatus[rowIndex + 3 - i][cellIndex + i] === cell,
-            )
-          ) {
-            return true
+          const diagonalWin1 = [...Array(4).keys()].every(
+            (i) => boardStatus[rowIndex + i][cellIndex + i] === cell,
+          )
+          const diagonalWin2 = [...Array(4).keys()].every(
+            (i) => boardStatus[rowIndex + 3 - i][cellIndex + i] === cell,
+          )
+
+          if (diagonalWin1) {
+            return [...Array(4).keys()].map((i) => [
+              rowIndex + i,
+              cellIndex + i,
+            ])
+          }
+          if (diagonalWin2) {
+            return [...Array(4).keys()].map((i) => [
+              rowIndex + 3 - i,
+              cellIndex + i,
+            ])
           }
         }
       }
     }
 
-    return false
+    return []
   }
 
   static determineCurrentGameState = (game: Game) => {
