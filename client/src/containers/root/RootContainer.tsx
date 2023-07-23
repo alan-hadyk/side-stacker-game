@@ -2,9 +2,12 @@ import { FullScreenLoader } from "@app/components/atoms/FullScreenLoader/FullScr
 import { LoginContainer } from "@app/containers/login/LoginContainer"
 import { useGetPlayer } from "@app/hooks/queries/useGetPlayer"
 import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
+import { useWebsockets } from "@app/hooks/useWebsockets"
 import { Outlet } from "@tanstack/router"
 
 export const RootContainer: React.FC = () => {
+  useWebsockets()
+
   const { authenticatedUser, setAuthenticatedUser } = useAuthenticatedUser()
   const { isInitialLoading } = useGetPlayer(authenticatedUser, {
     onError: () => {

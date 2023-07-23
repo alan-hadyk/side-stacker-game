@@ -29,6 +29,9 @@ export const createWebsocketsServer = (
       // whether to skip middlewares upon successful recovery
       skipMiddlewares: true,
     },
+    cors: {
+      origin: "http://127.0.0.1:4000",
+    },
   })
 
   return websocketsServer
