@@ -2,7 +2,7 @@ import { queryKeys } from "@app/api/queryKeys"
 import { axiosGet } from "@app/helpers/api/axiosGet"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { AxiosError } from "axios"
-import { PlayerResponse } from "@server/@types/playerObject"
+import { PlayerResponse } from "@server/@types/api"
 
 export const useGetPlayer = (
   params?: Pick<PlayerResponse, "player_id">,

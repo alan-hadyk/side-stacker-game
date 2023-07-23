@@ -1,4 +1,5 @@
-import { Player, PlayerResponse } from "@app/@types/playerObject"
+import { PlayerResponse } from "@app/@types/api"
+import { Player } from "@app/@types/playerObject"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
 
 export class PlayerService {

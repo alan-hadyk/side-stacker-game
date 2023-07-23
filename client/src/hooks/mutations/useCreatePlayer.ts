@@ -1,6 +1,6 @@
 import { axiosPost } from "@app/helpers/api/axiosPost"
 import { getAxiosError } from "@app/helpers/api/getAxiosError"
-import { PlayerResponse } from "@server/@types/playerObject"
+import { PlayerResponse } from "@server/@types/api"
 import { MutateOptions, useMutation } from "@tanstack/react-query"
 
 export const useCreatePlayer = () => {

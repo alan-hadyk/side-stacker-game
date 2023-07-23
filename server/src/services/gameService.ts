@@ -1,8 +1,4 @@
-import {
-  MoveTypeEnum as MoveTypeEnumType,
-  Game,
-  GameResponse,
-} from "@app/@types/gameObject"
+import { MoveTypeEnum as MoveTypeEnumType, Game } from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
 import {
   MoveTypeEnum,
@@ -15,6 +11,10 @@ import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertO
 import { convertDateISOStringToTimestamp } from "@app/helpers/dates/convertDateISOStringToTimestamp"
 import { Move } from "@app/@types/moveObject"
 import isEmpty from "lodash/isEmpty"
+import {
+  GameResponse,
+  GameStateEnum as GameStateEnumType,
+} from "@app/@types/api"
 
 export class GameService {
   static readonly BOARD_SIZE = 7
@@ -176,7 +176,9 @@ export class GameService {
   static parseGameToResponse = (game: Game): GameResponse => {
     const {
       current_board_status,
+      current_game_state,
       created_at,
+      finished_at,
       next_possible_moves,
       winning_moves,
     } = game
@@ -184,9 +186,13 @@ export class GameService {
     return {
       ...game,
       current_board_status: JSON.parse(current_board_status),
+      current_game_state: current_game_state as GameStateEnumType,
       next_possible_moves: JSON.parse(next_possible_moves),
       winning_moves: winning_moves ? JSON.parse(winning_moves) : undefined,
-      ...convertObjectToObjectWithIsoDates({ created_at }, ["created_at"]),
+      ...convertObjectToObjectWithIsoDates(
+        { created_at, finished_at: finished_at ? finished_at : null },
+        ["created_at", "finished_at"],
+      ),
     }
   }
 

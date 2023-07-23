@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios"
-import { ErrorResponse } from "@server/@types/errors"
+import { ErrorResponse } from "@server/@types/api"
 
 const getAxiosError = (error: unknown) => {
   const _error = error as AxiosError

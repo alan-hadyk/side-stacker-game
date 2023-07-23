@@ -24,8 +24,3 @@ export type Err =
   | TupleMovedToAnotherPartitionError
   | UniqueIntegrityConstraintViolationError
   | ConnectionError
-
-export interface ErrorResponse {
-  code: number
-  error: string | string[]
-}
