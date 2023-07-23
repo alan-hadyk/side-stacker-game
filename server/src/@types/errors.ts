@@ -13,7 +13,6 @@ import {
 } from "slonik"
 
 export type Err =
-  | Error
   | ValidationError
   | BackendTerminatedError
   | DataIntegrityError
@@ -25,3 +24,8 @@ export type Err =
   | TupleMovedToAnotherPartitionError
   | UniqueIntegrityConstraintViolationError
   | ConnectionError
+
+export interface ErrorResponse {
+  code: number
+  error: string | string[]
+}

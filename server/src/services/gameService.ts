@@ -1,4 +1,8 @@
-import { MoveTypeEnum as MoveTypeEnumType, Game } from "@app/@types/gameObject"
+import {
+  MoveTypeEnum as MoveTypeEnumType,
+  Game,
+  GameResponse,
+} from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
 import {
   MoveTypeEnum,
@@ -8,7 +12,6 @@ import {
 import { Player } from "@app/@types/playerObject"
 import { WebsocketService } from "@app/services/websocketService"
 import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
-import { GameResponse } from "@app/@types/gameService"
 import { convertDateISOStringToTimestamp } from "@app/helpers/dates/convertDateISOStringToTimestamp"
 import { Move } from "@app/@types/moveObject"
 import isEmpty from "lodash/isEmpty"

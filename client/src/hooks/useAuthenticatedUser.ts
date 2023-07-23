@@ -1,9 +1,9 @@
-import { Player } from "@app/@types/api"
+import { PlayerResponse } from "@server/@types/playerObject"
 import { useLocalStorage } from "usehooks-ts"
 
 export const useAuthenticatedUser = () => {
   const [authenticatedUser, setAuthenticatedUser] = useLocalStorage<
-    Player | undefined
+    PlayerResponse | undefined
   >("user", undefined)
 
   return {

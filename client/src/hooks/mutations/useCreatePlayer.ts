@@ -1,28 +1,30 @@
-import { Player } from "@app/@types/api"
 import { axiosPost } from "@app/helpers/api/axiosPost"
-import { getAxiosErrorMessage } from "@app/helpers/api/getAxiosErrorMessage"
+import { getAxiosError } from "@app/helpers/api/getAxiosError"
+import { PlayerResponse } from "@server/@types/playerObject"
 import { MutateOptions, useMutation } from "@tanstack/react-query"
 
 export const useCreatePlayer = () => {
   const { mutate, ...createPlayerMutation } = useMutation({
-    mutationFn: (body: Pick<Player, "username">) =>
-      axiosPost<Player>("/players", body),
+    mutationFn: (body: Pick<PlayerResponse, "username">) =>
+      axiosPost<PlayerResponse>("/players", body),
   })
 
   const createPlayer = (
-    body: Pick<Player, "username">,
-    options?: MutateOptions<Player, unknown, Pick<Player, "username">, unknown>,
+    body: Pick<PlayerResponse, "username">,
+    options?: MutateOptions<
+      PlayerResponse,
+      unknown,
+      Pick<PlayerResponse, "username">,
+      unknown
+    >,
   ) =>
     mutate(body, {
       onError: (error) => {
-        const errorMessage = getAxiosErrorMessage(error)
+        const errorMessage = getAxiosError(error)
 
         if (errorMessage) {
+          // TODO: Implement toasts
           console.error(errorMessage)
-          //   errorToast({
-          //     message: errorMessage,
-          //     title: "Error",
-          //   })
         }
       },
       ...options,
