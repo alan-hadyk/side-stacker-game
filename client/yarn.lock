@@ -183,7 +183,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.22.5"
 
-"@babel/runtime@^7.16.7", "@babel/runtime@^7.21.0":
+"@babel/runtime@^7.16.7":
   version "7.22.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.6.tgz#57d64b9ae3cff1d67eb067ae117dac087f5bd438"
   integrity sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ==
@@ -502,16 +502,7 @@
     "@tanstack/store" "0.0.1-beta.113"
     use-sync-external-store "^1.2.0"
 
-"@tanstack/router-devtools@^0.0.1-beta.115":
-  version "0.0.1-beta.115"
-  resolved "https://registry.yarnpkg.com/@tanstack/router-devtools/-/router-devtools-0.0.1-beta.115.tgz#4cdd38dd0cfc59f9334c9da33b562e42c97f969b"
-  integrity sha512-8UV4fMYr9stiFL+Rv3sTsSxkGrmnLPQJkkUl+9Z6xv6M3GYOowWcpIhACwJ5oeTLPdsT0UDSupYsJnVLS+QWcQ==
-  dependencies:
-    "@babel/runtime" "^7.16.7"
-    "@tanstack/router" "0.0.1-beta.115"
-    date-fns "^2.29.1"
-
-"@tanstack/router@0.0.1-beta.115", "@tanstack/router@^0.0.1-beta.115":
+"@tanstack/router@^0.0.1-beta.115":
   version "0.0.1-beta.115"
   resolved "https://registry.yarnpkg.com/@tanstack/router/-/router-0.0.1-beta.115.tgz#2e947eca4dab36a70902ae2286cec4361c1d1a5d"
   integrity sha512-hcdQ0qOfLUjbMEbvtr0RPTxu0oG4sKuXzgmLipCPd+Dd16R+uP3VM8yHV4RUNKSs08W/CPPcNQo71llQR1StgA==
@@ -1027,13 +1018,6 @@ daisyui@^3.2.1:
     postcss "^8"
     postcss-js "^4"
     tailwindcss "^3"
-
-date-fns@^2.29.1:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
 
 debug@^3.2.7:
   version "3.2.7"
