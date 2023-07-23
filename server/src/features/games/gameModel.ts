@@ -145,7 +145,9 @@ export class GameModel {
         OFFSET ${offset}
       `
 
-      return connection.many(query)
+      const { rows } = await connection.query(query)
+
+      return rows
     })
 
   static getById = (game_id: Game["game_id"]): Promise<Game> =>

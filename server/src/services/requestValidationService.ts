@@ -25,9 +25,33 @@ export class RequestValidationService {
 
     const objectWithoutEmptyFields = omitBy(object, isUndefined)
 
-    schema.parse(objectWithoutEmptyFields)
+    // Transformation step
+    const transformedObject = Object.keys(objectWithoutEmptyFields).reduce(
+      (acc, key) => {
+        const value = objectWithoutEmptyFields[key]
+        const fieldSchema = schema.shape[key as keyof T]
+        let innerSchema
 
-    return objectWithoutEmptyFields as z.infer<typeof schema>
+        if (fieldSchema instanceof z.ZodOptional) {
+          innerSchema = fieldSchema._def.innerType
+        } else {
+          innerSchema = fieldSchema
+        }
+
+        if (innerSchema instanceof z.ZodNumber && typeof value === "string") {
+          acc[key] = parseInt(value, 10)
+        } else {
+          acc[key] = value
+        }
+
+        return acc
+      },
+      {} as Record<string, unknown>,
+    )
+
+    schema.parse(transformedObject)
+
+    return transformedObject as z.infer<typeof schema>
   }
 
   static validateBody = <T extends ZodRawShape>(
