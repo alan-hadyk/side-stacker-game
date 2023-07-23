@@ -2,10 +2,13 @@
   "author": "alan-hadyk <alan.hadyk@gmail.com>",
   "description": "Client for Side-Stacker game",
   "dependencies": {
+    "@tanstack/react-query": "^4.32.0",
+    "@tanstack/router": "^0.0.1-beta.115",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.29.25",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
