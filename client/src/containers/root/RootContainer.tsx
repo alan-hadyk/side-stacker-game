@@ -1,5 +1,6 @@
 import { FullScreenLoader } from "@app/components/atoms/FullScreenLoader/FullScreenLoader"
 import { LoginContainer } from "@app/containers/login/LoginContainer"
+import { RootContainerHeaderSection } from "@app/containers/root/sections/header/RootContainerHeaderSection"
 import { useGetPlayer } from "@app/hooks/queries/useGetPlayer"
 import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
 import { useWebsockets } from "@app/hooks/useWebsockets"
@@ -28,7 +29,7 @@ export const RootContainer: React.FC = () => {
 
   return (
     <div>
-      <h1>My App</h1>
+      <RootContainerHeaderSection />
       <Outlet /> {/* This is where child routes will render */}
     </div>
   )

@@ -24,9 +24,12 @@ export const Button: React.FC<ButtonProps> = ({
     type={type}
   >
     {isLoading ? (
-      <span
-        className={`loading loading-spinner ${mapButtonSizeToSpinnerSize[size]}`}
-      ></span>
+      <>
+        <span
+          className={`loading loading-spinner ${mapButtonSizeToSpinnerSize[size]}`}
+        ></span>
+        Loading..
+      </>
     ) : (
       children
     )}

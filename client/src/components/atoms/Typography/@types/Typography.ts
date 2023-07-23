@@ -1,7 +1,9 @@
 import { ReactNode } from "react"
 
 export enum TypographyVariant {
-  H1,
+  Title,
+  Callout,
+  Subtitle,
 }
 
 export interface TypographyProps {

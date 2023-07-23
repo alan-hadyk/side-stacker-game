@@ -10,6 +10,11 @@ export enum MoveTypeEnum {
   empty = "empty",
 }
 
+export enum OrderDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 export interface ErrorResponse {
   code: number
   error: string | string[]
@@ -46,4 +51,18 @@ export interface MoveResponse {
   player_id: string
   position_x: number
   position_y: number
+}
+
+export interface GamesGetAllQueryParams {
+  filters?: {
+    player1_id?: string | null
+    player2_id?: string | null
+    current_game_state?: GameStateEnum | GameStateEnum[]
+    winner_id?: string | null
+  }
+  filterType?: "AND" | "OR"
+  limit?: number
+  offset?: number
+  orderBy?: "created_at" | "current_game_state" | "finished_at"
+  orderDirection?: OrderDirection
 }
