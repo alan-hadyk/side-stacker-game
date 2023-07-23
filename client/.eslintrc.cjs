@@ -82,5 +82,7 @@ module.exports = {
       },
     ],
     "@typescript-eslint/no-misused-promises": [0],
+    "require-await": "off",
+    "@typescript-eslint/require-await": "error",
   },
 }

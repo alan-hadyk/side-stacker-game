@@ -1,7 +1,5 @@
-import { Player } from "@app/@types/api"
-
 export interface LoginFormValues {
-  username: Player["username"]
+  username: string
 }
 
 export interface LoginFormProps {
