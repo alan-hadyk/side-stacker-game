@@ -1,6 +1,6 @@
 import { RootRoute, Route, lazy } from "@tanstack/router"
 import { RootContainer } from "@app/containers/root/RootContainer"
-import { Path } from "@app/routing/@enums/paths"
+import { Path } from "@app/@enums/paths"
 
 export const rootRoute = new RootRoute({
   component: RootContainer,

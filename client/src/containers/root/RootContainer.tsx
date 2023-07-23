@@ -1,7 +1,14 @@
+import { LoginContainer } from "@app/containers/login/LoginContainer"
+import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
 import { Outlet } from "@tanstack/router"
 
 export const RootContainer: React.FC = () => {
-  console.log(window.localStorage)
+  const { authenticatedUser } = useAuthenticatedUser()
+
+  if (!authenticatedUser) {
+    return <LoginContainer />
+  }
+
   return (
     <div>
       <h1>My App</h1>
