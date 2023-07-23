@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -80,5 +81,6 @@ module.exports = {
         natural: true,
       },
     ],
+    "@typescript-eslint/no-misused-promises": [0],
   },
 }
