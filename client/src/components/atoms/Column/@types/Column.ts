@@ -1,10 +1,10 @@
 import { ReactNode } from "react"
 
 export enum ColumnType {
-  Auto,
-  Default,
-  Grow,
-  Shrink,
+  Auto = "flex-auto",
+  Default = "",
+  Grow = "flex-grow",
+  Shrink = "flex-shrink",
 }
 
 export interface ColumnProps {
