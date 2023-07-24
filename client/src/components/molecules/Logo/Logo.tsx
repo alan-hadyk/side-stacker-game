@@ -11,11 +11,16 @@ export const Logo: React.FC<LogoProps> = ({
   switch (size) {
     case LogoSize.Sm:
       return (
-        <Img
-          alt="Side-Stacker logo"
-          className={`w-12 h-12 drop-shadow-md ${className?.img || ""}`}
-          src={logo}
-        />
+        <div className="flex items-center gap-2 group">
+          <Img
+            alt="Side-Stacker logo"
+            className={`w-12 h-12 drop-shadow-md ${className?.img || ""}`}
+            src={logo}
+          />
+          <Typography variant={TypographyVariant.Subtitle}>
+            Side-Stacker
+          </Typography>
+        </div>
       )
 
     case LogoSize.Lg:

@@ -10,7 +10,7 @@ export const Header: React.FC<HeaderProps> = ({ children }) => (
       <Link to={homeRoute.to}>
         <Logo
           className={{
-            img: "hover:animate-spin-z-2",
+            img: "group-hover:-animate-bounce-and-spin-y-2",
           }}
           size={LogoSize.Sm}
         />
