@@ -26,7 +26,7 @@ export const RootContainerHeaderSection: React.FC = () => {
           alignment={TypographyAlignment.Center}
           variant={TypographyVariant.Callout}
         >
-          {authenticatedUser?.username}
+          Hi, <strong>{authenticatedUser?.username}</strong>
         </Typography>
       </Dropdown>
     </Header>

@@ -9,23 +9,23 @@ import isEmpty from "lodash/isEmpty"
 import { IconType } from "react-icons"
 import { FiFrown } from "react-icons/fi"
 
-export const HomeContainerOpenGamesSection: React.FC = () => {
-  const { games: openGames, isInitialLoading } = useGetGames({
+export const HomeContainerFinishedGamesSection: React.FC = () => {
+  const { games: finishedGames, isInitialLoading } = useGetGames({
     filters: {
-      current_game_state: GameStateEnum.waiting_for_players,
+      current_game_state: GameStateEnum.finished,
     },
     limit: 100,
   })
 
   return (
-    <Section title="Open Games">
-      {isInitialLoading && <Progress variant={ProgressVariant.Primary} />}
+    <Section title="Finished Games">
+      {isInitialLoading && <Progress variant={ProgressVariant.Accent} />}
 
-      {!isInitialLoading && !isEmpty(openGames) ? (
+      {!isInitialLoading && !isEmpty(finishedGames) ? (
         <div>Games</div>
       ) : (
-        <Alert icon={FiFrown as IconType} type={AlertType.Primary}>
-          There are no Open Games at the moment
+        <Alert icon={FiFrown as IconType} type={AlertType.Accent}>
+          There are no Finished Games at the moment
         </Alert>
       )}
     </Section>

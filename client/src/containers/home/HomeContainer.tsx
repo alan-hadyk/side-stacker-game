@@ -1,6 +1,8 @@
 import { ColumnType } from "@app/components/atoms/Column/@types/Column"
 import { Column } from "@app/components/atoms/Column/Column"
 import { PageTemplate } from "@app/components/templates/PageTemplate/PageTemplate"
+import { HomeContainerFinishedGamesSection } from "@app/containers/home/sections/finishedGames/HomeContainerFinishedGamesSection"
+import { HomeContainerGamesInProgressSection } from "@app/containers/home/sections/gamesInProgress/HomeContainerGamesInProgressSection"
 import { HomeContainerOpenGamesSection } from "@app/containers/home/sections/openGames/HomeContainerOpenGamesSection"
 import { HomeContainerStatsSection } from "@app/containers/home/sections/stats/HomeContainerStatsSection"
 
@@ -9,6 +11,8 @@ export const HomeContainer: React.FC = () => (
     <Column type={ColumnType.Auto}>
       <HomeContainerStatsSection />
       <HomeContainerOpenGamesSection />
+      <HomeContainerGamesInProgressSection />
+      <HomeContainerFinishedGamesSection />
     </Column>
     <Column>Sidebar</Column>
   </PageTemplate>
