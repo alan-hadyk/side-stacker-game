@@ -3,6 +3,7 @@ import {
   ButtonSize,
   ButtonFill,
   ButtonVariant,
+  ButtonShape,
 } from "@app/components/atoms/Button/@types/Button"
 import { mapButtonSizeToSpinnerSize } from "@app/components/atoms/Button/styles"
 
@@ -13,13 +14,14 @@ export const Button: React.FC<ButtonProps> = ({
   fill = ButtonFill.Full,
   isLoading,
   onClick,
+  shape = ButtonShape.Default,
   size = ButtonSize.Md,
   type,
   variant = ButtonVariant.Success,
 }) => (
   <button
     disabled={disabled || isLoading}
-    className={`btn ${size} ${fill} ${variant} ${className}`}
+    className={`btn ${size} ${shape} ${fill} ${variant} ${className}`}
     onClick={onClick}
     type={type}
   >

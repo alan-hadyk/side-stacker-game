@@ -1,3 +1,5 @@
+import { ProgressVariant } from "@app/components/atoms/Progress/@types/Progress"
+import { Progress } from "@app/components/atoms/Progress/Progress"
 import { AlertType } from "@app/components/molecules/Alert/@types/Alert"
 import { Alert } from "@app/components/molecules/Alert/Alert"
 import { Section } from "@app/components/molecules/Section/Section"
@@ -16,12 +18,10 @@ export const HomeContainerOpenGamesSection: React.FC = () => {
       limit: 100,
     })
 
-  console.log({ openGames })
-
   return (
     <Section title="Open Games">
       {isInitialLoadingOpenGames && (
-        <progress className="progress progress-primary w-full"></progress>
+        <Progress variant={ProgressVariant.Primary} />
       )}
 
       {!isInitialLoadingOpenGames && !isEmpty(openGames) ? (
