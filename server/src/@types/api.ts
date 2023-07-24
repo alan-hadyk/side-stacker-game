@@ -41,6 +41,7 @@ export type GameResponse = {
   current_game_state: GameStateEnum
   finished_at?: string | null
   game_id: string
+  name: string
   next_possible_moves: number[][]
   number_of_moves: number
   player1_id?: string | null

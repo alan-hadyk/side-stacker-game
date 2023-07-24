@@ -26,6 +26,9 @@ const tailwindConfig: Config = {
       backgroundSize: {
         "400%": "400%",
       },
+      borderWidth: {
+        "1": "1px",
+      },
       keyframes: {
         "bg-gradient": {
           "0%": { backgroundPosition: "0% 50%" },

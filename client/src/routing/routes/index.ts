@@ -15,3 +15,13 @@ export const homeRoute = new Route({
   getParentRoute: () => rootRoute,
   path: Path.Home,
 })
+
+export const gameRoute = new Route({
+  component: lazy(() =>
+    import("@app/containers/game/GameContainer").then((module) => ({
+      default: module.GameContainer,
+    })),
+  ),
+  getParentRoute: () => rootRoute,
+  path: Path.Game,
+})

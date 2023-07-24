@@ -36,9 +36,9 @@ export const HomeContainerActivePlayersSection: React.FC = () => {
   )
 
   return (
-    <Card title="Recent Players">
+    <Card className="min-w-[320px]" title="Recent Players">
       <Table
-        className="min-w-64"
+        // className="min-w-80"
         headers={["#", "Name", "Last Active"]}
         isLoading={isInitialLoading}
         rows={rows}

@@ -4,6 +4,7 @@ import {
   ButtonVariant,
 } from "@app/components/atoms/Button/@types/Button"
 import { Button } from "@app/components/atoms/Button/Button"
+import { CardVariant } from "@app/components/molecules/Card/@types/Card"
 import { Card } from "@app/components/molecules/Card/Card"
 import { DropdownProps } from "@app/components/molecules/Dropdown/@types/Dropdown"
 import { useRef, useState } from "react"
@@ -35,7 +36,10 @@ export const Dropdown: React.FC<DropdownProps> = ({ children, items }) => {
       </Button>
 
       {isOpen && (
-        <Card className="z-[1] w-52 absolute top-14 right-0">
+        <Card
+          className="z-[1] w-52 absolute top-14 right-0"
+          variant={CardVariant.Secondary}
+        >
           {children}
 
           <ul tabIndex={0} className="menu bg-base-100 w-full p-0 mt-2">

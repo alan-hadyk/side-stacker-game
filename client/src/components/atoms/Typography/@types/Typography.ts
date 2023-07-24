@@ -3,8 +3,10 @@ import { ReactNode } from "react"
 export enum TypographyVariant {
   Title,
   Callout,
+  Paragraph,
   Subtitle,
   Span,
+  Text,
 }
 
 export enum TypographyAlignment {
@@ -19,6 +21,7 @@ export enum TypographyColor {
   Accent = "text-accent",
   Inherit = "text-inherit",
   Current = "text-current",
+  Info = "text-info",
 }
 
 export enum TypographyWeight {

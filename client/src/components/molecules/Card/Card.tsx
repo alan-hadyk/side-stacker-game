@@ -1,14 +1,49 @@
-import { CardProps } from "@app/components/molecules/Card/@types/Card"
+import {
+  TypographyVariant,
+  TypographyWeight,
+} from "@app/components/atoms/Typography/@types/Typography"
+import { Typography } from "@app/components/atoms/Typography/Typography"
+import {
+  CardProps,
+  CardType,
+  CardVariant,
+} from "@app/components/molecules/Card/@types/Card"
 
 export const Card: React.FC<CardProps> = ({
   children,
   className = "",
+  contentBottom,
+  contentTop,
   title,
+  type = CardType.Normal,
+  variant = CardVariant.Primary,
 }) => (
   <div
-    className={`card z-[1] compact shadow bg-base-100 rounded-box ${className}`}
+    className={`
+      card z-[1] compact shadow ${variant} rounded-box
+      ${
+        type === CardType.Link
+          ? "transition-all ease-in-out duration-150 hover:shadow-xl active:shadow cursor-pointer"
+          : ""
+      }
+      ${className}
+    `}
   >
-    {title && <h2 className="card-title px-4 pt-4">{title}</h2>}
-    <div className="card-body">{children}</div>
+    {contentTop}
+
+    <div className="card-body">
+      {title && (
+        <Typography
+          className="truncate max-w-full"
+          variant={TypographyVariant.Callout}
+          weight={TypographyWeight.Bold}
+        >
+          {title}
+        </Typography>
+      )}
+      {children}
+    </div>
+
+    {contentBottom}
   </div>
 )

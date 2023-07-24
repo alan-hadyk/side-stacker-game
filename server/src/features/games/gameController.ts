@@ -7,6 +7,11 @@ import { z } from "zod"
 import { WebsocketService } from "@app/services/websocketService"
 import { OrderDirection } from "@app/@types/models"
 import { QueryKeys } from "@app/@types/api"
+import {
+  adjectives,
+  starWars,
+  uniqueNamesGenerator,
+} from "unique-names-generator"
 
 export class GameController {
   static create = async (req: Request, res: Response) => {
@@ -18,8 +23,16 @@ export class GameController {
       }),
     )
 
+    const name = uniqueNamesGenerator({
+      dictionaries: [adjectives, starWars],
+      length: 2,
+      separator: " ",
+      style: "capital",
+    })
+
     const newGame = await GameModel.create({
       current_game_state: GameStateEnum.enum.waiting_for_players,
+      name,
       next_possible_moves: JSON.stringify(
         GameService.calculateNextPossibleMoves(),
       ),

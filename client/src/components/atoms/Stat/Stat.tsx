@@ -12,7 +12,7 @@ export const Stat: React.FC<StatProps> = ({
   const Icon = icon
 
   return (
-    <div className="stat">
+    <div className="stat bg-white">
       <div className={`stat-figure ${mapStatVariantToStyles[variant]}`}>
         <Icon className="inline-block w-8 h-8 stroke-current" />
       </div>
