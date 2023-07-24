@@ -7,6 +7,7 @@ import { z } from "zod"
 import { OrderDirection } from "@app/@types/models"
 import { PlayerService } from "@app/services/playerService"
 import { WebsocketService } from "@app/services/websocketService"
+import { QueryKeys } from "@app/@types/api"
 
 export class PlayerController {
   static create = async (req: Request, res: Response) => {
@@ -23,7 +24,7 @@ export class PlayerController {
     const newPlayerResponse = PlayerService.parsePlayerToResponse(newPlayer)
 
     // Emit an event to all connected clients to invalidate the players query
-    WebsocketService.emitInvalidateQuery(["players", "list"])
+    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
 
     res.json(newPlayerResponse)
   }
@@ -41,13 +42,13 @@ export class PlayerController {
     await GameService.removePlayerFromActiveGames(deletedPlayer.player_id)
 
     // Emit an event to all connected clients to invalidate the players query
-    WebsocketService.emitInvalidateQuery(["players", "list"])
+    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
     WebsocketService.emitInvalidateQuery(
-      ["players", "detail"],
+      [QueryKeys.Players, QueryKeys.Detail],
       deletedPlayer.player_id,
     )
     // Emit an event to all connected clients to invalidate the games queries
-    WebsocketService.emitInvalidateQuery(["games", "list"])
+    WebsocketService.emitInvalidateQuery([QueryKeys.Games, QueryKeys.List])
 
     const deletedPlayerResponse =
       PlayerService.parsePlayerToResponse(deletedPlayer)
@@ -126,9 +127,9 @@ export class PlayerController {
       PlayerService.parsePlayerToResponse(updatedPlayer)
 
     // Emit an event to all connected clients to invalidate the players query
-    WebsocketService.emitInvalidateQuery(["players", "list"])
+    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
     WebsocketService.emitInvalidateQuery(
-      ["players", "detail"],
+      [QueryKeys.Players, QueryKeys.Detail],
       updatedPlayer.player_id,
     )
 

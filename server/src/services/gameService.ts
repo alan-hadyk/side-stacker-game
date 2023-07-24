@@ -14,6 +14,7 @@ import isEmpty from "lodash/isEmpty"
 import {
   GameResponse,
   GameStateEnum as GameStateEnumType,
+  QueryKeys,
 } from "@app/@types/api"
 
 export class GameService {
@@ -235,7 +236,7 @@ export class GameService {
             await GameModel.update(game.game_id, updateObject)
 
             WebsocketService.emitInvalidateQuery(
-              ["games", "detail"],
+              [QueryKeys.Games, QueryKeys.Detail],
               game.game_id,
             )
           }

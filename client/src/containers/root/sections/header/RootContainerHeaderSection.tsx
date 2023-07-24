@@ -5,7 +5,7 @@ import {
 } from "@app/components/atoms/Typography/@types/Typography"
 import { Typography } from "@app/components/atoms/Typography/Typography"
 import { Dropdown } from "@app/components/molecules/Dropdown/Dropdown"
-import { Header } from "@app/components/molecules/Header/Header"
+import { Header } from "@app/components/organisms/Header/Header"
 import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
 
 export const RootContainerHeaderSection: React.FC = () => {

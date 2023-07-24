@@ -21,7 +21,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ children, items }) => {
   const swapActiveClassName = isOpen ? "swap-active" : ""
 
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative z-[100]" ref={ref}>
       <Button
         className={`swap swap-rotate ${swapActiveClassName}`}
         fill={ButtonFill.Outline}

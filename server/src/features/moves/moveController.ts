@@ -1,3 +1,4 @@
+import { QueryKeys } from "@app/@types/api"
 import { Game } from "@app/@types/gameObject"
 import { GameModel } from "@app/features/games/gameModel"
 import { MoveTypeEnum, GameStateEnum } from "@app/features/games/gameObject"
@@ -73,9 +74,15 @@ export class MoveController {
 
     await PlayerModel.update(player_id, {})
 
-    WebsocketService.emitInvalidateQuery(["games", "list"])
-    WebsocketService.emitInvalidateQuery(["games", "detail"], game_id)
-    WebsocketService.emitInvalidateQuery(["players", "list"])
-    WebsocketService.emitInvalidateQuery(["players", "detail"], player_id)
+    WebsocketService.emitInvalidateQuery([QueryKeys.Games, QueryKeys.List])
+    WebsocketService.emitInvalidateQuery(
+      [QueryKeys.Games, QueryKeys.Detail],
+      game_id,
+    )
+    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
+    WebsocketService.emitInvalidateQuery(
+      [QueryKeys.Players, QueryKeys.Detail],
+      player_id,
+    )
   }
 }

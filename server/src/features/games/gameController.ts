@@ -6,6 +6,7 @@ import { GameService } from "@app/services/gameService"
 import { z } from "zod"
 import { WebsocketService } from "@app/services/websocketService"
 import { OrderDirection } from "@app/@types/models"
+import { QueryKeys } from "@app/@types/api"
 
 export class GameController {
   static create = async (req: Request, res: Response) => {
@@ -28,7 +29,7 @@ export class GameController {
     const newGameResponse = GameService.parseGameToResponse(newGame)
 
     // Emit an event to all connected clients to invalidate the games query
-    WebsocketService.emitInvalidateQuery(["games", "list"])
+    WebsocketService.emitInvalidateQuery([QueryKeys.Games, QueryKeys.List])
 
     res.json(newGameResponse)
   }
@@ -123,8 +124,11 @@ export class GameController {
     })
 
     // Emit an event to all connected clients to invalidate the games query
-    WebsocketService.emitInvalidateQuery(["games", "list"])
-    WebsocketService.emitInvalidateQuery(["games", "detail"], game_id)
+    WebsocketService.emitInvalidateQuery([QueryKeys.Games, QueryKeys.List])
+    WebsocketService.emitInvalidateQuery(
+      [QueryKeys.Games, QueryKeys.Detail],
+      game_id,
+    )
 
     const updatedGameResponse = GameService.parseGameToResponse(updatedGame)
 

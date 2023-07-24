@@ -15,6 +15,13 @@ export enum OrderDirection {
   DESC = "DESC",
 }
 
+export enum QueryKeys {
+  Games = "games",
+  Players = "players",
+  List = "list",
+  Detail = "detail",
+}
+
 export interface ErrorResponse {
   code: number
   error: string | string[]
@@ -64,5 +71,17 @@ export interface GamesGetAllQueryParams {
   limit?: number
   offset?: number
   orderBy?: "created_at" | "current_game_state" | "finished_at"
+  orderDirection?: OrderDirection
+}
+
+export interface PlayersGetAllQueryParams {
+  limit?: number
+  offset?: number
+  orderBy?:
+    | "created_at"
+    | "deleted_at"
+    | "last_active_at"
+    | "player_id"
+    | "username"
   orderDirection?: OrderDirection
 }

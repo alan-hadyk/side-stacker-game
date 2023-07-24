@@ -4,7 +4,7 @@ import { TextInput } from "@app/components/atoms/TextInput/TextInput"
 import {
   LoginFormProps,
   LoginFormValues,
-} from "@app/components/molecules/LoginForm/@types/LoginForm"
+} from "@app/components/organisms/LoginForm/@types/LoginForm"
 import { Logo } from "@app/components/molecules/Logo/Logo"
 import { useForm } from "react-hook-form"
 import isEmpty from "lodash/isEmpty"

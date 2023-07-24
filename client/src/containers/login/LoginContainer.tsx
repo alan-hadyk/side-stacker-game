@@ -1,5 +1,5 @@
-import { LoginFormValues } from "@app/components/molecules/LoginForm/@types/LoginForm"
-import { LoginForm } from "@app/components/molecules/LoginForm/LoginForm"
+import { LoginFormValues } from "@app/components/organisms/LoginForm/@types/LoginForm"
+import { LoginForm } from "@app/components/organisms/LoginForm/LoginForm"
 import { useCreatePlayer } from "@app/hooks/mutations/useCreatePlayer"
 import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
 

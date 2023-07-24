@@ -1,5 +1,7 @@
+import { QueryKeys } from "@app/@types/api"
+
 export interface InvalidateQueryPayload {
-  entity: string[]
+  entity: QueryKeys[]
   id?: string | number
 }
 export interface ServerToClientEvents {
