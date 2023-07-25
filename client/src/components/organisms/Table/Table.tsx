@@ -1,11 +1,11 @@
-import { TableRowsLoader } from "@client/components/atoms/TableRowsLoader/TableRowsLoader"
 import { TableProps } from "@client/components/organisms/Table/@types/Table"
+import { TableLoader } from "@client/components/organisms/Table/loader/TableLoader"
 
 export const Table: React.FC<TableProps> = ({
   className = "",
   headers,
   isLoading = false,
-  rows,
+  rows = [],
 }) => (
   <div className={`overflow-x-auto ${className}`}>
     <table className="table">
@@ -18,15 +18,17 @@ export const Table: React.FC<TableProps> = ({
       </thead>
 
       <tbody>
-        {isLoading && <TableRowsLoader columns={headers.length} />}
-        {!isLoading &&
+        {isLoading ? (
+          <TableLoader columns={headers.length} />
+        ) : (
           rows?.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, cellIndex) => (
                 <td key={cellIndex}>{cell}</td>
               ))}
             </tr>
-          ))}
+          ))
+        )}
       </tbody>
     </table>
   </div>

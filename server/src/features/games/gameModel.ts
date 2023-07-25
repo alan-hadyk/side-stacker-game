@@ -224,7 +224,7 @@ export class GameModel {
     })
 }
 
-export const GamesTableInit = sql.unsafe`
+export const GameModelSchema = sql.unsafe`
     DO $$ BEGIN
         CREATE TYPE game_state AS ENUM ('waiting_for_players', 'in_progress', 'finished');
     EXCEPTION

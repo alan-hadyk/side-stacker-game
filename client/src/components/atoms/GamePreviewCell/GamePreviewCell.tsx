@@ -8,7 +8,6 @@ export const GamePreviewCell: React.FC<GamePreviewCellProps> = ({ cell }) => (
         flex items-center justify-center 
         border-r-1 last:border-r-0 border-base-300
         w-4 h-4
-        text-xs
       `}
   >
     {cell === MoveTypeEnum.X && (

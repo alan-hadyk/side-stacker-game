@@ -1,6 +1,6 @@
 import { LoginFormValues } from "@client/components/organisms/LoginForm/@types/LoginForm"
 import { LoginForm } from "@client/components/organisms/LoginForm/LoginForm"
-import { useCreatePlayer } from "@client/hooks/mutations/useCreatePlayer"
+import { useCreatePlayer } from "@client/api/mutations/useCreatePlayer"
 import { useAuthenticatedUser } from "@client/hooks/useAuthenticatedUser"
 
 export const LoginContainer: React.FC = () => {

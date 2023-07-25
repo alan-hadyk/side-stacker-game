@@ -7,11 +7,7 @@ import { z } from "zod"
 import { WebsocketService } from "@server/services/websocketService"
 import { OrderDirection } from "@server/@types/models"
 import { QueryKeys } from "@server/@types/api"
-import {
-  adjectives,
-  starWars,
-  uniqueNamesGenerator,
-} from "unique-names-generator"
+import { PlayerModel } from "@server/features/players/playerModel"
 
 export class GameController {
   static create = async (req: Request, res: Response) => {
@@ -23,21 +19,25 @@ export class GameController {
       }),
     )
 
-    const name = uniqueNamesGenerator({
-      dictionaries: [adjectives, starWars],
-      length: 2,
-      separator: " ",
-      style: "capital",
-    })
-
     const newGame = await GameModel.create({
       current_game_state: GameStateEnum.enum.waiting_for_players,
-      name,
+      name: GameService.generateGameName(),
       next_possible_moves: JSON.stringify(
         GameService.calculateNextPossibleMoves(),
       ),
       player1_id,
     })
+
+    if (player1_id) {
+      await PlayerModel.update(player1_id, {})
+
+      // Emit an event to all connected clients to invalidate the players query
+      WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
+      WebsocketService.emitInvalidateQuery(
+        [QueryKeys.Players, QueryKeys.Detail],
+        player1_id,
+      )
+    }
 
     const newGameResponse = GameService.parseGameToResponse(newGame)
 

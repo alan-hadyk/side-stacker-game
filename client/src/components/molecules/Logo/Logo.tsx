@@ -31,9 +31,11 @@ export const Logo: React.FC<LogoProps> = ({
         <>
           <Img
             alt="Side-Stacker logo"
-            className={`w-28 h-28 mx-auto mb-4 animate-spin-y-8 drop-shadow-lg ${
-              className?.img || ""
-            }`}
+            className={`
+              w-28 h-28 mx-auto mb-4 
+              animate-spin-y-8 drop-shadow-lg 
+              ${className?.img || ""}
+            `}
             src={logo}
           />
           <Typography variant={TypographyVariant.Title}>

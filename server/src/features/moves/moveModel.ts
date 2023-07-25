@@ -84,7 +84,7 @@ export class MoveModel {
     )
 }
 
-export const MovesTableInit = sql.unsafe`
+export const MoveModelSchema = sql.unsafe`
   DO $$ BEGIN
     CREATE TYPE move_type AS ENUM ('X', 'O');
   EXCEPTION

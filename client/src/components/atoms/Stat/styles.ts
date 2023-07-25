@@ -1,7 +1,7 @@
 import { StatVariant } from "@client/components/atoms/Stat/@types/Stat"
 
-export const mapStatVariantToStyles: Record<StatVariant, string> = {
-  [StatVariant.Primary]: "text-primary-focus",
-  [StatVariant.Secondary]: "text-secondary-focus",
-  [StatVariant.Accent]: "text-accent-focus",
+export const mapStatVariantToLoaderStyles: Record<StatVariant, string> = {
+  [StatVariant.Primary]: "from-primary-focus to-warning",
+  [StatVariant.Secondary]: "from-secondary-focus to-success",
+  [StatVariant.Accent]: "from-accent-focus to-success",
 }

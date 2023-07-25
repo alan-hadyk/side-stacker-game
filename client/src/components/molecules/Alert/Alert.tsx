@@ -18,7 +18,7 @@ export const Alert: React.FC<AlertProps> = ({
           className={`${mapAlertTypeToStyles[type].icon} shrink-0 w-6 h-6`}
         />
       )}
-      <span>{children}</span>
+      <span className="text-sm">{children}</span>
     </div>
   )
 }

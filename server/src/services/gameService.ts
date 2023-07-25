@@ -19,6 +19,11 @@ import {
   GameStateEnum as GameStateEnumType,
   QueryKeys,
 } from "@server/@types/api"
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  starWars,
+} from "unique-names-generator"
 
 export class GameService {
   static readonly BOARD_SIZE = 7
@@ -249,4 +254,12 @@ export class GameService {
       )
     }
   }
+
+  static generateGameName = () =>
+    uniqueNamesGenerator({
+      dictionaries: [adjectives, starWars],
+      length: 2,
+      separator: " ",
+      style: "capital",
+    })
 }

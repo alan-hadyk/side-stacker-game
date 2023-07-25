@@ -8,7 +8,7 @@ export const useGetPlayer = (
   params?: Pick<PlayerResponse, "player_id">,
   options?: UseQueryOptions<PlayerResponse, AxiosError, PlayerResponse>,
 ) => {
-  const useGetPlayerQuery = useQuery({
+  const getPlayerQuery = useQuery({
     enabled: Boolean(params?.player_id),
     queryFn: () =>
       axiosGet<PlayerResponse>(`/players/${params?.player_id || ""}`),
@@ -16,10 +16,10 @@ export const useGetPlayer = (
     ...options,
   })
 
-  const player = useGetPlayerQuery.data
+  const player = getPlayerQuery.data
 
   return {
-    ...useGetPlayerQuery,
+    ...getPlayerQuery,
     player,
   }
 }

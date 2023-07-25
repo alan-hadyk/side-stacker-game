@@ -25,18 +25,16 @@ export class RequestValidationService {
 
     const objectWithoutEmptyFields = omitBy(object, isUndefined)
 
-    // Transformation step
+    // Transformation step - this is needed because values in the incoming requests
+    // are always strings
     const transformedObject = Object.keys(objectWithoutEmptyFields).reduce(
       (acc, key) => {
         const value = objectWithoutEmptyFields[key]
         const fieldSchema = schema.shape[key as keyof T]
-        let innerSchema
-
-        if (fieldSchema instanceof z.ZodOptional) {
-          innerSchema = fieldSchema._def.innerType
-        } else {
-          innerSchema = fieldSchema
-        }
+        const innerSchema =
+          fieldSchema instanceof z.ZodOptional
+            ? fieldSchema._def.innerType
+            : fieldSchema
 
         if (innerSchema instanceof z.ZodNumber && typeof value === "string") {
           acc[key] = parseInt(value, 10)

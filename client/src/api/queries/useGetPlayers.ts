@@ -8,16 +8,16 @@ export const useGetPlayers = (
   params?: PlayersGetAllQueryParams,
   options?: UseQueryOptions<PlayerResponse[], AxiosError, PlayerResponse[]>,
 ) => {
-  const useGetPlayersQuery = useQuery({
+  const getPlayersQuery = useQuery({
     queryFn: () => axiosGet<PlayerResponse[]>("/players", { params }),
     queryKey: queryKeys.players.list(params),
     ...options,
   })
 
-  const players = useGetPlayersQuery.data
+  const players = getPlayersQuery.data
 
   return {
-    ...useGetPlayersQuery,
+    ...getPlayersQuery,
     players,
   }
 }

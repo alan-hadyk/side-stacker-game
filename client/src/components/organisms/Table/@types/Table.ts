@@ -6,3 +6,8 @@ export interface TableProps {
   isLoading?: boolean
   rows?: ReactNode[][]
 }
+
+export interface TableLoaderProps {
+  columns: number
+  rows?: number
+}

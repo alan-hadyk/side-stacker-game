@@ -1,6 +1,6 @@
-import { TableRowsLoaderProps } from "@client/components/atoms/TableRowsLoader/@props/TableRowsLoader"
+import { TableLoaderProps } from "@client/components/organisms/Table/@types/Table"
 
-export const TableRowsLoader: React.FC<TableRowsLoaderProps> = ({
+export const TableLoader: React.FC<TableLoaderProps> = ({
   columns,
   rows = 6,
 }) =>

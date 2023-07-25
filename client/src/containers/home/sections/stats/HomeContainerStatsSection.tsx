@@ -1,6 +1,6 @@
+import { useGetGames } from "@client/api/queries/useGetGames"
 import { StatVariant } from "@client/components/atoms/Stat/@types/Stat"
 import { Stats } from "@client/components/molecules/Stats/Stats"
-import { useGetGames } from "@client/hooks/queries/useGetGames"
 import { GameStateEnum } from "@server/@types/api"
 import { IconType } from "react-icons"
 import { FiPlay, FiRefreshCw, FiCheckCircle } from "react-icons/fi"

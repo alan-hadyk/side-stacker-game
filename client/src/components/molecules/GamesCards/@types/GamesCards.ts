@@ -1,5 +1,6 @@
 import { GameResponse } from "@server/@types/api"
 
 export interface GamesCardsProps {
-  games: GameResponse[]
+  games?: GameResponse[]
+  isLoading?: boolean
 }

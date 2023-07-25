@@ -5,7 +5,6 @@ export enum LogoSize {
 export interface LogoProps {
   className?: {
     img?: string
-    typography?: string
   }
   size?: LogoSize
 }

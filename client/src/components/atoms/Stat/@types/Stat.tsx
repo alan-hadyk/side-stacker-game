@@ -1,13 +1,12 @@
 import { IconType } from "react-icons"
 
 export enum StatVariant {
-  Primary,
-  Secondary,
-  Accent,
+  Primary = "text-primary-focus",
+  Secondary = "text-secondary-focus",
+  Accent = "text-accent-focus",
 }
 
 export interface StatProps {
-  desc?: string
   icon: IconType
   isLoading?: boolean
   title: string

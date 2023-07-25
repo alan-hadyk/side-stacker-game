@@ -42,9 +42,7 @@ export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
             {number_of_moves} moves
           </Badge>
           <Badge type={BadgeType.Info}>
-            {finished_at
-              ? `Finished: ${dayjs(finished_at).fromNow()}`
-              : `started ${dayjs(created_at).fromNow()}`}
+            {dayjs(finished_at ?? created_at).fromNow()}
           </Badge>
         </div>
       </Card>
