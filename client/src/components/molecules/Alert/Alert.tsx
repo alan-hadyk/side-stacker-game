@@ -1,8 +1,8 @@
 import {
   AlertProps,
   AlertType,
-} from "@app/components/molecules/Alert/@types/Alert"
-import { mapAlertTypeToStyles } from "@app/components/molecules/Alert/styles"
+} from "@client/components/molecules/Alert/@types/Alert"
+import { mapAlertTypeToStyles } from "@client/components/molecules/Alert/styles"
 
 export const Alert: React.FC<AlertProps> = ({
   children,

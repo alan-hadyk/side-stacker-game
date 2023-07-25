@@ -1,12 +1,12 @@
-import { GameModel } from "@app/features/games/gameModel"
-import { GameObject, GameStateEnum } from "@app/features/games/gameObject"
-import { RequestValidationService } from "@app/services/requestValidationService"
+import { GameModel } from "@server/features/games/gameModel"
+import { GameObject, GameStateEnum } from "@server/features/games/gameObject"
+import { RequestValidationService } from "@server/services/requestValidationService"
 import { Request, Response } from "express"
-import { GameService } from "@app/services/gameService"
+import { GameService } from "@server/services/gameService"
 import { z } from "zod"
-import { WebsocketService } from "@app/services/websocketService"
-import { OrderDirection } from "@app/@types/models"
-import { QueryKeys } from "@app/@types/api"
+import { WebsocketService } from "@server/services/websocketService"
+import { OrderDirection } from "@server/@types/models"
+import { QueryKeys } from "@server/@types/api"
 import {
   adjectives,
   starWars,

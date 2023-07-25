@@ -1,4 +1,4 @@
-import { AlertType } from "@app/components/molecules/Alert/@types/Alert"
+import { AlertType } from "@client/components/molecules/Alert/@types/Alert"
 
 export const mapAlertTypeToStyles: Record<
   AlertType,

@@ -1,4 +1,4 @@
-import { websocketsClient } from "@app/clients/websocketsClient"
+import { websocketsClient } from "@client/clients/websocketsClient"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { InvalidateQueryPayload } from "@server/@types/websocketsServer"

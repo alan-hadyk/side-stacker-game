@@ -3,7 +3,7 @@ import {
   ServerToClientEvents,
   InterServerEvents,
   SocketData,
-} from "@app/@types/websocketsServer"
+} from "@server/@types/websocketsServer"
 import { IncomingMessage, Server, ServerResponse } from "http"
 import { Server as SocketIOServer } from "socket.io"
 

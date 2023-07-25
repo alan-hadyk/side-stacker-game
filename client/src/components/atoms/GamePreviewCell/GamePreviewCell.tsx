@@ -1,4 +1,4 @@
-import { GamePreviewCellProps } from "@app/components/atoms/GamePreviewCell/@types/GamePreviewCell"
+import { GamePreviewCellProps } from "@client/components/atoms/GamePreviewCell/@types/GamePreviewCell"
 import { MoveTypeEnum } from "@server/@types/api"
 import { FiCircle, FiX } from "react-icons/fi"
 

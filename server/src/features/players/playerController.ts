@@ -1,13 +1,13 @@
-import { PlayerModel } from "@app/features/players/playerModel"
-import { PlayerObject } from "@app/features/players/playerObject"
-import { GameService } from "@app/services/gameService"
-import { RequestValidationService } from "@app/services/requestValidationService"
+import { PlayerModel } from "@server/features/players/playerModel"
+import { PlayerObject } from "@server/features/players/playerObject"
+import { GameService } from "@server/services/gameService"
+import { RequestValidationService } from "@server/services/requestValidationService"
 import { Request, Response } from "express"
 import { z } from "zod"
-import { OrderDirection } from "@app/@types/models"
-import { PlayerService } from "@app/services/playerService"
-import { WebsocketService } from "@app/services/websocketService"
-import { QueryKeys } from "@app/@types/api"
+import { OrderDirection } from "@server/@types/models"
+import { PlayerService } from "@server/services/playerService"
+import { WebsocketService } from "@server/services/websocketService"
+import { QueryKeys } from "@server/@types/api"
 
 export class PlayerController {
   static create = async (req: Request, res: Response) => {

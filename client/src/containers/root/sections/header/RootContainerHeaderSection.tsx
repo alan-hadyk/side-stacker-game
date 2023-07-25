@@ -1,12 +1,12 @@
-import { Button } from "@app/components/atoms/Button/Button"
+import { Button } from "@client/components/atoms/Button/Button"
 import {
   TypographyAlignment,
   TypographyVariant,
-} from "@app/components/atoms/Typography/@types/Typography"
-import { Typography } from "@app/components/atoms/Typography/Typography"
-import { Dropdown } from "@app/components/molecules/Dropdown/Dropdown"
-import { Header } from "@app/components/organisms/Header/Header"
-import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
+} from "@client/components/atoms/Typography/@types/Typography"
+import { Typography } from "@client/components/atoms/Typography/Typography"
+import { Dropdown } from "@client/components/molecules/Dropdown/Dropdown"
+import { Header } from "@client/components/organisms/Header/Header"
+import { useAuthenticatedUser } from "@client/hooks/useAuthenticatedUser"
 
 export const RootContainerHeaderSection: React.FC = () => {
   const { authenticatedUser } = useAuthenticatedUser()

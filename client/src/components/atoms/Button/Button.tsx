@@ -4,8 +4,8 @@ import {
   ButtonFill,
   ButtonVariant,
   ButtonShape,
-} from "@app/components/atoms/Button/@types/Button"
-import { mapButtonSizeToSpinnerSize } from "@app/components/atoms/Button/styles"
+} from "@client/components/atoms/Button/@types/Button"
+import { mapButtonSizeToSpinnerSize } from "@client/components/atoms/Button/styles"
 
 export const Button: React.FC<ButtonProps> = ({
   children,

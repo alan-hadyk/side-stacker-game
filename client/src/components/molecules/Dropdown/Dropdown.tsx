@@ -2,11 +2,11 @@ import {
   ButtonFill,
   ButtonShape,
   ButtonVariant,
-} from "@app/components/atoms/Button/@types/Button"
-import { Button } from "@app/components/atoms/Button/Button"
-import { CardVariant } from "@app/components/molecules/Card/@types/Card"
-import { Card } from "@app/components/molecules/Card/Card"
-import { DropdownProps } from "@app/components/molecules/Dropdown/@types/Dropdown"
+} from "@client/components/atoms/Button/@types/Button"
+import { Button } from "@client/components/atoms/Button/Button"
+import { CardVariant } from "@client/components/molecules/Card/@types/Card"
+import { Card } from "@client/components/molecules/Card/Card"
+import { DropdownProps } from "@client/components/molecules/Dropdown/@types/Dropdown"
 import { useRef, useState } from "react"
 import { FiMenu, FiX } from "react-icons/fi"
 import { useOnClickOutside } from "usehooks-ts"

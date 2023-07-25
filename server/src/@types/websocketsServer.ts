@@ -1,4 +1,4 @@
-import { QueryKeys } from "@app/@types/api"
+import { QueryKeys } from "@server/@types/api"
 
 export interface InvalidateQueryPayload {
   entity: QueryKeys[]

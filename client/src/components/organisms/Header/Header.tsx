@@ -1,7 +1,7 @@
-import { HeaderProps } from "@app/components/organisms/Header/@types/Header"
-import { LogoSize } from "@app/components/molecules/Logo/@types/Logo"
-import { Logo } from "@app/components/molecules/Logo/Logo"
-import { homeRoute } from "@app/routing/routes"
+import { HeaderProps } from "@client/components/organisms/Header/@types/Header"
+import { LogoSize } from "@client/components/molecules/Logo/@types/Logo"
+import { Logo } from "@client/components/molecules/Logo/Logo"
+import { homeRoute } from "@client/routing/routes"
 import { Link } from "@tanstack/router"
 
 export const Header: React.FC<HeaderProps> = ({ children }) => (

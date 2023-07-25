@@ -1,21 +1,24 @@
-import { MoveTypeEnum as MoveTypeEnumType, Game } from "@app/@types/gameObject"
-import { GameModel } from "@app/features/games/gameModel"
+import {
+  MoveTypeEnum as MoveTypeEnumType,
+  Game,
+} from "@server/@types/gameObject"
+import { GameModel } from "@server/features/games/gameModel"
 import {
   MoveTypeEnum,
   GameStateEnum,
   gameObjectKeys,
-} from "@app/features/games/gameObject"
-import { Player } from "@app/@types/playerObject"
-import { WebsocketService } from "@app/services/websocketService"
-import { convertObjectToObjectWithIsoDates } from "@app/helpers/objects/convertObjectToObjectWithIsoDates"
-import { convertDateISOStringToTimestamp } from "@app/helpers/dates/convertDateISOStringToTimestamp"
-import { Move } from "@app/@types/moveObject"
+} from "@server/features/games/gameObject"
+import { Player } from "@server/@types/playerObject"
+import { WebsocketService } from "@server/services/websocketService"
+import { convertObjectToObjectWithIsoDates } from "@server/helpers/objects/convertObjectToObjectWithIsoDates"
+import { convertDateISOStringToTimestamp } from "@server/helpers/dates/convertDateISOStringToTimestamp"
+import { Move } from "@server/@types/moveObject"
 import isEmpty from "lodash/isEmpty"
 import {
   GameResponse,
   GameStateEnum as GameStateEnumType,
   QueryKeys,
-} from "@app/@types/api"
+} from "@server/@types/api"
 
 export class GameService {
   static readonly BOARD_SIZE = 7

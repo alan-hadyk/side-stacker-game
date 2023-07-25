@@ -1,5 +1,5 @@
-import { TableRowsLoader } from "@app/components/atoms/TableRowsLoader/TableRowsLoader"
-import { TableProps } from "@app/components/organisms/Table/@types/Table"
+import { TableRowsLoader } from "@client/components/atoms/TableRowsLoader/TableRowsLoader"
+import { TableProps } from "@client/components/organisms/Table/@types/Table"
 
 export const Table: React.FC<TableProps> = ({
   className = "",

@@ -1,4 +1,7 @@
-import { BadgeProps, BadgeType } from "@app/components/atoms/Badge/@types/Badge"
+import {
+  BadgeProps,
+  BadgeType,
+} from "@client/components/atoms/Badge/@types/Badge"
 
 export const Badge: React.FC<BadgeProps> = ({
   children,

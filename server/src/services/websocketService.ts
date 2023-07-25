@@ -1,5 +1,5 @@
-import { QueryKeys } from "@app/@types/api"
-import { websocketsServer } from "@app/clients/websocketsServer"
+import { QueryKeys } from "@server/@types/api"
+import { websocketsServer } from "@server/clients/websocketsServer"
 
 export class WebsocketService {
   static emitInvalidateQuery = (entity: QueryKeys[], id?: string): void => {

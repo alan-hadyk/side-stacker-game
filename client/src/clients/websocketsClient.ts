@@ -1,4 +1,4 @@
-import { config } from "@app/config"
+import { config } from "@client/config"
 import { io } from "socket.io-client"
 
 export const websocketsClient = io(config.api.httpBaseUrl)

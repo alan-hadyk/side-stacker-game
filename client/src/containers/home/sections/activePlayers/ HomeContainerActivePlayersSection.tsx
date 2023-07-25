@@ -2,12 +2,12 @@ import {
   TypographyColor,
   TypographyVariant,
   TypographyWeight,
-} from "@app/components/atoms/Typography/@types/Typography"
-import { Typography } from "@app/components/atoms/Typography/Typography"
-import { Card } from "@app/components/molecules/Card/Card"
-import { Table } from "@app/components/organisms/Table/Table"
-import { useGetPlayers } from "@app/hooks/queries/useGetPlayers"
-import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
+} from "@client/components/atoms/Typography/@types/Typography"
+import { Typography } from "@client/components/atoms/Typography/Typography"
+import { Card } from "@client/components/molecules/Card/Card"
+import { Table } from "@client/components/organisms/Table/Table"
+import { useGetPlayers } from "@client/hooks/queries/useGetPlayers"
+import { useAuthenticatedUser } from "@client/hooks/useAuthenticatedUser"
 import dayjs from "dayjs"
 
 export const HomeContainerActivePlayersSection: React.FC = () => {
@@ -38,7 +38,6 @@ export const HomeContainerActivePlayersSection: React.FC = () => {
   return (
     <Card className="min-w-[320px]" title="Recent Players">
       <Table
-        // className="min-w-80"
         headers={["#", "Name", "Last Active"]}
         isLoading={isInitialLoading}
         rows={rows}

@@ -1,7 +1,7 @@
 import {
   ProgressProps,
   ProgressVariant,
-} from "@app/components/atoms/Progress/@types/Progress"
+} from "@client/components/atoms/Progress/@types/Progress"
 
 export const Progress: React.FC<ProgressProps> = ({
   className = "",

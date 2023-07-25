@@ -1,9 +1,9 @@
-import { FullScreenLoader } from "@app/components/atoms/FullScreenLoader/FullScreenLoader"
-import { LoginContainer } from "@app/containers/login/LoginContainer"
-import { RootContainerHeaderSection } from "@app/containers/root/sections/header/RootContainerHeaderSection"
-import { useGetPlayer } from "@app/hooks/queries/useGetPlayer"
-import { useAuthenticatedUser } from "@app/hooks/useAuthenticatedUser"
-import { useWebsockets } from "@app/hooks/useWebsockets"
+import { FullScreenLoader } from "@client/components/atoms/FullScreenLoader/FullScreenLoader"
+import { LoginContainer } from "@client/containers/login/LoginContainer"
+import { RootContainerHeaderSection } from "@client/containers/root/sections/header/RootContainerHeaderSection"
+import { useGetPlayer } from "@client/hooks/queries/useGetPlayer"
+import { useAuthenticatedUser } from "@client/hooks/useAuthenticatedUser"
+import { useWebsockets } from "@client/hooks/useWebsockets"
 import { Outlet } from "@tanstack/router"
 
 export const RootContainer: React.FC = () => {

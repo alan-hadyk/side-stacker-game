@@ -3,7 +3,7 @@ import {
   ServerToClientEvents,
   InterServerEvents,
   SocketData,
-} from "@app/@types/websocketsServer"
+} from "@server/@types/websocketsServer"
 import { Socket } from "socket.io"
 
 export const logWsConnectionsMiddleware = (

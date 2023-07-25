@@ -1,4 +1,4 @@
-import { ValidationError } from "@app/errors/validationError"
+import { ValidationError } from "@server/errors/validationError"
 import { Request } from "express"
 import isEmpty from "lodash/isEmpty"
 import omitBy from "lodash/omitBy"

@@ -1,4 +1,4 @@
-import { StatProps } from "@app/components/atoms/Stat/@types/Stat"
+import { StatProps } from "@client/components/atoms/Stat/@types/Stat"
 
 export interface StatsProps {
   className?: string

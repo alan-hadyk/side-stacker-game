@@ -1,8 +1,8 @@
-import { databasePool } from "@app/db/databasePool"
-import { OrderDirection } from "@app/@types/models"
-import { PlayerModelGetAll } from "@app/@types/playerModel"
-import { Player } from "@app/@types/playerObject"
-import { PlayerObject } from "@app/features/players/playerObject"
+import { databasePool } from "@server/db/databasePool"
+import { OrderDirection } from "@server/@types/models"
+import { PlayerModelGetAll } from "@server/@types/playerModel"
+import { Player } from "@server/@types/playerObject"
+import { PlayerObject } from "@server/features/players/playerObject"
 import {
   DatabasePoolConnection,
   NotFoundError,

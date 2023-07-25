@@ -1,5 +1,5 @@
-import { GameCard } from "@app/components/molecules/GameCard/GameCard"
-import { GamesCardsProps } from "@app/components/molecules/GamesCards/@types/GamesCards"
+import { GameCard } from "@client/components/molecules/GameCard/GameCard"
+import { GamesCardsProps } from "@client/components/molecules/GamesCards/@types/GamesCards"
 
 export const GamesCards: React.FC<GamesCardsProps> = ({ games }) => (
   <div className="flex items-start justify-start gap-4 flex-wrap">

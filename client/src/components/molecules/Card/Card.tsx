@@ -1,13 +1,13 @@
 import {
   TypographyVariant,
   TypographyWeight,
-} from "@app/components/atoms/Typography/@types/Typography"
-import { Typography } from "@app/components/atoms/Typography/Typography"
+} from "@client/components/atoms/Typography/@types/Typography"
+import { Typography } from "@client/components/atoms/Typography/Typography"
 import {
   CardProps,
   CardType,
   CardVariant,
-} from "@app/components/molecules/Card/@types/Card"
+} from "@client/components/molecules/Card/@types/Card"
 
 export const Card: React.FC<CardProps> = ({
   children,

@@ -1,6 +1,6 @@
 import { StrictMode } from "react"
 import ReactDOM from "react-dom/client"
-import { App } from "@app/App"
+import { App } from "@client/App"
 import relativeTime from "dayjs/plugin/relativeTime"
 import dayjs from "dayjs"
 

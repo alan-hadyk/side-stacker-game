@@ -1,5 +1,5 @@
-import { StatProps, StatVariant } from "@app/components/atoms/Stat/@types/Stat"
-import { mapStatVariantToStyles } from "@app/components/atoms/Stat/styles"
+import { StatProps, StatVariant } from "@client/components/atoms/Stat/@types/Stat"
+import { mapStatVariantToStyles } from "@client/components/atoms/Stat/styles"
 
 export const Stat: React.FC<StatProps> = ({
   desc,

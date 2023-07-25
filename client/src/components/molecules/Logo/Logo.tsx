@@ -1,8 +1,11 @@
-import { Typography } from "@app/components/atoms/Typography/Typography"
-import logo from "@app/assets/images/logo.svg"
-import { Img } from "@app/components/atoms/Img/Img"
-import { TypographyVariant } from "@app/components/atoms/Typography/@types/Typography"
-import { LogoProps, LogoSize } from "@app/components/molecules/Logo/@types/Logo"
+import { Typography } from "@client/components/atoms/Typography/Typography"
+import logo from "@client/assets/images/logo.svg"
+import { Img } from "@client/components/atoms/Img/Img"
+import { TypographyVariant } from "@client/components/atoms/Typography/@types/Typography"
+import {
+  LogoProps,
+  LogoSize,
+} from "@client/components/molecules/Logo/@types/Logo"
 
 export const Logo: React.FC<LogoProps> = ({
   className,

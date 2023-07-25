@@ -4,7 +4,7 @@ import {
   TypographyProps,
   TypographyVariant,
   TypographyWeight,
-} from "@app/components/atoms/Typography/@types/Typography"
+} from "@client/components/atoms/Typography/@types/Typography"
 
 export const Typography: React.FC<TypographyProps> = ({
   alignment = TypographyAlignment.Left,

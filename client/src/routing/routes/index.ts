@@ -1,6 +1,6 @@
 import { RootRoute, Route, lazy } from "@tanstack/router"
-import { RootContainer } from "@app/containers/root/RootContainer"
-import { Path } from "@app/@enums/paths"
+import { RootContainer } from "@client/containers/root/RootContainer"
+import { Path } from "@client/@enums/paths"
 
 export const rootRoute = new RootRoute({
   component: RootContainer,
@@ -8,7 +8,7 @@ export const rootRoute = new RootRoute({
 
 export const homeRoute = new Route({
   component: lazy(() =>
-    import("@app/containers/home/HomeContainer").then((module) => ({
+    import("@client/containers/home/HomeContainer").then((module) => ({
       default: module.HomeContainer,
     })),
   ),
@@ -18,7 +18,7 @@ export const homeRoute = new Route({
 
 export const gameRoute = new Route({
   component: lazy(() =>
-    import("@app/containers/game/GameContainer").then((module) => ({
+    import("@client/containers/game/GameContainer").then((module) => ({
       default: module.GameContainer,
     })),
   ),

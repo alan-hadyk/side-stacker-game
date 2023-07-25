@@ -1,7 +1,7 @@
 import {
   ColumnProps,
   ColumnType,
-} from "@app/components/atoms/Column/@types/Column"
+} from "@client/components/atoms/Column/@types/Column"
 
 export const Column: React.FC<ColumnProps> = ({
   children,

@@ -1,15 +1,15 @@
-import { databasePool } from "@app/db/databasePool"
-import { OrderDirection } from "@app/@types/models"
+import { databasePool } from "@server/db/databasePool"
+import { OrderDirection } from "@server/@types/models"
 import {
   GameModelGetAll,
   GameModelUpdateFieldsReturnType,
-} from "@app/@types/gameModel"
-import { Game } from "@app/@types/gameObject"
+} from "@server/@types/gameModel"
+import { Game } from "@server/@types/gameObject"
 import {
   MoveTypeEnum,
   GameObject,
   GameStateEnum,
-} from "@app/features/games/gameObject"
+} from "@server/features/games/gameObject"
 import {
   DatabasePoolConnection,
   NotFoundError,
@@ -19,7 +19,7 @@ import {
   createSqlTag,
 } from "slonik"
 import { ZodTypeAny, z } from "zod"
-import { MoveTypeEnum as MoveTypeEnumType } from "@app/@types/api"
+import { MoveTypeEnum as MoveTypeEnumType } from "@server/@types/api"
 
 const sql = createSqlTag({
   typeAliases: {

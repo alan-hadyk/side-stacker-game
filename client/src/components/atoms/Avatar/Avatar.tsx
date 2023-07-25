@@ -1,4 +1,4 @@
-import { AvatarProps } from "@app/components/atoms/Avatar/@types/Avatar"
+import { AvatarProps } from "@client/components/atoms/Avatar/@types/Avatar"
 
 export const Avatar: React.FC<AvatarProps> = ({ children }) => (
   <div className="avatar placeholder">
