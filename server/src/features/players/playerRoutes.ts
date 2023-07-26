@@ -25,10 +25,6 @@ playersRouter.get(
   Path.Player,
   requestAsyncHandlerMiddleware(PlayerController.getById),
 )
-playersRouter.post(
-  Path.PlayerSignIn,
-  requestAsyncHandlerMiddleware(PlayerController.signIn),
-)
 playersRouter.put(
   Path.Player,
   requestAsyncHandlerMiddleware(PlayerController.update),

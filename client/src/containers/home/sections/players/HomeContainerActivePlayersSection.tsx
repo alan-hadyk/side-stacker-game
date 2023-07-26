@@ -4,12 +4,12 @@ import { AlertType } from "@client/components/molecules/Alert/@types/Alert"
 import { Alert } from "@client/components/molecules/Alert/Alert"
 import { Card } from "@client/components/molecules/Card/Card"
 import { Table } from "@client/components/organisms/Table/Table"
-import { mapPlayersToRows } from "@client/containers/home/sections/activePlayers/helpers/mapPlayersToRows"
+import { mapPlayersToRows } from "@client/containers/home/sections/players/helpers/mapPlayersToRows"
 import isEmpty from "lodash/isEmpty"
 import { IconType } from "react-icons"
 import { FiUserX } from "react-icons/fi"
 
-export const HomeContainerActivePlayersSection: React.FC = () => {
+export const HomeContainerPlayersSection: React.FC = () => {
   const { isInitialLoading, players } = useGetPlayers({
     limit: 100,
   })
@@ -18,10 +18,10 @@ export const HomeContainerActivePlayersSection: React.FC = () => {
   const rows = mapPlayersToRows(currentPlayer?.player_id, players)
 
   return (
-    <Card className="min-w-[320px]" title="Active Players">
+    <Card title="Players">
       {isInitialLoading || !isEmpty(rows) ? (
         <Table
-          headers={["#", "Name", "Last Active"]}
+          headers={["Name", "Last Active"]}
           isLoading={isInitialLoading}
           rows={rows}
         />

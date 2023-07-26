@@ -17,8 +17,7 @@ export const mapPlayersToRows = (
   const isAuthenticatedUser = (player_id: PlayerResponse["player_id"]) =>
     player_id === authenticated_user_id
 
-  return players.map(({ last_active_at, username, player_id }, index) => [
-    index + 1,
+  return players.map(({ last_active_at, username, player_id }) => [
     <Typography
       variant={TypographyVariant.Span}
       weight={
@@ -27,7 +26,7 @@ export const mapPlayersToRows = (
           : TypographyWeight.Normal
       }
     >
-      {username} {isAuthenticatedUser(player_id) && "(you)"}
+      {username}
     </Typography>,
     dayjs(last_active_at).fromNow(),
   ])

@@ -28,6 +28,7 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = ({
       <Typography variant={TypographyVariant.Subtitle}>{title}</Typography>
 
       <TextInput
+        autoComplete="on"
         className="mt-6 mb-2"
         disabled={isLoading}
         hasError={Boolean(errors.username)}
@@ -36,7 +37,8 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = ({
       />
 
       <TextInput
-        className="mb-6"
+        autoComplete="on"
+        className="mb-4"
         disabled={isLoading}
         hasError={Boolean(errors.password)}
         placeholder="Enter your password"

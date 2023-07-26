@@ -174,7 +174,12 @@ export class GameController {
 
     if (player1_id) {
       await GameService.removePlayerFromActiveGames(player1_id)
-      await PlayerModel.update(player1_id, {})
+      const player1 = await PlayerModel.update(player1_id, {})
+
+      WebsocketService.emitToast(
+        `${player1.username} joined ${currentGame.name}`,
+      )
+
       WebsocketService.emitInvalidateQuery(
         [QueryKeys.Players, QueryKeys.Detail],
         player1_id,
@@ -183,7 +188,12 @@ export class GameController {
 
     if (player2_id) {
       await GameService.removePlayerFromActiveGames(player2_id)
-      await PlayerModel.update(player2_id, {})
+      const player2 = await PlayerModel.update(player2_id, {})
+
+      WebsocketService.emitToast(
+        `${player2.username} joined ${currentGame.name}`,
+      )
+
       WebsocketService.emitInvalidateQuery(
         [QueryKeys.Players, QueryKeys.Detail],
         player2_id,

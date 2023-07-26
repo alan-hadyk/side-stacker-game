@@ -50,7 +50,7 @@
     "db:reverse-migration": "NODE_ENV=development npm run db:start && ts-node-dev -r tsconfig-paths/register --project tsconfig.json src/db/scripts/reverseLastDbMigration.ts",
     "db:start": "docker-compose up db -d",
     "db:stop": "docker-compose down",
-    "dev": "NODE_ENV=development npm run db:start && ts-node-dev -r tsconfig-paths/register --project tsconfig.json src/index.ts",
+    "dev": "NODE_ENV=development npm run db:start && npm run redis:start && ts-node-dev -r tsconfig-paths/register --project tsconfig.json src/index.ts",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "redis:start": "docker-compose up redis -d",
