@@ -7,13 +7,23 @@ import { MoveObject } from "@server/features/moves/moveObject"
 import { PlayerModel } from "@server/features/players/playerModel"
 import { GameService } from "@server/services/gameService"
 import { RequestValidationService } from "@server/services/requestValidationService"
+import { SessionService } from "@server/services/sessionService"
 import { WebsocketService } from "@server/services/websocketService"
-import { Request } from "express"
+import { Request, Response } from "express"
 import isEmpty from "lodash/isEmpty"
 import { z } from "zod"
 
 export class MoveController {
-  static create = async (req: Request) => {
+  static create = async (req: Request, res: Response) => {
+    const { player_id: sessionPlayerId } = SessionService.getSessionData(
+      req,
+      res,
+    )
+
+    if (!sessionPlayerId) {
+      return
+    }
+
     RequestValidationService.validateQuery(req.query, z.object({}))
     const { game_id, player_id, position_x, position_y } =
       RequestValidationService.validateBody(
@@ -25,6 +35,12 @@ export class MoveController {
           position_y: true,
         }),
       )
+
+    if (player_id !== sessionPlayerId) {
+      res.status(403)
+      res.end()
+      return
+    }
 
     const game = await GameModel.getById(game_id)
     const parsedGame = GameService.parseGameToResponse(game)

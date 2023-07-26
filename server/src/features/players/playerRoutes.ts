@@ -18,8 +18,16 @@ playersRouter.get(
   requestAsyncHandlerMiddleware(PlayerController.getAll),
 )
 playersRouter.get(
+  Path.CurrentPlayer,
+  requestAsyncHandlerMiddleware(PlayerController.getCurrent),
+)
+playersRouter.get(
   Path.Player,
   requestAsyncHandlerMiddleware(PlayerController.getById),
+)
+playersRouter.post(
+  Path.PlayerSignIn,
+  requestAsyncHandlerMiddleware(PlayerController.signIn),
 )
 playersRouter.put(
   Path.Player,

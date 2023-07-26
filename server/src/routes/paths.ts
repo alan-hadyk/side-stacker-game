@@ -4,5 +4,7 @@ export enum Path {
   Moves = "/moves",
   Players = "/players",
   Player = "/players/:player_id",
+  CurrentPlayer = "/players/current",
+  PlayerSignIn = "/players/sign-in",
   Root = "/",
 }

@@ -4,15 +4,15 @@ import { useToast } from "@client/hooks/useToast"
 import { PlayerResponse } from "@server/@types/api"
 import { MutateOptions, useMutation } from "@tanstack/react-query"
 
-export const useCreatePlayer = () => {
-  const { mutate, ...createPlayerMutation } = useMutation({
+export const usePlayerSignIn = () => {
+  const { mutate, ...playerSignInMutation } = useMutation({
     mutationFn: (
       body: Pick<PlayerResponse, "username"> & { password: string },
-    ) => axiosPost<PlayerResponse>("/players", body),
+    ) => axiosPost<PlayerResponse>("/players/sign-in", body),
   })
   const { errorToast } = useToast()
 
-  const createPlayer = (
+  const playerSignIn = (
     body: Pick<PlayerResponse, "username"> & { password: string },
     options?: MutateOptions<
       PlayerResponse,
@@ -35,7 +35,7 @@ export const useCreatePlayer = () => {
     })
 
   return {
-    ...createPlayerMutation,
-    createPlayer,
+    ...playerSignInMutation,
+    playerSignIn,
   }
 }

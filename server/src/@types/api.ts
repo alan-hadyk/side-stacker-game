@@ -20,6 +20,7 @@ export enum QueryKeys {
   Players = "players",
   List = "list",
   Detail = "detail",
+  Current = "current",
 }
 
 export interface ErrorResponse {

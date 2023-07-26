@@ -1,3 +1,4 @@
+import { useGetCurrentPlayer } from "@client/api/queries/useGetCurrentPlayer"
 import { Button } from "@client/components/atoms/Button/Button"
 import {
   TypographyAlignment,
@@ -6,10 +7,9 @@ import {
 import { Typography } from "@client/components/atoms/Typography/Typography"
 import { Dropdown } from "@client/components/molecules/Dropdown/Dropdown"
 import { Header } from "@client/components/organisms/Header/Header"
-import { useAuthenticatedUser } from "@client/hooks/useAuthenticatedUser"
 
 export const RootContainerHeaderSection: React.FC = () => {
-  const { authenticatedUser } = useAuthenticatedUser()
+  const { currentPlayer } = useGetCurrentPlayer()
 
   return (
     <Header>
@@ -26,7 +26,7 @@ export const RootContainerHeaderSection: React.FC = () => {
           alignment={TypographyAlignment.Center}
           variant={TypographyVariant.Callout}
         >
-          Hi, <strong>{authenticatedUser?.username}</strong>
+          Hi, <strong>{currentPlayer?.username || "user"}</strong>
         </Typography>
       </Dropdown>
     </Header>

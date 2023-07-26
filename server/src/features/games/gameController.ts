@@ -8,9 +8,19 @@ import { WebsocketService } from "@server/services/websocketService"
 import { OrderDirection } from "@server/@types/models"
 import { QueryKeys } from "@server/@types/api"
 import { PlayerModel } from "@server/features/players/playerModel"
+import { SessionService } from "@server/services/sessionService"
 
 export class GameController {
   static create = async (req: Request, res: Response) => {
+    const { player_id: sessionPlayerId } = SessionService.getSessionData(
+      req,
+      res,
+    )
+
+    if (!sessionPlayerId) {
+      return
+    }
+
     RequestValidationService.validateQuery(req.query, z.object({}))
     const { player1_id } = RequestValidationService.validateBody(
       req.body,
@@ -18,6 +28,12 @@ export class GameController {
         player1_id: true,
       }),
     )
+
+    if (player1_id && player1_id !== sessionPlayerId) {
+      res.status(403)
+      res.end()
+      return
+    }
 
     const newGame = await GameModel.create({
       current_game_state: GameStateEnum.enum.waiting_for_players,
@@ -49,6 +65,12 @@ export class GameController {
   }
 
   static getAll = async (req: Request, res: Response) => {
+    const { player_id } = SessionService.getSessionData(req, res)
+
+    if (!player_id) {
+      return
+    }
+
     const { filterType, filters, limit, offset, orderBy, orderDirection } =
       RequestValidationService.validateQuery(
         req.query,
@@ -87,6 +109,12 @@ export class GameController {
   }
 
   static getById = async (req: Request, res: Response) => {
+    const { player_id } = SessionService.getSessionData(req, res)
+
+    if (!player_id) {
+      return
+    }
+
     RequestValidationService.validateQuery(req.query, z.object({}))
     RequestValidationService.validateBody(req.body, z.object({}))
     const { game_id } = RequestValidationService.validateParams(
@@ -102,6 +130,15 @@ export class GameController {
   }
 
   static update = async (req: Request, res: Response) => {
+    const { player_id: sessionPlayerId } = SessionService.getSessionData(
+      req,
+      res,
+    )
+
+    if (!sessionPlayerId) {
+      return
+    }
+
     RequestValidationService.validateQuery(req.query, z.object({}))
     const { player1_id, player2_id } = RequestValidationService.validateBody(
       req.body,
@@ -114,6 +151,26 @@ export class GameController {
       req.params,
       GameObject.pick({ game_id: true }),
     )
+
+    const currentGame = await GameModel.getById(game_id)
+
+    if (
+      (player1_id === null &&
+        currentGame.player1_id &&
+        currentGame.player1_id !== sessionPlayerId) ||
+      (player1_id &&
+        currentGame.player1_id &&
+        currentGame.player1_id !== sessionPlayerId) ||
+      (player2_id === null &&
+        currentGame.player2_id &&
+        currentGame.player2_id !== sessionPlayerId) ||
+      (player2_id &&
+        currentGame.player2_id &&
+        currentGame.player2_id !== sessionPlayerId)
+    ) {
+      res.status(403).end()
+      return
+    }
 
     if (player1_id) {
       await GameService.removePlayerFromActiveGames(player1_id)
@@ -133,11 +190,12 @@ export class GameController {
       )
     }
 
-    const currentGame = await GameModel.getById(game_id)
     const currentGameState = GameService.determineCurrentGameState({
       finished_at: currentGame.finished_at,
-      player1_id,
-      player2_id,
+      player1_id:
+        player1_id !== undefined ? player1_id : currentGame.player1_id,
+      player2_id:
+        player2_id !== undefined ? player2_id : currentGame.player2_id,
     })
 
     const updatedGame = await GameModel.update(game_id, {

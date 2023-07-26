@@ -21,5 +21,5 @@ export const logWsConnectionsMiddleware = (
     console.log("websocketsServer connection")
   }
 
-  console.log("websocketsServer handshake", socket.handshake)
+  // console.log("websocketsServer handshake", socket.handshake)
 }
