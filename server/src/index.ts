@@ -24,6 +24,7 @@ const startServer = async () => {
 
   // Middlewares
   useHttpMiddlewares(app)
+  useWsMiddlewares(websocketsServer)
 
   // Routes
   app.use(Path.Root, gamesRouter)
@@ -33,7 +34,6 @@ const startServer = async () => {
 
   // HTTP & WS Errors along with WS logging middlewares - have to be used after routing
   app.use(httpErrorsMiddleware)
-  useWsMiddlewares(websocketsServer)
 
   const { appConfig } = config
   const { host, port } = appConfig.httpServer

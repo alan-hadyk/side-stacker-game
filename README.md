@@ -63,6 +63,35 @@ The take-home task is to implement the 2-player version of this game, where each
 
 ![System Architecture - High-level diagram](docs/system-architecture.drawio.svg?raw=true "System Architecture - High-level diagram")
 
+The system architecture is primarily divided into three parts: the client-side, the server-side and databases.
+
+#### Client-side:
+
+There are two clients represented in the diagram, both using React for their frontend:
+
+- Client 1 (React): This client communicates with the server using HTTP/REST and WebSockets. The client sends requests to the server and receives responses.
+- Client 2 (React): This client also communicates with the server using HTTP/REST and WebSockets.
+
+**Detailed client implementation is described in [client's README](client/README.md)**
+
+
+#### Server-side:
+
+Server (Node.js/Express): This server is built using Node.js and Express. It communicates with both clients using HTTP/REST and WebSockets. It also interacts with the PostgreSQL database and the Redis Store.
+
+**Detailed server implementation is described in [server's README](server/README.md)**
+
+#### Databases:
+
+There are two databases in the system:
+
+- PostgreSQL Database: This is a relational database used for storing structured data. The server communicates with this database through the Slonik SQL tool.
+- Redis Store: This is an in-memory data structure store, used as a database, cache, and message broker. The server communicates with this store directly.
+
+Arrows between the components indicate the direction of communication. For instance, both clients send requests to the server and receive responses from it. The server, in turn, communicates with the databases to fetch, update, or delete data as per the client's requests.
+
+This diagram provides a high-level overview of how these components interact within the system.
+
 ### Technology Stack
 
 > List of technologies used in the project
