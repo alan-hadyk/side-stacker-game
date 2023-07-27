@@ -1,12 +1,11 @@
 import { QueryKeys } from "@server/@types/api"
-import { RedisKey } from "@server/@types/redis"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
   SocketData,
 } from "@server/@types/websocketsServer"
-import { redisClient } from "@server/clients/redis"
+import { RedisService } from "@server/services/redisService"
 import { WebsocketService } from "@server/services/websocketService"
 import { Socket } from "socket.io"
 
@@ -25,7 +24,7 @@ export const handleSocketConnectionMiddleware = async (
     socket.disconnect()
   } else {
     // Store active players in Redis
-    await redisClient.sAdd(RedisKey.OnlineUsers, player_id)
+    await RedisService.addOnlineUser(player_id)
   }
 
   socket.on("disconnect", async () => {
@@ -33,7 +32,7 @@ export const handleSocketConnectionMiddleware = async (
     const player_id = req.session.player_id
 
     if (player_id) {
-      await redisClient.sRem(RedisKey.OnlineUsers, player_id)
+      await RedisService.removeOnlineUser(player_id)
 
       WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
       WebsocketService.emitInvalidateQuery(

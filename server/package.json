@@ -1,6 +1,6 @@
 {
   "_moduleAliases": {
-    "@app": "./dist"
+    "@server": "./dist"
   },
   "author": "alan-hadyk <alan.hadyk@gmail.com>",
   "description": "Server for Side-Stacker game",

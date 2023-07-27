@@ -1,18 +1,14 @@
-import { PlayerModel } from "@server/features/players/playerModel"
 import { PlayerObject } from "@server/features/players/playerObject"
 import { RequestValidationService } from "@server/services/requestValidationService"
 import { Request, Response } from "express"
 import { z } from "zod"
 import { PlayerService } from "@server/services/playerService"
-import { WebsocketService } from "@server/services/websocketService"
-import { QueryKeys } from "@server/@types/api"
-import { PasswordService } from "@server/services/passwordService"
 import { SessionService } from "@server/services/sessionService"
-import { AuthenticationError } from "@server/errors/authenticationError"
-import { redisClient } from "@server/clients/redis"
-import { RedisKey } from "@server/@types/redis"
 
 export class AuthenticationController {
+  /*
+    Handles user sign-in requests by validating the provided username and password, marking the user as online, setting the user's session data, and sending a JSON response representing the signed-in player.
+  */
   static signIn = async (req: Request, res: Response) => {
     RequestValidationService.validateQuery(req.query, z.object({}))
     const { password, username } = RequestValidationService.validateBody(
@@ -20,37 +16,12 @@ export class AuthenticationController {
       PlayerObject.pick({ password: true, username: true }),
     )
 
-    const existingPlayers = await PlayerModel.getAll({
-      filters: {
-        username,
-      },
-    })
-
-    const player = existingPlayers[0]
-
-    if (!player) {
-      throw new AuthenticationError("Incorrect username or password", 401)
-    }
-
-    const isPasswordValid = await PasswordService.verify(
-      player.password,
+    const { player } = await PlayerService.validateUsernameAndPassword(
+      username,
       password,
     )
 
-    if (!isPasswordValid) {
-      throw new AuthenticationError("Incorrect username or password", 401)
-    }
-
-    await PlayerModel.update(player.player_id, {})
-    // Store active players in Redis
-    await redisClient.sAdd(RedisKey.OnlineUsers, player.player_id)
-
-    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
-    WebsocketService.emitInvalidateQuery(
-      [QueryKeys.Players, QueryKeys.Detail],
-      player.player_id,
-    )
-    WebsocketService.emitToast(`${player.username} is online`)
+    await PlayerService.markAsOnline(player)
 
     SessionService.setSessionData(req, {
       player_id: player.player_id,
@@ -61,20 +32,16 @@ export class AuthenticationController {
     res.json(playerResponse)
   }
 
+  /*
+    Handles user sign-out requests by marking the user as offline, and destroying the user's session data. If there's no player_id in the session, the request is ignored. This could occur if the user is already signed out.
+  */
   static signOut = async (req: Request, res: Response) => {
-    const { player_id } = SessionService.getSessionData(req, res)
-
-    if (!player_id) {
-      return
-    }
+    const { player_id } = SessionService.getSessionData(req)
 
     RequestValidationService.validateQuery(req.query, z.object({}))
     RequestValidationService.validateBody(req.body, z.object({}))
 
-    await PlayerModel.update(player_id, {})
-    await redisClient.sRem(RedisKey.OnlineUsers, player_id)
-
-    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
+    await PlayerService.markAsOffline(player_id)
 
     SessionService.destroySession(req, res)
   }

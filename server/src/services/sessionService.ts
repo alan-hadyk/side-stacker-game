@@ -1,14 +1,17 @@
-import { CustomSessionData } from "@server/@types/expressSession"
 import { Player } from "@server/@types/playerObject"
 import { websocketsServer } from "@server/clients/websocketsServer"
+import { AuthenticationError } from "@server/errors/authenticationError"
+import { InternalServerError } from "@server/errors/internalServerError"
 import { Request, Response } from "express"
 
+// SessionService is responsible for managing the HTTP sessions
 export class SessionService {
+  // Stores the session data on the request
   static setSessionData = (
     req: Request,
     { player_id }: Pick<Player, "player_id">,
   ) => {
-    ;(req.session as CustomSessionData).player_id = player_id
+    req.session.player_id = player_id
 
     req.session.save((err) => {
       if (err) {
@@ -19,23 +22,25 @@ export class SessionService {
     })
   }
 
-  static getSessionData = (req: Request, res: Response) => {
-    const player_id = (req.session as CustomSessionData).player_id
+  // Retrieves the session data from the request
+  static getSessionData = (req: Request) => {
+    const player_id = req.session.player_id
 
     if (!player_id) {
-      res.writeHead(401)
-      res.end()
+      throw new AuthenticationError("Invalid credentials")
     }
 
-    return req.session as unknown as { player_id?: string }
+    return req.session
   }
 
+  // Destroys the session and disconnects all sockets associated with the session
   static destroySession = (req: Request, res: Response) => {
     const sessionId = req.session.id
 
     req.session.destroy((err) => {
       if (err) {
         console.error("Error while destroying session", err)
+        throw new InternalServerError()
       } else {
         websocketsServer.in(sessionId).disconnectSockets()
 

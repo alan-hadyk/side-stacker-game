@@ -1,5 +1,8 @@
 import { Session } from "express-session"
-import { CustomSessionData } from "@server/@types/expressSession"
+
+interface CustomSessionData extends SessionData {
+  player_id?: Player["player_id"]
+}
 
 declare module "http" {
   interface IncomingMessage {
