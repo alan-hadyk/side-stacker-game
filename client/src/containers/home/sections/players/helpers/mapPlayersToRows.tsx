@@ -1,3 +1,5 @@
+import { IndicatorType } from "@client/components/atoms/Indicator/@types/Indicator"
+import { Indicator } from "@client/components/atoms/Indicator/Indicator"
 import {
   TypographyVariant,
   TypographyWeight,
@@ -14,10 +16,15 @@ export const mapPlayersToRows = (
     return []
   }
 
+  console.log({ players })
+
   const isAuthenticatedUser = (player_id: PlayerResponse["player_id"]) =>
     player_id === authenticated_user_id
 
-  return players.map(({ last_active_at, username, player_id }) => [
+  return players.map(({ is_online, last_active_at, username, player_id }) => [
+    <Indicator
+      type={is_online ? IndicatorType.Success : IndicatorType.Neutral}
+    />,
     <Typography
       variant={TypographyVariant.Span}
       weight={

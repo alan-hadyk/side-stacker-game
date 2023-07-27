@@ -2,9 +2,10 @@ import { AuthenticationFormValues } from "@client/components/organisms/Authentic
 import { AuthenticationForm } from "@client/components/organisms/AuthenticationForm/AuthenticationForm"
 import { useCreatePlayer } from "@client/api/mutations/useCreatePlayer"
 import { useQueryClient } from "@tanstack/react-query"
-import { PlayerResponse, QueryKeys } from "@server/@types/api"
+import { PlayerResponse } from "@server/@types/api"
 import { AuthenticationTemplate } from "@client/components/templates/AuthenticationTemplate/AuthenticationTemplate"
 import { useSignIn } from "@client/api/mutations/useSignIn"
+import { queryKeys } from "@client/api/queryKeys"
 
 export const AuthenticationContainer: React.FC = () => {
   const { createPlayer, isLoading: isCreatingPlayer } = useCreatePlayer()
@@ -12,7 +13,7 @@ export const AuthenticationContainer: React.FC = () => {
   const queryClient = useQueryClient()
 
   const onSuccess = (player: PlayerResponse) => {
-    queryClient.setQueriesData([QueryKeys.Players, QueryKeys.Current], player)
+    queryClient.setQueriesData(queryKeys.players.current, player)
   }
 
   const handleSignIn = (data: AuthenticationFormValues) => {

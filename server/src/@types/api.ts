@@ -31,6 +31,7 @@ export interface ErrorResponse {
 export interface PlayerResponse {
   created_at: string
   deleted_at: string | null
+  is_online?: boolean
   last_active_at: string
   player_id: string
   username: string
@@ -87,3 +88,9 @@ export interface PlayersGetAllQueryParams {
     | "username"
   orderDirection?: OrderDirection
 }
+
+export type SignInPostBody = Pick<PlayerResponse, "username"> & {
+  password: string
+}
+
+export type CreatePlayerPostBody = SignInPostBody

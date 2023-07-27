@@ -31,7 +31,8 @@ export const createWebsocketsServer = (
     },
     cors: {
       credentials: true, // allow credentials (cookies)
-      origin: ["http://127.0.0.1:4000", "http://127.0.0.1:3000"],
+      origin:
+        process.env.NODE_ENV === "development" ? true : process.env.ORIGIN, // allow requests from all origins - needed for testing & development
     },
   })
 

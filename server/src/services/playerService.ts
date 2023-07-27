@@ -5,11 +5,13 @@ import { convertObjectToObjectWithIsoDates } from "@server/helpers/objects/conve
 export class PlayerService {
   static parsePlayerToResponse = (
     player: Omit<Player, "password">,
+    is_online?: boolean,
   ): PlayerResponse => {
     const { created_at, deleted_at, last_active_at, player_id, username } =
       player
 
     return {
+      is_online,
       player_id,
       username,
       ...convertObjectToObjectWithIsoDates(

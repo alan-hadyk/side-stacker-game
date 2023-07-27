@@ -2,10 +2,11 @@ import { axiosPost } from "@client/helpers/api/axiosPost"
 import { getAxiosError } from "@client/helpers/api/getAxiosError"
 import { useToast } from "@client/hooks/useToast"
 import { MutateOptions, useMutation } from "@tanstack/react-query"
+import { Path } from "@server/routes/paths"
 
 export const useSignOut = () => {
   const { mutate, ...signOutMutation } = useMutation({
-    mutationFn: () => axiosPost("/sign-out"),
+    mutationFn: () => axiosPost(Path.SignOut),
   })
   const { errorToast } = useToast()
 

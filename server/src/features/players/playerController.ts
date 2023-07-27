@@ -11,6 +11,8 @@ import { QueryKeys } from "@server/@types/api"
 import { PasswordService } from "@server/services/passwordService"
 import { SessionService } from "@server/services/sessionService"
 import { ValidationError } from "@server/errors/validationError"
+import { redisClient } from "@server/clients/redis"
+import { RedisKey } from "@server/@types/redis"
 
 export class PlayerController {
   static create = async (req: Request, res: Response) => {
@@ -129,7 +131,12 @@ export class PlayerController {
       orderDirection,
     })
 
-    const playersResponse = players.map(PlayerService.parsePlayerToResponse)
+    const onlineUsers = await redisClient.sMembers(RedisKey.OnlineUsers)
+
+    const playersResponse = players.map((player) => {
+      const is_online = onlineUsers.includes(player.player_id)
+      return PlayerService.parsePlayerToResponse(player, is_online)
+    })
 
     res.json(playersResponse)
   }
@@ -149,7 +156,14 @@ export class PlayerController {
     )
 
     const player = await PlayerModel.getById(params.player_id)
-    const playerResponse = PlayerService.parsePlayerToResponse(player)
+    const is_online = await redisClient.sIsMember(
+      RedisKey.OnlineUsers,
+      player.player_id,
+    )
+    const playerResponse = PlayerService.parsePlayerToResponse(
+      player,
+      is_online,
+    )
 
     res.json(playerResponse)
   }
@@ -168,14 +182,16 @@ export class PlayerController {
 
     await PlayerModel.update(player_id, {})
 
+    await redisClient.sAdd(RedisKey.OnlineUsers, player_id)
+    WebsocketService.emitToast(`${player.username} is online`)
+
     WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
     WebsocketService.emitInvalidateQuery(
       [QueryKeys.Players, QueryKeys.Detail],
       player.player_id,
     )
-    WebsocketService.emitToast(`${player.username} is online`)
 
-    const playerResponse = PlayerService.parsePlayerToResponse(player)
+    const playerResponse = PlayerService.parsePlayerToResponse(player, true)
 
     res.json(playerResponse)
   }

@@ -21,7 +21,7 @@ export const HomeContainerPlayersSection: React.FC = () => {
     <Card title="Players">
       {isInitialLoading || !isEmpty(rows) ? (
         <Table
-          headers={["Name", "Last Active"]}
+          headers={[" ", "Name", "Last Active"]}
           isLoading={isInitialLoading}
           rows={rows}
         />

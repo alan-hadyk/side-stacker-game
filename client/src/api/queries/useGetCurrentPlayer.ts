@@ -3,12 +3,13 @@ import { axiosGet } from "@client/helpers/api/axiosGet"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { PlayerResponse } from "@server/@types/api"
+import { Path } from "@server/routes/paths"
 
 export const useGetCurrentPlayer = (
   options?: UseQueryOptions<PlayerResponse, AxiosError, PlayerResponse>,
 ) => {
   const getCurrentPlayerQuery = useQuery({
-    queryFn: () => axiosGet<PlayerResponse>("/players/current"),
+    queryFn: () => axiosGet<PlayerResponse>(Path.CurrentPlayer),
     queryKey: queryKeys.players.current,
     ...options,
   })

@@ -9,6 +9,8 @@ import { QueryKeys } from "@server/@types/api"
 import { PasswordService } from "@server/services/passwordService"
 import { SessionService } from "@server/services/sessionService"
 import { AuthenticationError } from "@server/errors/authenticationError"
+import { redisClient } from "@server/clients/redis"
+import { RedisKey } from "@server/@types/redis"
 
 export class AuthenticationController {
   static signIn = async (req: Request, res: Response) => {
@@ -40,6 +42,8 @@ export class AuthenticationController {
     }
 
     await PlayerModel.update(player.player_id, {})
+    // Store active players in Redis
+    await redisClient.sAdd(RedisKey.OnlineUsers, player.player_id)
 
     WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
     WebsocketService.emitInvalidateQuery(
@@ -68,6 +72,9 @@ export class AuthenticationController {
     RequestValidationService.validateBody(req.body, z.object({}))
 
     await PlayerModel.update(player_id, {})
+    await redisClient.sRem(RedisKey.OnlineUsers, player_id)
+
+    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
 
     SessionService.destroySession(req, res)
   }
