@@ -94,3 +94,7 @@ export type SignInPostBody = Pick<PlayerResponse, "username"> & {
 }
 
 export type CreatePlayerPostBody = SignInPostBody
+
+export type CreateGamePostBody = {
+  player1_id: PlayerResponse["player_id"]
+}
