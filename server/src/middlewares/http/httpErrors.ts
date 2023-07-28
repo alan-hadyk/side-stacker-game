@@ -65,6 +65,10 @@ export const httpErrorsMiddleware = (
   }
 
   switch (true) {
+    case error instanceof ZodError:
+      status = 400
+      break
+
     case error instanceof NotFoundError:
       status = 404
       break
