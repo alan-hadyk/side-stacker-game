@@ -32,7 +32,7 @@ const startServer = async () => {
   app.use(Path.Root, playersRouter)
   app.use(Path.Root, authenticationRouter)
 
-  // HTTP & WS Errors along with WS logging middlewares - have to be used after routing
+  // HTTP Errors logging middlewares - have to be used after routing
   app.use(httpErrorsMiddleware)
 
   const { appConfig } = config
