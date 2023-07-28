@@ -1,5 +1,7 @@
+import { useCreateGame } from "@client/api/mutations/useCreateGame"
 import { useSignOut } from "@client/api/mutations/useSignOut"
 import { useGetCurrentPlayer } from "@client/api/queries/useGetCurrentPlayer"
+import { queryKeys } from "@client/api/queryKeys"
 import { Button } from "@client/components/atoms/Button/Button"
 import {
   TypographyAlignment,
@@ -8,7 +10,9 @@ import {
 import { Typography } from "@client/components/atoms/Typography/Typography"
 import { Dropdown } from "@client/components/molecules/Dropdown/Dropdown"
 import { Header } from "@client/components/organisms/Header/Header"
+import { gameRoute } from "@client/routing/routes"
 import { useQueryClient } from "@tanstack/react-query"
+import { useNavigate } from "@tanstack/router"
 
 export const RootContainerHeaderSection: React.FC = () => {
   const { currentPlayer } = useGetCurrentPlayer()
@@ -23,9 +27,43 @@ export const RootContainerHeaderSection: React.FC = () => {
     })
   }
 
+  const { createGame, isLoading: isCreatingGame } = useCreateGame()
+  const navigate = useNavigate()
+
+  const handleCreateGame = () => {
+    if (currentPlayer?.player_id) {
+      createGame(
+        {
+          player1_id: currentPlayer.player_id,
+        },
+        {
+          onSuccess: async (game) => {
+            queryClient.setQueriesData(
+              queryKeys.games.detail(game.game_id),
+              game,
+            )
+
+            await navigate({
+              params: {
+                game_id: game.game_id,
+              },
+              to: gameRoute.to,
+            })
+          },
+        },
+      )
+    }
+  }
+
   return (
     <Header>
-      <Button>New Game</Button>
+      <Button
+        disabled={!currentPlayer?.player_id}
+        isLoading={isCreatingGame}
+        onClick={handleCreateGame}
+      >
+        New Game
+      </Button>
       <Dropdown
         items={[
           {

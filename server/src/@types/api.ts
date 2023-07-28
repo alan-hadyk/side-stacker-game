@@ -15,6 +15,11 @@ export enum OrderDirection {
   DESC = "DESC",
 }
 
+export enum FilterType {
+  AND = "AND",
+  OR = "OR",
+}
+
 export enum QueryKeys {
   Games = "games",
   Players = "players",
@@ -70,7 +75,7 @@ export interface GamesGetAllQueryParams {
     current_game_state?: GameStateEnum | GameStateEnum[]
     winner_id?: string | null
   }
-  filterType?: "AND" | "OR"
+  filterType?: FilterType
   limit?: number
   offset?: number
   orderBy?: "created_at" | "current_game_state" | "finished_at"

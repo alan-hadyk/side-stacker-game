@@ -1,5 +1,5 @@
 import { databasePool } from "@server/db/databasePool"
-import { OrderDirection } from "@server/@types/models"
+import { FilterType, OrderDirection } from "@server/@types/models"
 import {
   GameModelGetAll,
   GameModelUpdateFieldsReturnType,
@@ -109,7 +109,7 @@ export class GameModel {
             ${current_game_state || GameStateEnum.enum.waiting_for_players}, 
             ${sql.json(current_board_status)}, 
             ${name},
-            ${next_possible_moves}, 
+            ${sql.json(next_possible_moves)}, 
             ${0}, 
             NULL, 
             NULL, 
@@ -125,7 +125,7 @@ export class GameModel {
 
   static getAll = ({
     filters,
-    filterType = "AND",
+    filterType = FilterType.AND,
     limit = 40,
     offset = 0,
     orderBy = "created_at",
@@ -159,7 +159,7 @@ export class GameModel {
         FROM games 
         WHERE ${sql.join(
           filtersFragments,
-          filterType === "AND" ? sql.unsafe`, ` : sql.unsafe` OR `,
+          filterType === FilterType.AND ? sql.unsafe`, ` : sql.unsafe` OR `,
         )}
         ORDER BY ${sql.identifier([orderBy])} ${sql.unsafe([direction])} 
         LIMIT ${limit} 

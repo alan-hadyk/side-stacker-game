@@ -1,5 +1,5 @@
 import { Game, GameStateEnum } from "@server/@types/gameObject"
-import { OrderDirection } from "@server/@types/models"
+import { FilterType, OrderDirection } from "@server/@types/models"
 import { PrimitiveValueExpression } from "slonik"
 
 export interface GameModelGetAll {
@@ -9,7 +9,7 @@ export interface GameModelGetAll {
     current_game_state?: GameStateEnum | GameStateEnum[]
     winner_id?: string | null
   }
-  filterType?: "AND" | "OR"
+  filterType?: FilterType
   limit?: number
   offset?: number
   orderBy?: keyof Game

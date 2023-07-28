@@ -21,7 +21,7 @@ export const useWebsockets = () => {
           console.log("invalidateQuery event", { data })
           const queryKey = [...data.entity, data.id].filter(Boolean)
 
-          await queryClient.invalidateQueries({ queryKey })
+          await queryClient.invalidateQueries({ queryKey, refetchType: "all" })
         },
       )
     }

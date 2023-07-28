@@ -8,7 +8,7 @@ import { getAxiosError } from "@client/helpers/api/getAxiosError"
 import { Path } from "@server/routes/paths"
 
 export const useGetGame = (
-  params?: Pick<GameResponse, "game_id">,
+  params: Partial<Pick<GameResponse, "game_id">>,
   options?: UseQueryOptions<GameResponse, AxiosError, GameResponse>,
 ) => {
   const { errorToast } = useToast()
@@ -32,10 +32,10 @@ export const useGetGame = (
     ...options,
   })
 
-  const player = getGameQuery.data
+  const game = getGameQuery.data
 
   return {
     ...getGameQuery,
-    player,
+    game,
   }
 }

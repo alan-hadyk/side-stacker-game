@@ -1,10 +1,10 @@
 import { GameModel } from "@server/features/games/gameModel"
-import { GameObject } from "@server/features/games/gameObject"
+import { GameObject, GameStateEnum } from "@server/features/games/gameObject"
 import { RequestValidationService } from "@server/services/requestValidationService"
 import { Request, Response } from "express"
 import { GameService } from "@server/services/gameService"
 import { z } from "zod"
-import { OrderDirection } from "@server/@types/models"
+import { FilterType, OrderDirection } from "@server/@types/models"
 import { SessionService } from "@server/services/sessionService"
 import { AuthenticationError } from "@server/errors/authenticationError"
 import { PlayerService } from "@server/services/playerService"
@@ -55,13 +55,18 @@ export class GameController {
       RequestValidationService.validateQuery(
         req.query,
         z.object({
-          filterType: z.enum(["AND", "OR"]).optional(),
-          filters: GameObject.pick({
-            current_game_state: true,
-            player1_id: true,
-            player2_id: true,
-            winner_id: true,
-          }).optional(),
+          filterType: z.enum([FilterType.AND, FilterType.OR]).optional(),
+          filters: z
+            .object({
+              current_game_state: z
+                .array(GameStateEnum)
+                .or(GameStateEnum)
+                .optional(),
+              player1_id: z.string().optional(),
+              player2_id: z.string().optional(),
+              winner_id: z.string().optional(),
+            })
+            .optional(),
           limit: z.number().optional(),
           offset: z.number().optional(),
           orderBy: z

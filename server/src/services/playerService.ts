@@ -4,7 +4,6 @@ import { AuthenticationError } from "@server/errors/authenticationError"
 import { ValidationError } from "@server/errors/validationError"
 import { PlayerModel } from "@server/features/players/playerModel"
 import { convertObjectToObjectWithIsoDates } from "@server/helpers/objects/convertObjectToObjectWithIsoDates"
-import { GameService } from "@server/services/gameService"
 import { PasswordService } from "@server/services/passwordService"
 import { RedisService } from "@server/services/redisService"
 import { WebsocketService } from "@server/services/websocketService"
@@ -144,8 +143,6 @@ export class PlayerService {
   */
   static deletePlayer = async (player_id: Player["player_id"]) => {
     const deletedPlayer = await PlayerModel.delete(player_id)
-
-    await GameService.removePlayerFromActiveGames(deletedPlayer.player_id)
 
     await PlayerService.markAsOffline(deletedPlayer.player_id)
   }
