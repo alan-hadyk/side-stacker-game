@@ -13,6 +13,7 @@ import { Header } from "@client/components/organisms/Header/Header"
 import { gameRoute } from "@client/routing/routes"
 import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/router"
+import isEqual from "lodash/isEqual"
 
 export const RootContainerHeaderSection: React.FC = () => {
   const { currentPlayer } = useGetCurrentPlayer()
@@ -22,7 +23,11 @@ export const RootContainerHeaderSection: React.FC = () => {
   const handleSignOut = () => {
     signOut({
       onSettled: async () => {
-        await queryClient.resetQueries()
+        await queryClient.resetQueries({ queryKey: queryKeys.players.current })
+        await queryClient.cancelQueries({
+          predicate: (query) =>
+            !isEqual(query.queryKey, queryKeys.players.current),
+        })
       },
     })
   }

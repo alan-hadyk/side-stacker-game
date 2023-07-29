@@ -231,7 +231,6 @@ This section provides a list of API endpoints for the application.
 > | name       |  type     | data type               | description                                                           |
 > |------------|-----------|-------------------------|-----------------------------------------------------------------------|
 > | game_id    | required  | string                  | ID of the game                                                                   |
-> | player_id  | required  | string                  | ID of the player that made a move                                          |
 > | position_x | required  | number                  | X coordinate of the move                                          |
 > | position_y | required  | number                  | Y coordinate of the move                                          |
 

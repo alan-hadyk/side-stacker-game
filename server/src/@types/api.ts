@@ -20,6 +20,18 @@ export enum FilterType {
   OR = "OR",
 }
 
+export type GamesGetAllCondition = {
+  current_game_state?: GameStateEnum
+  player1_id?: string
+  player2_id?: string
+  winner_id?: string
+}
+
+export interface GamesGetAllFilter {
+  conditions: GamesGetAllCondition
+  filterType?: FilterType
+}
+
 export enum QueryKeys {
   Games = "games",
   Players = "players",
@@ -69,13 +81,7 @@ export interface MoveResponse {
 }
 
 export interface GamesGetAllQueryParams {
-  filters?: {
-    player1_id?: string | null
-    player2_id?: string | null
-    current_game_state?: GameStateEnum | GameStateEnum[]
-    winner_id?: string | null
-  }
-  filterType?: FilterType
+  filters?: GamesGetAllFilter[]
   limit?: number
   offset?: number
   orderBy?: "created_at" | "current_game_state" | "finished_at"
@@ -103,3 +109,5 @@ export type CreatePlayerPostBody = SignInPostBody
 export type CreateGamePostBody = {
   player1_id: PlayerResponse["player_id"]
 }
+
+export type UpdateGamePutBody = Pick<GameResponse, "player1_id" | "player2_id">

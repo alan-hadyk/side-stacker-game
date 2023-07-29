@@ -289,7 +289,7 @@ export class GameService {
     player_id?: Player["player_id"] | null,
   ) => {
     if (player_id) {
-      const { player } = await PlayerService.markActivity(player_id)
+      const { player } = await PlayerService.markAsOnline(player_id)
 
       WebsocketService.emitToast(`${player.username} joined ${game.name}`)
     }

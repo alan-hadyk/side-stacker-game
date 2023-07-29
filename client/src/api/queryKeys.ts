@@ -9,13 +9,13 @@ import {
 export const queryKeys = {
   games: {
     detail: (game_id?: GameResponse["game_id"]) => [
-      QueryKeys.Players,
+      QueryKeys.Games,
       QueryKeys.Detail,
       game_id,
     ],
     list: (params?: GamesGetAllQueryParams) => [
       QueryKeys.Games,
-      QueryKeys.Detail,
+      QueryKeys.List,
       params,
     ],
   },

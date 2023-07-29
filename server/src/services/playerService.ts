@@ -62,28 +62,24 @@ export class PlayerService {
   }
 
   /*
-    Updates the player's status (last active) in the database and sends a WebSocket message to invalidate the client's cached player list and player details.
+    Updates the player's status (last active) in the database and Redis cache to 'online', sends a WebSocket message to invalidate the client's cached player list and player details.
   */
-  static markActivity = async (player_id: Player["player_id"]) => {
+  static markAsOnline = async (
+    player_id: Player["player_id"],
+    emitEvents = true,
+  ) => {
     const player = await PlayerModel.update(player_id, {})
-
-    WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
-    WebsocketService.emitInvalidateQuery(
-      [QueryKeys.Players, QueryKeys.Detail],
-      player_id,
-    )
-
-    return { player }
-  }
-
-  /*
-    Updates the player's status (last active) in the database and Redis cache to 'online', sends a WebSocket message to invalidate the client's cached player list and player details, and sends a 'toast' message to notify clients that the player is online.
-  */
-  static markAsOnline = async (player: Player) => {
-    await PlayerService.markActivity(player.player_id)
     await RedisService.addOnlineUser(player.player_id)
 
-    WebsocketService.emitToast(`${player.username} is online`)
+    if (emitEvents) {
+      WebsocketService.emitInvalidateQuery([QueryKeys.Players, QueryKeys.List])
+      WebsocketService.emitInvalidateQuery(
+        [QueryKeys.Players, QueryKeys.Detail],
+        player_id,
+      )
+    }
+
+    return { player }
   }
 
   /*

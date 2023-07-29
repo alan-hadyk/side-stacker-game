@@ -26,9 +26,9 @@ export const useGetGame = (
     },
     queryFn: () =>
       axiosGet<GameResponse>(
-        Path.Game.replace(":game_id", params?.game_id || ""),
+        Path.Game.replace(":game_id", params.game_id || ""),
       ),
-    queryKey: queryKeys.games.detail(params?.game_id),
+    queryKey: queryKeys.games.detail(params.game_id),
     ...options,
   })
 

@@ -12,15 +12,36 @@ import { FiFrown } from "react-icons/fi"
 export const HomeContainerCurrentPlayerGamesSection: React.FC = () => {
   const { currentPlayer } = useGetCurrentPlayer()
   const { games: currentPlayerGames, isInitialLoading } = useGetGames({
-    filterType: FilterType.OR,
-    filters: {
-      current_game_state: [
-        GameStateEnum.in_progress,
-        GameStateEnum.waiting_for_players,
-      ],
-      player1_id: currentPlayer?.player_id,
-      player2_id: currentPlayer?.player_id,
-    },
+    filters: [
+      {
+        conditions: {
+          current_game_state: GameStateEnum.in_progress,
+          player1_id: currentPlayer?.player_id,
+        },
+        filterType: FilterType.AND,
+      },
+      {
+        conditions: {
+          current_game_state: GameStateEnum.waiting_for_players,
+          player1_id: currentPlayer?.player_id,
+        },
+        filterType: FilterType.AND,
+      },
+      {
+        conditions: {
+          current_game_state: GameStateEnum.in_progress,
+          player2_id: currentPlayer?.player_id,
+        },
+        filterType: FilterType.AND,
+      },
+      {
+        conditions: {
+          current_game_state: GameStateEnum.waiting_for_players,
+          player2_id: currentPlayer?.player_id,
+        },
+        filterType: FilterType.AND,
+      },
+    ],
     limit: 100,
   })
 
