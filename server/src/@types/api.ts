@@ -111,3 +111,9 @@ export type CreateGamePostBody = {
 }
 
 export type UpdateGamePutBody = Pick<GameResponse, "player1_id" | "player2_id">
+
+export type CreateMovePostBody = {
+  game_id: GameResponse["game_id"]
+  position_x: number
+  position_y: number
+}

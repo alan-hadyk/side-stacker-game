@@ -19,11 +19,13 @@ import {
   ButtonVariant,
 } from "@client/components/atoms/Button/@types/Button"
 import { ReactNode } from "react"
+import { FaMedal } from "react-icons/fa"
 
 export const GamePlayerRow = ({
   hasNextMove,
   isCurrentUser,
   isDisabled,
+  isWinner,
   onJoin,
   onLeave,
   player,
@@ -56,6 +58,8 @@ export const GamePlayerRow = ({
           >
             {player.username}
           </Typography>
+
+          {isWinner && <FaMedal className="text-accent" />}
         </div>
       ) : (
         <Typography

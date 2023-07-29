@@ -1,5 +1,6 @@
+import { OIcon } from "@client/assets/icons/OIcon"
+import { XIcon } from "@client/assets/icons/XIcon"
 import { GamePreviewCellProps } from "@client/components/atoms/GamePreviewCell/@types/GamePreviewCell"
-import { FiCircle, FiX } from "react-icons/fi"
 
 export const GamePreviewCell: React.FC<GamePreviewCellProps> = ({ cell }) => (
   <div
@@ -9,9 +10,11 @@ export const GamePreviewCell: React.FC<GamePreviewCellProps> = ({ cell }) => (
         w-4 h-4
       `}
   >
-    {cell === "X" && <FiX className="inline-block w-4 h-4 text-primary" />}
+    {cell === "X" && (
+      <XIcon className="block w-3 h-3 text-primary" fill="currentColor" />
+    )}
     {cell === "O" && (
-      <FiCircle className="inline-block w-3 h-3 text-secondary" />
+      <OIcon className="block w-3 h-3 text-secondary" fill="currentColor" />
     )}
   </div>
 )

@@ -37,7 +37,15 @@ export const GameInfoCard: React.FC<GameInfoCardProps> = ({
             </Badge>
           )}
           <Typography variant={TypographyVariant.Paragraph}>
-            <strong>{game?.number_of_moves}</strong> moves made so far
+            {game?.current_game_state === "finished" ? (
+              <>
+                This game took <strong>{game?.number_of_moves}</strong> moves
+              </>
+            ) : (
+              <>
+                <strong>{game?.number_of_moves}</strong> moves made so far
+              </>
+            )}
           </Typography>
         </>
       )}

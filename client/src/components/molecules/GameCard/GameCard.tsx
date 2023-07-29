@@ -8,6 +8,7 @@ import { calculateNumberOfPlayersInGame } from "@client/helpers/data/calculateNu
 import { gameRoute } from "@client/routing/routes"
 import { Link } from "@tanstack/router"
 import dayjs from "dayjs"
+import { mapCurrentBoardStatusToBoard } from "@client/components/molecules/GameCard/helpers/mapCurrentBoardStatusToBoard"
 
 export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
   const {
@@ -16,19 +17,21 @@ export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
     created_at,
     name,
     finished_at,
-    current_board_status,
+    winning_moves,
   } = game
   const numberOfPlayers = calculateNumberOfPlayersInGame(game)
   const numberOfPlayersBadgeType =
     numberOfPlayers === 2 ? BadgeType.Warning : BadgeType.Success
   const isNumberOfMovesEven = number_of_moves % 2 === 0
 
+  const board = mapCurrentBoardStatusToBoard(game)
+
   return (
     <Link className={className} to={gameRoute.to} params={{ game_id }}>
       <Card
         contentTop={
           <figure className="bg-base-300">
-            <GamePreview boardStatus={current_board_status} />
+            <GamePreview board={board} winningMoves={winning_moves} />
           </figure>
         }
         type={CardType.Link}

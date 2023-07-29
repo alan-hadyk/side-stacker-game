@@ -35,7 +35,7 @@ export class GameService {
     position_x: Move["position_x"],
     moveType: MoveTypeEnumType,
   ) => {
-    const currentBoardStatus = { ...current_board_status }
+    const currentBoardStatus = [...current_board_status]
 
     currentBoardStatus[position_y][position_x] = moveType
 
