@@ -5,7 +5,7 @@ import { determineWinDirection } from "@client/components/molecules/GameBoard/he
 import { GameBoardLoader } from "@client/components/molecules/GameBoard/loaders/GameBoardLoader"
 
 export const GameBoard: React.FC<GameBoardProps> = ({
-  board,
+  board = [],
   isLoading,
   nextMoveType,
   winningMoves = [],

@@ -23,18 +23,12 @@ export const GameContainerBoardSection: React.FC = () => {
 
   const board = mapCurrentBoardStatusToBoard(game, hasCurrentUserNextMove)
 
-  return game || isInitialLoading ? (
-    <>
-      {game && board && (
-        <GameBoard
-          board={board}
-          isLoading={isInitialLoading}
-          nextMoveType={nextMoveType}
-          winningMoves={game.winning_moves}
-        />
-      )}
-    </>
-  ) : (
-    <div>NO GAME</div>
+  return (
+    <GameBoard
+      board={board}
+      isLoading={isInitialLoading}
+      nextMoveType={nextMoveType}
+      winningMoves={game?.winning_moves}
+    />
   )
 }

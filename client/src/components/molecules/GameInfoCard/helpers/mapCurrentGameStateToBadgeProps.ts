@@ -17,7 +17,7 @@ export const mapCurrentGameStateToBadgeProps: Record<
     type: BadgeType.Secondary,
   },
   waiting_for_players: {
-    text: "Waiting for players",
+    text: "Open spot(s)",
     type: BadgeType.Primary,
   },
 }
