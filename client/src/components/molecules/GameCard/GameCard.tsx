@@ -9,6 +9,7 @@ import { gameRoute } from "@client/routing/routes"
 import { Link } from "@tanstack/router"
 import dayjs from "dayjs"
 import { mapCurrentBoardStatusToBoard } from "@client/components/molecules/GameCard/helpers/mapCurrentBoardStatusToBoard"
+import { getResult } from "@client/components/molecules/GameCard/helpers/getResult"
 
 export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
   const {
@@ -25,6 +26,7 @@ export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
   const isNumberOfMovesEven = number_of_moves % 2 === 0
 
   const board = mapCurrentBoardStatusToBoard(game)
+  const result = getResult(game)
 
   return (
     <Link className={className} to={gameRoute.to} params={{ game_id }}>
@@ -44,9 +46,11 @@ export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
           >
             {number_of_moves} moves
           </Badge>
-          <Badge type={BadgeType.Info}>
-            {dayjs(finished_at ?? created_at).fromNow()}
-          </Badge>
+          {result ? (
+            <Badge type={BadgeType.Success}>{result}</Badge>
+          ) : (
+            <Badge type={BadgeType.Info}>{dayjs(created_at).fromNow()}</Badge>
+          )}
         </div>
       </Card>
     </Link>
