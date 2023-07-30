@@ -2,7 +2,6 @@ import { useGetCurrentPlayer } from "@client/api/queries/useGetCurrentPlayer"
 import { useGetPlayers } from "@client/api/queries/useGetPlayers"
 import { AlertType } from "@client/components/molecules/Alert/@types/Alert"
 import { Alert } from "@client/components/molecules/Alert/Alert"
-import { CardPosition } from "@client/components/molecules/Card/@types/Card"
 import { Card } from "@client/components/molecules/Card/Card"
 import { PaginationSize } from "@client/components/molecules/Pagination/@types/Pagination"
 import { Pagination } from "@client/components/molecules/Pagination/Pagination"
@@ -26,11 +25,11 @@ export const HomeContainerPlayersSection: React.FC = () => {
   const rows = mapPlayersToRows(currentPlayer?.player_id, players)
 
   return (
-    <Card position={CardPosition.Sticky} title="Players">
+    <Card title="Players">
       {isInitialLoading || !isEmpty(rows) ? (
         <>
           <Table
-            headers={[" ", "Name", "Last Active"]}
+            headers={["Name", "Last Active"]}
             isLoading={isInitialLoading}
             rows={rows}
           />

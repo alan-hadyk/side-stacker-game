@@ -5,11 +5,11 @@ export const usePagination = (
     limit: 4,
   },
 ) => {
-  const _limit = limit
+  const defaultLimit = limit
   const [offset, setOffset] = useState(0)
 
   return {
-    limit: _limit,
+    limit: defaultLimit,
     offset,
     setOffset,
   }
