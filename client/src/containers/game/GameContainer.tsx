@@ -17,6 +17,8 @@ import { FiAlertCircle } from "react-icons/fi"
 export const GameContainer: React.FC = () => {
   const { game, isInitialLoading } = useGameContainerQueries()
 
+  console.log({ game, isInitialLoading })
+
   return (
     <PageTemplate>
       {game || isInitialLoading ? (
