@@ -220,8 +220,8 @@ Fields:
 - [x] [Authentication](https://github.com/alan-hadyk/side-stacker-game/pull/18)
 - [x] [Client - game creation and game board](https://github.com/alan-hadyk/side-stacker-game/pull/19)
 - [x] [Client - game joining logic](https://github.com/alan-hadyk/side-stacker-game/pull/19)
-- [x] [Client - game play (making moves) logic]()
-- [ ] Client - game end (win/draw) logic
+- [x] [Client - game play (making moves) logic](https://github.com/alan-hadyk/side-stacker-game/pull/20)
+- [x] [Client - game end (win/draw) logic](https://github.com/alan-hadyk/side-stacker-game/pull/20)
 - [ ] Client - 404 page
 - [ ] Server - abandoned games
 - [ ] Testing of all routes, controllers, and user interfaces
