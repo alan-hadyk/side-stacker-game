@@ -14,8 +14,6 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     winningMoves.map(([row, col]) => `${row},${col}`), // Convert the moves to strings for easy comparison
   )
 
-  console.log({ nextMoveType })
-
   const winDirection =
     winningMoves.length > 0 ? determineWinDirection(winningMoves) : undefined
 

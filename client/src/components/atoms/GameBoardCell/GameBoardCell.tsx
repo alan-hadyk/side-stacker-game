@@ -20,7 +20,7 @@ export const GameBoardCell: React.FC<GameBoardCellProps> = ({
         flex items-center justify-center 
         border-r-2 last:border-r-0 border-base-300
         h-0 flex-[0_0_calc(100%/7)] pb-[calc(100%/7)]
-        relative
+        relative group
 
         ${
           isLoading
@@ -70,14 +70,20 @@ export const GameBoardCell: React.FC<GameBoardCellProps> = ({
     )}
     {cell === "X" && (
       <XIcon
-        className={`${commonCellClassNames} text-primary`}
+        className={`
+          ${commonCellClassNames} 
+          text-primary
+        `}
         stroke="currentColor"
         fill="currentColor"
       />
     )}
     {cell === "O" && (
       <OIcon
-        className={`${commonCellClassNames} text-secondary`}
+        className={`
+          ${commonCellClassNames} 
+          text-secondary
+        `}
         stroke="currentColor"
         fill="currentColor"
       />

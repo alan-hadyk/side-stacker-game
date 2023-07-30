@@ -4,6 +4,7 @@ import { TypographyVariant } from "@client/components/atoms/Typography/@types/Ty
 import { Typography } from "@client/components/atoms/Typography/Typography"
 import { Card } from "@client/components/molecules/Card/Card"
 import { GameInfoCardProps } from "@client/components/molecules/GameInfoCard/@types/GameInfoCard"
+import { getGameStateBadgeText } from "@client/components/molecules/GameInfoCard/helpers/getGameStateBadgeText"
 import { mapCurrentGameStateToBadgeProps } from "@client/components/molecules/GameInfoCard/helpers/mapCurrentGameStateToBadgeProps"
 import { commonLoaderClassNames } from "@client/components/molecules/GameInfoCard/styles"
 
@@ -13,6 +14,8 @@ export const GameInfoCard: React.FC<GameInfoCardProps> = ({
 }) => {
   const gameStateBadgeProps =
     game && mapCurrentGameStateToBadgeProps[game.current_game_state]
+
+  const gameStateBadgeText = getGameStateBadgeText(game)
 
   return (
     <Card isLoading={isLoading} title={game?.name}>
@@ -32,9 +35,7 @@ export const GameInfoCard: React.FC<GameInfoCardProps> = ({
       ) : (
         <>
           {gameStateBadgeProps && (
-            <Badge type={gameStateBadgeProps.type}>
-              {gameStateBadgeProps.text}
-            </Badge>
+            <Badge type={gameStateBadgeProps.type}>{gameStateBadgeText}</Badge>
           )}
           <Typography variant={TypographyVariant.Paragraph}>
             {game?.current_game_state === "finished" ? (
