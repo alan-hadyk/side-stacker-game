@@ -69,6 +69,11 @@ export type GameResponse = {
   winning_moves?: number[][]
 }
 
+export type GamesResponse = {
+  games: GameResponse[]
+  total: number
+}
+
 export interface MoveResponse {
   created_at: string
   game_id: string
