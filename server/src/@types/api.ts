@@ -54,6 +54,11 @@ export interface PlayerResponse {
   username: string
 }
 
+export type PlayersResponse = {
+  players: PlayerResponse[]
+  total: number
+}
+
 export type GameResponse = {
   created_at: string
   current_board_status: MoveTypeEnum[][]
