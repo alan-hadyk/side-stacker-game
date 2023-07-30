@@ -43,7 +43,7 @@ export const GamePlayerRow = ({
     />,
     <>
       {player ? (
-        <div className="flex items-center gap-2">
+        <div className="flex items-baseline gap-2">
           <Indicator
             type={
               player.is_online ? IndicatorType.Success : IndicatorType.Neutral
@@ -59,7 +59,7 @@ export const GamePlayerRow = ({
             {player.username}
           </Typography>
 
-          {isWinner && <FaMedal className="text-accent" />}
+          {isWinner && <FaMedal className="text-accent self-center" />}
         </div>
       ) : (
         <Typography

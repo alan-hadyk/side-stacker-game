@@ -12,18 +12,10 @@ import { mapCurrentBoardStatusToBoard } from "@client/components/molecules/GameC
 import { getResult } from "@client/components/molecules/GameCard/helpers/getResult"
 
 export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
-  const {
-    game_id,
-    number_of_moves,
-    created_at,
-    name,
-    finished_at,
-    winning_moves,
-  } = game
+  const { game_id, number_of_moves, created_at, name, winning_moves } = game
   const numberOfPlayers = calculateNumberOfPlayersInGame(game)
   const numberOfPlayersBadgeType =
     numberOfPlayers === 2 ? BadgeType.Warning : BadgeType.Success
-  const isNumberOfMovesEven = number_of_moves % 2 === 0
 
   const board = mapCurrentBoardStatusToBoard(game)
   const result = getResult(game)
@@ -42,7 +34,9 @@ export const GameCard: React.FC<GameCardProps> = ({ className = "", game }) => {
         <div className="flex items-center justify-start gap-2 flex-wrap mb-4">
           <Badge type={numberOfPlayersBadgeType}>{numberOfPlayers} / 2</Badge>
           <Badge
-            type={isNumberOfMovesEven ? BadgeType.Secondary : BadgeType.Primary}
+            type={
+              numberOfPlayers === 2 ? BadgeType.Secondary : BadgeType.Primary
+            }
           >
             {number_of_moves} moves
           </Badge>

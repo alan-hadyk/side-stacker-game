@@ -2,6 +2,7 @@ import { useGetCurrentPlayer } from "@client/api/queries/useGetCurrentPlayer"
 import { useGetPlayers } from "@client/api/queries/useGetPlayers"
 import { AlertType } from "@client/components/molecules/Alert/@types/Alert"
 import { Alert } from "@client/components/molecules/Alert/Alert"
+import { CardPosition } from "@client/components/molecules/Card/@types/Card"
 import { Card } from "@client/components/molecules/Card/Card"
 import { Table } from "@client/components/organisms/Table/Table"
 import { mapPlayersToRows } from "@client/containers/home/sections/players/helpers/mapPlayersToRows"
@@ -18,7 +19,7 @@ export const HomeContainerPlayersSection: React.FC = () => {
   const rows = mapPlayersToRows(currentPlayer?.player_id, players)
 
   return (
-    <Card title="Players">
+    <Card position={CardPosition.Sticky} title="Players">
       {isInitialLoading || !isEmpty(rows) ? (
         <Table
           headers={[" ", "Name", "Last Active"]}
