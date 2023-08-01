@@ -14,11 +14,13 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   winningMoves = [],
 }) => {
   const winningMovesSet = new Set(
-    winningMoves.map(([row, col]) => `${row},${col}`), // Convert the moves to strings for easy comparison
+    winningMoves?.map(([row, col]) => `${row},${col}`), // Convert the moves to strings for easy comparison
   )
 
   const winDirection =
-    winningMoves.length > 0 ? determineWinDirection(winningMoves) : undefined
+    winningMoves && winningMoves.length > 0
+      ? determineWinDirection(winningMoves)
+      : undefined
 
   return isLoading ? (
     <GameBoardLoader />
