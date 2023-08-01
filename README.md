@@ -224,7 +224,7 @@ Fields:
 - [x] [Client - game end (win/draw) logic](https://github.com/alan-hadyk/side-stacker-game/pull/20)
 - [x] [Client - 404 page](https://github.com/alan-hadyk/side-stacker-game/pull/21)
 - [x] [Remove obsolete code](https://github.com/alan-hadyk/side-stacker-game/pull/22)
-- [x] [Testing - client & server]()
+- [x] [Testing - client & server](https://github.com/alan-hadyk/side-stacker-game/pull/23)
 - [ ] Missing documentation
 
 ### Potential additional features

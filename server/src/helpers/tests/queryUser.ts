@@ -8,7 +8,10 @@ const sql = createSqlTag({
   },
 })
 
-export const queryAuthenticatedUser = async (
+/**
+ * Query user from database
+ */
+export const queryUser = async (
   connection: DatabasePoolConnection,
   username: Player["username"],
 ) => {

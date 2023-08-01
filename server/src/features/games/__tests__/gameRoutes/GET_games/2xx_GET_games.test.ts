@@ -13,7 +13,7 @@ import { websocketsServer } from "@server/clients/websocketsServer"
 import qs from "qs"
 import { validateGamesGetResponse } from "@server/helpers/tests/validateGamesGetResponse"
 import { RedisService } from "@server/services/redisService"
-import { queryAuthenticatedUser } from "@server/helpers/tests/queryAuthenticatedUser"
+import { queryUser } from "@server/helpers/tests/queryUser"
 import { FilterType } from "@server/@types/models"
 
 const sql = createSqlTag({
@@ -77,10 +77,7 @@ describe("2xx - GET /games", () => {
         .expect(200)
 
       // Check if user making the request is online
-      const authenticatedUser = await queryAuthenticatedUser(
-        connection,
-        "testSession",
-      )
+      const authenticatedUser = await queryUser(connection, "testSession")
       const isOnline = await RedisService.isUserOnline(
         authenticatedUser.player_id,
       )
