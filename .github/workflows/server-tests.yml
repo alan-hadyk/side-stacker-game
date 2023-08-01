@@ -39,9 +39,11 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
+        working-directory: ./server
 
       - name: Run Tests
         run: yarn test
+        working-directory: ./server
         env:
           NODE_ENV: test
           REDIS_HOST: localhost
