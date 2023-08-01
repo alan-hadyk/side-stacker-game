@@ -6,7 +6,7 @@ switch (process.env.NODE_ENV) {
     break
 
   case "test":
-    url = "redis://:test_password@localhost:6380"
+    url = "redis://localhost:6380"
     break
 
   default:

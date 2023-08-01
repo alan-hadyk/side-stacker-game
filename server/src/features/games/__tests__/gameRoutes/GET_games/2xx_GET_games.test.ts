@@ -15,6 +15,7 @@ import { validateGamesGetResponse } from "@server/helpers/tests/validateGamesGet
 import { RedisService } from "@server/services/redisService"
 import { queryUser } from "@server/helpers/tests/queryUser"
 import { FilterType } from "@server/@types/models"
+import { redisClient } from "@server/clients/redis"
 
 const sql = createSqlTag({
   typeAliases: {
@@ -417,6 +418,7 @@ afterAll(async () => {
   })
 
   await databasePool.end()
+  await redisClient.disconnect()
 
   httpServer.close()
   websocketsServer.close()

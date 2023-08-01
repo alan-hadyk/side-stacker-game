@@ -12,6 +12,7 @@ import { PlayerObject } from "@server/features/players/playerObject"
 import { GameObject } from "@server/features/games/gameObject"
 import session from "supertest-session"
 import { websocketsServer } from "@server/clients/websocketsServer"
+import { redisClient } from "@server/clients/redis"
 
 const sql = createSqlTag({
   typeAliases: {
@@ -151,6 +152,7 @@ afterAll(async () => {
   })
 
   await databasePool.end()
+  await redisClient.disconnect()
 
   httpServer.close()
   websocketsServer.close()

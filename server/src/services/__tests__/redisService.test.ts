@@ -1,5 +1,6 @@
 import { redisClient } from "@server/clients/redis"
 import { websocketsServer } from "@server/clients/websocketsServer"
+import { databasePool } from "@server/db/databasePool"
 import { httpServer, startServer } from "@server/index"
 import { RedisService } from "@server/services/redisService"
 
@@ -24,17 +25,17 @@ describe("RedisService", () => {
     await RedisService.addOnlineUser(player1_id)
 
     onlineUsers = await RedisService.getOnlineUsers()
-    expect(onlineUsers).toEqual([player1_id])
+    expect(onlineUsers.sort()).toEqual([player1_id])
 
     await RedisService.addOnlineUser(player2_id)
 
     onlineUsers = await RedisService.getOnlineUsers()
-    expect(onlineUsers).toEqual([player1_id, player2_id])
+    expect(onlineUsers.sort()).toEqual([player1_id, player2_id].sort())
 
     await RedisService.removeOnlineUser(player1_id)
 
     onlineUsers = await RedisService.getOnlineUsers()
-    expect(onlineUsers).toEqual([player2_id])
+    expect(onlineUsers.sort()).toEqual([player2_id])
 
     await RedisService.removeOnlineUser(player2_id)
 
@@ -65,6 +66,9 @@ describe("RedisService", () => {
 })
 
 afterAll(async () => {
+  await databasePool.end()
+  await redisClient.disconnect()
+
   httpServer.close()
   websocketsServer.close()
 })

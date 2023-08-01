@@ -18,11 +18,16 @@ jobs:
           POSTGRES_DB: test_database
         ports:
           - 5433:5432
+        options: >-
+            --health-cmd pg_isready 
+            --health-interval 10s 
+            --health-timeout 5s 
+            --health-retries 5
       test_redis:
         image: redis
         ports:
           - 6380:6379
-        options: --entrypoint "redis-server --requirepass test_password"
+        options: --entrypoint redis-server
 
     steps:
       - uses: actions/checkout@v3.5.2
@@ -31,13 +36,6 @@ jobs:
         uses: actions/setup-node@v3.6.0
         with:
           node-version: 18.0.0
-      
-      - name: Install Docker Compose
-        run: |
-          sudo rm /usr/local/bin/docker-compose
-          curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` > docker-compose
-          chmod +x docker-compose
-          sudo mv docker-compose /usr/local/bin
 
       - name: Install Dependencies
         run: yarn install
@@ -48,7 +46,6 @@ jobs:
           NODE_ENV: test
           REDIS_HOST: localhost
           REDIS_PORT: 6380
-          REDIS_PASSWORD: test_password
           DATABASE_HOST: localhost
           DATABASE_PORT: 5433
           DATABASE_USER: test_user

@@ -26,6 +26,5 @@ services:
 
   test_redis:
     image: redis
-    command: redis-server --requirepass test_password
     ports:
       - "6380:6379"
