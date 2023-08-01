@@ -66,8 +66,9 @@
     "redis:test:start": "docker-compose up test_redis -d",
     "redis:start": "docker-compose up redis -d",
     "start": "NODE_ENV=production node -r module-alias/register dist/index.js",
-    "test": "NODE_ENV=test npm run db:test:start && NODE_ENV=test npm run redis:test:start && jest --coverage --runInBand --detectOpenHandles",
-    "test:watch": "NODE_ENV=test npm run db:test:start && NODE_ENV=test npm run redis:test:start && jest --watch --runInBand --detectOpenHandles"
+    "test": "NODE_ENV=test npm run db:test:start && NODE_ENV=test npm run redis:test:start && NODE_ENV=test jest --coverage --runInBand",
+    "test:ci": "NODE_ENV=test jest --coverage --runInBand",
+    "test:watch": "NODE_ENV=test npm run db:test:start && NODE_ENV=test npm run redis:test:start && NODE_ENV=test jest --watch --runInBand"
   },
   "version": "1.0.0"
 }
