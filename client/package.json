@@ -19,6 +19,8 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.29.25",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.0.0",
     "@types/lodash": "^4.14.195",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
@@ -34,6 +36,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
     "eslint-plugin-typescript-sort-keys": "^2.3.0",
+    "happy-dom": "^10.5.2",
     "postcss": "^8.4.26",
     "prettier": "^3.0.0",
     "tailwindcss": "^3.3.3",
@@ -41,7 +44,8 @@
     "ts-prune": "^0.10.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
-    "vite-tsconfig-paths": "^4.2.0"
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.34.1"
   },
   "engines": {
     "node": ">=18.0.0",
@@ -50,11 +54,13 @@
   "name": "client",
   "private": true,
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "rm -rf dist/ && tsc -p tsconfig.build.json && vite build",
     "dead-code": "ts-prune",
     "dev": "vite",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "type": "module",
   "version": "0.0.0"

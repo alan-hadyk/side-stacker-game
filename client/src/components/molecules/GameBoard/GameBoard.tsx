@@ -25,7 +25,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   return isLoading ? (
     <GameBoardLoader />
   ) : (
-    <div className="flex items-center justify-stretch flex-col bg-white shadow rounded-box w-full overflow-hidden">
+    <div
+      className="flex items-center justify-stretch flex-col bg-white shadow rounded-box w-full overflow-hidden"
+      data-testid="GameBoard"
+    >
       {board.map((row, rowIndex) => (
         <GameBoardRow key={rowIndex}>
           {row.map(({ cell, isNextPossibleMove, onClick }, cellIndex) => {

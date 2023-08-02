@@ -82,6 +82,9 @@ Starts the app in production mode
 ### `yarn test`
 Starts Docker containers with Redis and PostgreSQL for testing, and then runs all tests
 
+### `yarn test:ci`
+Runs all tests in CI
+
 ### `yarn test:watch`
 Starts Docker containers with Redis and PostgreSQL for testing, and then runs all tests in watch mode
 
