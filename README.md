@@ -205,15 +205,17 @@ Fields:
 
 > Step-by-step walkthrough of a typical user interaction with the application
 
-1. **User visits the application**: The user opens the application in their web browser. They are presented with a loading indicator, and then a welcome screen and a modal to enter their username. If they've already entered the username, they land in step `3.`.
+1. **User visits the application**: The user opens the application in their web browser. They are presented with a loading indicator, and then an authentication form. They can either create a new account or sign in with existing crederntials. If they already have a valid session in the browser, they land in step `3.`.
 
-2. **User enters username**: The user enters their chosen username and clicks on the "Confirm" button. A session is created for the user, and they are taken to the main game lobby.
+2. **User authenticates**: 
+- A: The user enters their chosen username and password, and clicks on the "Create Account" button. New user is created, and session is created for that user, and they are taken to the main game lobby.
+- B: The user enters their existing username and password, and clicks on the "Sign In" button. Session is created for that user, and they are taken to the main game lobby.
 
-3. **User waits in the game lobby**: The user waits in the game lobby. They can see a list of open games, games in progress, as well as a list of finished games. In the top, there might be also a list of games that they are currently participating in.
+3. **User waits in the game lobby**: The user waits in the game lobby. They can see a list of open games, games in progress, as well as a list of finished games. In the top, there might be also a list of games that they are currently participating in. In the sidebar there's a list of all players, with indicators stating that they are online or offline.
 
 4. **User creates a new game or joins an existing one**
 - A: **User creates a new game**: User clicks on "New Game" button. New game is created, and user is redirected to a route with a new game. They are assigned as Player 1 and there's no Player 2 yet. User waits for another player to join. 
-- B: **User joins an existing game**: User clicks on one of the games in progress. They are redirected to a route with an existing game. If there's a free spot, user clicks on "Join Game" button. User is assigned as Player 1 or Player 2. If there isn't any free spot, user can watch the game.
+- B: **User joins an existing game**: User clicks on one of the open games or games in progress. They are redirected to a route with an existing game. If there's a free spot, user clicks on "Join Game" button. User is assigned as Player 1 or Player 2. If there isn't any free spot, user can watch the game.
 
 5. **Game starts**: The game board is displayed, and Player 1 is prompted to make the first move.
 
