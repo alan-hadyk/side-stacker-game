@@ -1,8 +1,28 @@
 # Side-Stacker Game
 
-Side-Stacker Game - Monadical Application - Take-home project
+## Table of Contents
+- [Important note](#important-note)
+- [Architecture Implementation Plan](#architecture-implementation-plan)
+    - [Project Overview](#project-overview)
+    - [Technical Requirements](#technical-requirements)
+        - [The Frontend](#the-frontend)
+        - [The Backend](#the-backend)
+    - [System Architecture](#system-architecture)
+        - [Client-side](#client-side)
+        - [Server-side](#server-side)
+        - [Databases](#databases)
+    - [Technology Stack](#technology-stack)
+        - [The Frontend](#the-frontend)
+        - [The Backend](#the-backend)
+        - [Additional tools](#additional-tools)
+    - [Data Model](#data-model)
+    - [User Flow](#user-flow)
+    - [Implementation Plan](#implementation-plan)
+    - [Potential additional features](#potential-additional-features)
+    - [Testing Strategy](#testing-strategy)
+    - [Potential Challenges](#potential-challenges)
 
-## Important
+## Important note
 
 Please read `Architecture Implementation Plan` below first, and then refer to client and server documentation:
 - [Client Documentation](client/README.md)
@@ -229,13 +249,21 @@ Fields:
 - [x] [Client - 404 page](https://github.com/alan-hadyk/side-stacker-game/pull/21)
 - [x] [Remove obsolete code](https://github.com/alan-hadyk/side-stacker-game/pull/22)
 - [x] [Testing - client & server](https://github.com/alan-hadyk/side-stacker-game/pull/23)
-- [ ] Missing documentation
+- [x] [Missing documentation](https://github.com/alan-hadyk/side-stacker-game/pull/24)
 
 ### Potential additional features
 
 > Step into the shoes of a product manager and spec out some potential features to add to the project. Frame it as if it’s a client project and explain thought process for gathering requirements, prioritizing tickets, delegating, and making time estimates.
 
-TODO
+**Proposed new features**
+
+- Real-time global chat for players in the game lobby.
+- System of levels and point for players.
+- Ability to make a game private, and/or invite a particular user.
+- Settings with the ability to update the username and password, as well as delete an account.
+- Ability to create a game with a custom name.
+- Ability for each player to have an avatar.
+- Display a history of moves made in a particular game, with ability to "replay" the game step by step.
 
 ### Testing Strategy
 
