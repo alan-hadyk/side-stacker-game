@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Build the client
+      - name: Test the client
         working-directory: ./client
         run: |
           yarn install
