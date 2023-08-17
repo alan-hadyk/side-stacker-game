@@ -36,9 +36,13 @@ export class GameController {
       throw new AuthenticationError("Not allowed", 403)
     }
 
-    // Create new game
+    // Hardcode bot id for the sake of simplicity
+    const player2_id = "7cdd5592-fcf4-44e4-8792-d9b62c197ce9"
+
+    // Create new game with bot assigned as player2
     const { newGame } = await GameService.createNewGame({
       player1_id,
+      player2_id,
     })
 
     // Mark player activity

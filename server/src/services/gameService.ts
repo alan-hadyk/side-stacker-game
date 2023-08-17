@@ -178,7 +178,7 @@ export class GameService {
    * The game state is updated based on the current board status
    * and the position of the next move.
    */
-  static calculateGameAfterNextMove = (
+  static calculateGameAfterMove = (
     parsedGame: GameResponse,
     position_y: number,
     position_x: number,
@@ -336,12 +336,16 @@ export class GameService {
   /**
    * createNewGame creates a new game, invalidates the cached games queries and emits a toast message.
    */
-  static createNewGame = async ({ player1_id }: Pick<Game, "player1_id">) => {
+  static createNewGame = async ({
+    player1_id,
+    player2_id,
+  }: Pick<Game, "player1_id" | "player2_id">) => {
     const newGame = await GameModel.create({
       current_game_state: GameStateEnum.enum.waiting_for_players,
       name: GameService.generateGameName(),
       next_possible_moves: GameService.calculateNextPossibleMoves(),
       player1_id,
+      player2_id,
     })
 
     WebsocketService.emitToast(`New Game available - ${newGame.name}`)
