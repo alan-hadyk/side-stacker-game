@@ -3,6 +3,7 @@ import { GameModel } from "@server/features/games/gameModel"
 import { MoveTypeEnum } from "@server/features/games/gameObject"
 import { MoveModel } from "@server/features/moves/moveModel"
 import { MoveObject } from "@server/features/moves/moveObject"
+import { BotService } from "@server/services/botService"
 import { GameService } from "@server/services/gameService"
 import { MoveService } from "@server/services/moveService"
 import { PlayerService } from "@server/services/playerService"
@@ -45,7 +46,7 @@ export class MoveController {
 
     // Calculate the game state after the proposed move
     const { moveType, updatedGame, winningMoves } =
-      GameService.calculateGameAfterNextMove(
+      GameService.calculateGameAfterMove(
         parsedGame,
         position_y,
         position_x,
@@ -73,6 +74,9 @@ export class MoveController {
       position_x,
       position_y,
     })
+
+    // Make a move on behalf of bot
+    await BotService.makeAMove(game_id)
 
     // Mark the player as active (update last_active_at)
     const { player } = await PlayerService.markAsOnline(player_id)

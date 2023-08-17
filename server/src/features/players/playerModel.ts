@@ -244,6 +244,7 @@ export const PlayerModelCurrentSchema = sql.unsafe`
     password TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     last_active_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    deleted_at TIMESTAMP
+    deleted_at TIMESTAMP,
+    is_bot BOOLEAN DEFAULT FALSE
   );
 `
